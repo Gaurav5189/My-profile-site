@@ -10,10 +10,12 @@
 }
 
 .navbar--scrolled {
-    padding: 16px 0;
-    background: rgba(10, 10, 10, 0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--gray-dark);
+    padding: 14px 0;
+    background: rgba(8, 8, 12, 0.55);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .navbar__inner {
@@ -90,10 +92,13 @@
 .navbar__mobile {
     display: flex;
     flex-direction: column;
-    background: var(--dark);
-    border-top: 1px solid var(--gray-dark);
+    background: rgba(8, 8, 12, 0.72);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
     padding: 24px 0;
     animation: slideDown 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
 @keyframes slideDown {

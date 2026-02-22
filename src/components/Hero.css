@@ -1,23 +1,78 @@
+/* ================================================================
+   HERO  –  Two-column: 3D LEFT  |  Text RIGHT
+   ================================================================ */
+
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding-top: 140px;
+    padding-top: 100px;
 }
 
+/* ── Spline 3D (fills entire hero background) ─────────────────── */
+.hero__spline-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero__spline-wrap spline-viewer {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* ── Overlay: clear on left (3D icon), dark on right (text) ────── */
+.hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg,
+            rgba(10, 10, 10, 0.00) 0%,
+            /* fully clear — 3D fully visible  */
+            rgba(10, 10, 10, 0.10) 45%,
+            /* slight tint starts              */
+            rgba(10, 10, 10, 0.78) 58%,
+            /* fades to dark — text starts     */
+            rgba(10, 10, 10, 0.92) 100%
+            /* dark behind right-side text     */
+        );
+    pointer-events: none;
+}
+
+/* ── Two-column grid container ─────────────────────────────────── */
 .hero__inner {
     position: relative;
-    z-index: 1;
-    max-width: 820px;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* 50% 3D spacer | 50% text */
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    max-width: var(--container-width);
 }
 
+/* Left col — visually empty, lets 3D icon show through */
+.hero__left {
+    /* no content — just holds the space */
+}
+
+/* Right col — all text content */
+.hero__right {
+    padding-left: 48px;
+}
+
+/* ── Heading ─────────────────────────────────────────────────────── */
 .hero__heading {
-    font-size: clamp(3.2rem, 9vw, 7.5rem);
+    font-size: clamp(2.4rem, 4.2vw, 6rem);
     font-weight: 800;
     color: var(--cream);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     line-height: 1.0;
 }
 
@@ -26,21 +81,41 @@
     color: transparent;
 }
 
+/* ── Sub copy ─────────────────────────────────────────────────────── */
 .hero__sub {
-    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    font-size: clamp(0.88rem, 1.1vw, 1.05rem);
     color: var(--gray-light);
-    max-width: 480px;
+    max-width: 420px;
     line-height: 1.8;
-    margin-bottom: 44px;
+    margin-bottom: 40px;
 }
 
+/* ── CTA buttons ─────────────────────────────────────────────────── */
 .hero__actions {
     display: flex;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 }
 
+/* Liquid-glass touch on the outline button */
+.hero__actions .btn-outline {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border-color: rgba(255, 255, 255, 0.18);
+    transition: background var(--transition), border-color var(--transition),
+        transform var(--transition), box-shadow var(--transition);
+}
+
+.hero__actions .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.13);
+    border-color: rgba(255, 255, 255, 0.38);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(120, 80, 255, 0.22);
+}
+
+/* ── Scroll indicator ─────────────────────────────────────────────── */
 .hero__scroll {
     display: flex;
     align-items: center;
@@ -51,6 +126,13 @@
     color: var(--gray-light);
     cursor: pointer;
     transition: color var(--transition);
+}
+
+.hero__scroll a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: inherit;
 }
 
 .hero__scroll:hover {
@@ -73,7 +155,7 @@
     }
 }
 
-/* Decorative background text */
+/* ── Decorative BG text ──────────────────────────────────────────── */
 .hero__bg-text {
     position: absolute;
     bottom: -30px;
@@ -87,11 +169,36 @@
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
+    z-index: 1;
 }
 
-@media (max-width: 768px) {
-    .hero {
-        padding-top: 120px;
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+
+    /* Stack vertically on tablets — 3D on top, text below */
+    .hero__inner {
+        grid-template-columns: 1fr;
+    }
+
+    /* On mobile show a spacer so 3D has room at top */
+    .hero__left {
+        height: 260px;
+    }
+
+    .hero__right {
+        padding-left: 0;
+    }
+
+    .hero__overlay {
+        background: linear-gradient(180deg,
+                rgba(10, 10, 10, 0.10) 0%,
+                rgba(10, 10, 10, 0.60) 45%,
+                rgba(10, 10, 10, 0.90) 70%,
+                rgba(10, 10, 10, 0.95) 100%);
+    }
+
+    .hero__heading {
+        font-size: clamp(2.8rem, 8vw, 4.5rem);
     }
 
     .hero__actions {
