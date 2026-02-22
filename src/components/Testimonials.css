@@ -1,10 +1,20 @@
+/* ================================================================
+   ENGINEERING PHILOSOPHY SECTION
+   ================================================================ */
+
 .testimonials {
     background: var(--dark);
 }
 
 .testimonials__inner {
     padding-top: 80px;
-    max-width: 760px;
+    /* centered layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 860px;
+    margin-inline: auto;
 }
 
 .testimonials__heading {
@@ -13,112 +23,89 @@
     color: var(--cream);
     line-height: 1.08;
     margin-top: 16px;
-    margin-bottom: 56px;
+    margin-bottom: 64px;
 }
 
-.testimonials__card {
+/* ── Philosophy quote card ─────────────────────────────────── */
+.philosophy__card {
+    position: relative;
     border: 1px solid var(--gray-dark);
-    padding: 52px 48px;
+    padding: 72px 64px 56px;
     background: var(--black);
-    margin-bottom: 40px;
-}
-
-.testimonials__quote {
-    font-size: clamp(1.05rem, 2vw, 1.3rem);
-    color: var(--cream);
-    line-height: 1.75;
-    font-weight: 300;
-    margin-bottom: 40px;
-}
-
-.testimonials__author {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 0;
+    width: 100%;
+
+    /* subtle liquid-glass inset shimmer */
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
-.testimonials__avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--gray-dark);
-    border: 1px solid var(--gray-mid);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Giant decorative opening quote mark */
+.philosophy__mark {
+    position: absolute;
+    top: -0.12em;
+    left: 50%;
+    transform: translateX(-50%);
     font-family: var(--font-heading);
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-size: clamp(6rem, 12vw, 11rem);
+    font-weight: 900;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(245, 240, 232, 0.10);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
+}
+
+/* The quote text */
+.philosophy__quote {
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
     color: var(--cream);
+    line-height: 1.85;
+    font-weight: 300;
+    max-width: 660px;
+    margin-bottom: 48px;
+    letter-spacing: 0.01em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Attribution row */
+.philosophy__attribution {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.philosophy__line {
+    display: block;
+    width: 36px;
+    height: 1px;
+    background: var(--gray-mid);
     flex-shrink: 0;
 }
 
-.testimonials__name {
-    display: block;
-    font-size: 0.9rem;
+.philosophy__author {
+    font-size: 0.82rem;
     font-weight: 500;
-    color: var(--cream);
-}
-
-.testimonials__role {
-    display: block;
-    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--gray-light);
-    letter-spacing: 0.06em;
-    margin-top: 3px;
 }
 
-/* Controls */
-.testimonials__controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-}
-
-.testimonials__dots {
-    display: flex;
-    gap: 10px;
-}
-
-.testimonials__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gray-mid);
-    transition: background var(--transition), transform var(--transition);
-}
-
-.testimonials__dot--active {
-    background: var(--cream);
-    transform: scale(1.4);
-}
-
-.testimonials__arrows {
-    display: flex;
-    gap: 8px;
-}
-
-.testimonials__arrow {
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--gray-dark);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gray-light);
-    transition: border-color var(--transition), color var(--transition), background var(--transition);
-}
-
-.testimonials__arrow:hover {
-    border-color: var(--cream);
-    color: var(--cream);
-    background: rgba(245, 240, 232, 0.05);
-}
-
+/* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 600px) {
-    .testimonials__card {
-        padding: 32px 24px;
+    .philosophy__card {
+        padding: 56px 28px 40px;
+    }
+
+    .philosophy__mark {
+        font-size: 7rem;
     }
 }

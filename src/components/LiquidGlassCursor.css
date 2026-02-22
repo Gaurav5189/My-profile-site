@@ -1,0 +1,166 @@
+/* ================================================================
+   LIQUID GLASS CURSOR  ─  Pure CSS, transparent, refractive
+   ================================================================ */
+
+/* ── Outer blob wrapper ──────────────────────────────────────────
+   • Animates border-radius → liquid "morphing" shape
+   • overflow: hidden clips the backdrop-filter to the exact shape
+   • pointer-events: none so nothing is blocked
+   ──────────────────────────────────────────────────────────────── */
+.lgc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 180px;
+    height: 180px;
+    z-index: 9900;
+    pointer-events: none;
+    will-change: transform;
+    transform: translate(-999px, -999px) translate(-50%, -50%);
+    display: none;
+
+    /* Clip everything to this morphing blob */
+    overflow: hidden;
+    animation: lg-morph 7s ease-in-out infinite;
+}
+
+@media (pointer: fine) {
+    .lgc {
+        display: block;
+    }
+}
+
+/* Slow organic blob morphing */
+@keyframes lg-morph {
+    0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+
+    20% {
+        border-radius: 40% 60% 55% 45% / 50% 65% 35% 58%;
+    }
+
+    40% {
+        border-radius: 55% 45% 65% 35% / 40% 55% 60% 40%;
+    }
+
+    60% {
+        border-radius: 35% 65% 40% 60% / 65% 35% 55% 45%;
+    }
+
+    80% {
+        border-radius: 65% 35% 55% 45% / 45% 60% 40% 65%;
+    }
+
+    100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+}
+
+/* ── Inner pane (fills 100% of blob) ────────────────────────────── */
+.lgc__pane {
+    position: absolute;
+    inset: 0;
+}
+
+/* ── Glass refraction layer ──────────────────────────────────────
+   This is the core: a near-transparent surface with backdrop-filter.
+   The parent overflow:hidden clips the blur to the blob silhouette.
+   ──────────────────────────────────────────────────────────────── */
+.lgc__refract {
+    position: absolute;
+    inset: 0;
+
+    /* NEARLY transparent — just enough to anchor the backdrop-filter */
+    background: rgba(255, 255, 255, 0.05);
+
+    /* The actual glass effect: blurs + shifts colours of everything behind */
+    backdrop-filter:
+        blur(5px) saturate(200%) brightness(1.18) contrast(1.06);
+    -webkit-backdrop-filter:
+        blur(5px) saturate(200%) brightness(1.18) contrast(1.06);
+
+    /* Asymmetric border — bright top-left (light source), dim elsewhere */
+    border-top: 1px solid rgba(255, 255, 255, 0.65);
+    border-left: 1px solid rgba(255, 255, 255, 0.45);
+    border-right: 1px solid rgba(255, 255, 255, 0.10);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    /* Depth: inner shadow at bottom, inner light at top */
+    box-shadow:
+        inset 0 8px 18px rgba(255, 255, 255, 0.12),
+        inset 0 -10px 22px rgba(0, 0, 0, 0.15),
+        0 12px 40px rgba(0, 0, 0, 0.22),
+        0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+/* ── Primary specular highlight (top-left bright spot) ──────────── */
+.lgc__shine--primary {
+    position: absolute;
+    top: 6%;
+    left: 10%;
+    width: 54%;
+    height: 36%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+            rgba(255, 255, 255, 0.82) 0%,
+            rgba(255, 255, 255, 0.32) 42%,
+            transparent 100%);
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+/* ── Micro catchlight (sharp tiny dot) ──────────────────────────── */
+.lgc__shine--secondary {
+    position: absolute;
+    top: 12%;
+    left: 24%;
+    width: 20%;
+    height: 13%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+            rgba(255, 255, 255, 0.95) 0%,
+            transparent 100%);
+    filter: blur(1.5px);
+    pointer-events: none;
+}
+
+/* ── Caustic light (bottom — light that "passed through") ──────── */
+.lgc__caustic {
+    position: absolute;
+    bottom: 8%;
+    right: 10%;
+    width: 48%;
+    height: 28%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center,
+            rgba(140, 215, 255, 0.35) 0%,
+            rgba(100, 180, 255, 0.14) 55%,
+            transparent 100%);
+    filter: blur(6px);
+    pointer-events: none;
+}
+
+/* ── Chromatic aberration — red fringe ──────────────────────────── */
+.lgc__aberr-r {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 55% at 28% 24%,
+            rgba(255, 70, 50, 0.16) 0%,
+            transparent 65%);
+    mix-blend-mode: screen;
+    transform: translate(-2.5px, -2px);
+    pointer-events: none;
+}
+
+/* ── Chromatic aberration — blue fringe ─────────────────────────── */
+.lgc__aberr-b {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 55% at 72% 76%,
+            rgba(60, 110, 255, 0.16) 0%,
+            transparent 65%);
+    mix-blend-mode: screen;
+    transform: translate(2.5px, 2px);
+    pointer-events: none;
+}
