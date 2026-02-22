@@ -15,13 +15,35 @@ export default function Contact() {
     const isInView = useInView(ref, { once: true, margin: '-80px' })
     const [formState, setFormState] = useState({ name: '', email: '', message: '' })
     const [submitted, setSubmitted] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
     const handleChange = e => setFormState(s => ({ ...s, [e.target.name]: e.target.value }))
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Wire to your preferred backend / Formspree / EmailJS here
-        setSubmitted(true)
+        setLoading(true)
+        setError('')
+
+        const formData = new FormData(e.target)
+        formData.append('access_key', 'cf0934dc-8825-482d-be53-aeaad45da867')
+
+        try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData,
+            })
+            const data = await res.json()
+            if (data.success) {
+                setSubmitted(true)
+            } else {
+                setError('Something went wrong. Please try again.')
+            }
+        } catch {
+            setError('Network error. Please check your connection.')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -75,7 +97,14 @@ export default function Contact() {
                             <div className="contact__success" id="contact-success">
                                 <div className="contact__success-icon">✓</div>
                                 <h3>Message sent!</h3>
-                                <p>Thanks for reaching out — I'll get back to you within 24 hours.</p>
+                                <p>Thanks for reaching out — I&apos;ll get back to you within 24 hours.</p>
+                                <button
+                                    className="btn btn-outline"
+                                    style={{ marginTop: '20px', fontSize: '0.8rem' }}
+                                    onClick={() => { setSubmitted(false); setFormState({ name: '', email: '', message: '' }) }}
+                                >
+                                    Send another message
+                                </button>
                             </div>
                         ) : (
                             <form className="contact__form" onSubmit={handleSubmit} id="contact-form">
@@ -115,8 +144,16 @@ export default function Contact() {
                                         required
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary contact__submit" id="contact-submit-btn">
-                                    Send Message <HiArrowUpRight />
+                                {error && (
+                                    <p className="contact__error">{error}</p>
+                                )}
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary contact__submit"
+                                    id="contact-submit-btn"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Sending…' : <> Send Message <HiArrowUpRight /> </>}
                                 </button>
                             </form>
                         )}

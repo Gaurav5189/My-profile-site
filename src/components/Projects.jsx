@@ -82,7 +82,7 @@ export default function Projects() {
                                 ) : (
                                     <div className="project-card__image-placeholder">
                                         <span>{placeholder}</span>
-                                        <p>Replace with project screenshot</p>
+                                        <p>#</p>
                                     </div>
                                 )}
                                 <div className="project-card__overlay">

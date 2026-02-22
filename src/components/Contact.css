@@ -134,6 +134,19 @@ a.contact__info-item:hover {
     width: fit-content;
 }
 
+.contact__submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.contact__error {
+    font-size: 0.82rem;
+    color: #e07070;
+    letter-spacing: 0.04em;
+    margin-top: -8px;
+}
+
 /* Success */
 .contact__success {
     display: flex;
