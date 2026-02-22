@@ -57,10 +57,7 @@
     max-width: var(--container-width);
 }
 
-/* Left col — visually empty, lets 3D icon show through */
-.hero__left {
-    /* no content — just holds the space */
-}
+/* Left col — visually empty, lets 3D icon show through (styled via media query) */
 
 /* Right col — all text content */
 .hero__right {

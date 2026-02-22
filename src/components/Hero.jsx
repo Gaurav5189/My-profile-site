@@ -15,7 +15,7 @@ export default function Hero() {
             {/* === Spline 3D background — fills left portion === */}
             <div className="hero__spline-wrap" aria-hidden="true">
                 <spline-viewer
-                    url="https://prod.spline.design/1k31OrecM06Uz8Qd/scene.splinecode"
+                    url="/scene-clean.splinecode"
                     loading-anim-type="none"
                 />
             </div>
