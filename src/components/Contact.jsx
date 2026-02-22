@@ -65,9 +65,7 @@ export default function Contact() {
                         </motion.p>
 
                         <motion.div className="contact__info" variants={anim} custom={0.3} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            <a className="contact__info-item" href="mailto:hello@yourname.com" id="contact-email-link">
-                                <FiMail /> <span>hello@yourname.com</span>
-                            </a>
+
                             <div className="contact__info-item">
                                 <FiMapPin /> <span>India 🇮🇳</span>
                             </div>

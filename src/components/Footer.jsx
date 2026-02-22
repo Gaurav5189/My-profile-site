@@ -71,9 +71,7 @@ export default function Footer() {
                     {/* Contact */}
                     <div className="footer__col">
                         <span className="footer__col-title">Say Hello</span>
-                        <a href="mailto:hello@yourname.com" className="footer__email" id="footer-email">
-                            hello@yourname.com
-                        </a>
+                        <span className="contact__info-title" style={{ color: 'var(--cream)', fontSize: '0.9rem', marginBottom: '8px', display: 'block' }}>Let's Talk</span>
                         <p className="footer__availability">
                             <span className="footer__dot" />
                             Available for new projects
