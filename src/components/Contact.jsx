@@ -79,8 +79,8 @@ export default function Contact() {
                         {/* Social Links */}
                         <motion.div className="contact__socials" variants={anim} custom={0.4} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             {[
-                                { icon: <FiGithub size={18} />, href: 'https://github.com', label: 'GitHub', id: 'social-github' },
-                                { icon: <FiLinkedin size={18} />, href: 'https://linkedin.com', label: 'LinkedIn', id: 'social-linkedin' },
+                                { icon: <FiGithub size={18} />, href: 'https://github.com/Gaurav5189', label: 'GitHub', id: 'social-github' },
+                                { icon: <FiLinkedin size={18} />, href: 'https://www.linkedin.com/in/gaurav-s-4b36b624b', label: 'LinkedIn', id: 'social-linkedin' },
                                 { icon: <FiTwitter size={18} />, href: 'https://twitter.com', label: 'Twitter', id: 'social-twitter' },
                                 { icon: <FiInstagram size={18} />, href: 'https://instagram.com', label: 'Instagram', id: 'social-instagram' },
                             ].map(({ icon, href, label, id }) => (
