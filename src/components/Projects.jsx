@@ -7,33 +7,37 @@ const PROJECTS = [
     {
         id: 'p1',
         number: '01',
-        category: 'CI/CD Security',
-        title: 'Secure Pipeline Automation',
-        year: '2025',
-        desc: 'Designed and implemented a fully automated DevSecOps pipeline integrating SAST, DAST, container scanning, and secret detection — reducing vulnerability exposure by 80%.',
-        tags: ['GitHub Actions', 'SonarQube', 'Trivy', 'OWASP ZAP'],
-        placeholder: 'Project Preview',
+        category: 'Secure Backend Development',
+        title: 'Ravenshaw Alumni System',
+        year: '2024',
+        desc: 'Architected and deployed a dedicated alumni networking platform. Hardened the application by implementing core Django security protocols and routing traffic through Cloudflare for enhanced DDoS protection and DNS management.',
+        tags: ['Django', 'Python', 'Cloudflare', 'Web Security'],
+        placeholder: 'Live Web Application',
+        link: 'http://ravenshawalumnisystem.dpdns.org',
+        image: '/ravenshaw-site.png'
     },
     {
         id: 'p2',
         number: '02',
-        category: 'Cloud Security',
-        title: 'Zero-Trust Cloud Architecture',
-        year: '2024',
-        desc: 'Architected a zero-trust AWS environment with IaC security scanning, least-privilege IAM policies, and continuous compliance monitoring aligned to CIS benchmarks.',
-        tags: ['AWS', 'Terraform', 'Checkov', 'IAM', 'CloudTrail'],
-        placeholder: 'Project Preview',
+        category: 'System Architecture',
+        title: 'PyCloud Media Server',
+        year: '2025',
+        desc: 'Built a lightweight, self-hosted personal cloud and media center in pure Python. Engineered asynchronous background task queues, real-time system monitoring, and secure local file streaming without relying on external frameworks.',
+        tags: ['Python 3', 'Linux', 'Asynchronous I/O', 'Self-Hosted'],
+        placeholder: 'Open Source Tool',
+        link: 'https://github.com/Gaurav5189/PyCloud-Server',
+        image: '/pycloud-img.png'
     },
     {
         id: 'p3',
         number: '03',
-        category: 'Container Security',
-        title: 'Kubernetes Security Hardening',
-        year: '2024',
-        desc: 'Hardened a production Kubernetes cluster with OPA Gatekeeper policies, RBAC fine-tuning, network policies, runtime threat detection using Falco, and image signing.',
-        tags: ['Kubernetes', 'Falco', 'OPA', 'Docker', 'Cosign'],
-        placeholder: 'Project Preview',
-    },
+        category: 'Workflow Automation',
+        title: 'n8n Security & CI/CD Pipelines',
+        year: '2025',
+        desc: 'Designed automated CI/CD and security workflows bridging development and operations. Triggered automatic tasks and deployment alerts to ensure continuous, secure delivery and maintenance of live production applications.',
+        tags: ['n8n', 'CI/CD', 'Workflow Automation', 'Webhooks'],
+        placeholder: 'Infrastructure Maintenance'
+    }
 ]
 
 const anim = {
@@ -60,7 +64,7 @@ export default function Projects() {
 
                 {/* Project Cards */}
                 <div className="projects__list">
-                    {PROJECTS.map(({ id, number, category, title, year, desc, tags, placeholder }, i) => (
+                    {PROJECTS.map(({ id, number, category, title, year, desc, tags, placeholder, link, image }, i) => (
                         <motion.div
                             key={id}
                             className="project-card"
@@ -71,14 +75,26 @@ export default function Projects() {
                             id={`project-card-${i + 1}`}
                         >
                             <div className="project-card__image">
-                                <div className="project-card__image-placeholder">
-                                    <span>{placeholder}</span>
-                                    <p>Replace with project screenshot</p>
-                                </div>
+                                {image ? (
+                                    <div className="project-card__image-cover">
+                                        <img src={image} alt={title} className="project-card__img" />
+                                    </div>
+                                ) : (
+                                    <div className="project-card__image-placeholder">
+                                        <span>{placeholder}</span>
+                                        <p>Replace with project screenshot</p>
+                                    </div>
+                                )}
                                 <div className="project-card__overlay">
-                                    <button className="project-card__view-btn" id={`project-view-btn-${i + 1}`}>
-                                        View Project <HiArrowUpRight />
-                                    </button>
+                                    {link ? (
+                                        <a href={link} target="_blank" rel="noopener noreferrer" className="project-card__view-btn" id={`project-view-btn-${i + 1}`}>
+                                            View Project <HiArrowUpRight />
+                                        </a>
+                                    ) : (
+                                        <button className="project-card__view-btn" id={`project-view-btn-${i + 1}`}>
+                                            View Project <HiArrowUpRight />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <div className="project-card__info">

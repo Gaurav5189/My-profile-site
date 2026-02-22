@@ -60,8 +60,7 @@ export default function Hero() {
                         initial="hidden"
                         animate="visible"
                     >
-                        I embed security into every stage of the SDLC — from code to cloud —
-                        so teams can ship faster without leaving doors open.
+                        I bridge the gap between offensive security and robust architecture. By combining Python backend development (Django/Flask) with automated threat modeling (n8n) and a hacker's mindset, I harden infrastructure so teams can ship faster without leaving doors open.
                     </motion.p>
 
                     <motion.div

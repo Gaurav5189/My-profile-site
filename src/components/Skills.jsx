@@ -6,27 +6,27 @@ import './Skills.css'
 const SERVICES = [
     {
         number: '01',
-        title: 'CI/CD Security',
-        desc: 'Hardening build and release pipelines with SAST, DAST, dependency scanning, and secret detection — catching vulnerabilities before they reach production.',
-        tags: ['GitHub Actions', 'Jenkins', 'SonarQube', 'Snyk'],
+        title: 'Secure Backend Development',
+        desc: 'Architecting and building robust, scalable server-side applications. I focus on writing clean code with security baked in from day one, mitigating vulnerabilities at the framework level.',
+        tags: ['Django', 'Flask', 'Python', 'REST APIs'],
     },
     {
         number: '02',
-        title: 'Cloud & Infrastructure Security',
-        desc: 'Securing cloud-native environments and IaC templates across AWS, GCP, and Azure — enforcing least-privilege, policy-as-code, and compliance guardrails.',
-        tags: ['AWS', 'Terraform', 'Checkov', 'IAM'],
+        title: 'Offensive Security & Pen Testing',
+        desc: 'Leveraging a hacker\'s mindset to proactively hunt for vulnerabilities in web applications and networks. I identify and patch OWASP Top 10 flaws before they reach production.',
+        tags: ['Penetration Testing', 'OWASP', 'Burp Suite', 'Nmap'],
     },
     {
         number: '03',
-        title: 'Container & Kubernetes Security',
-        desc: 'Locking down containerized workloads — image scanning, runtime security, admission controllers, network policies, and RBAC hardening.',
-        tags: ['Docker', 'Kubernetes', 'Trivy', 'Falco'],
+        title: 'Workflow & Dev Automation',
+        desc: 'Designing intelligent, automated workflows to streamline operations. From triggering automatic security scans on code commits to managing alert systems, I bridge the gap between development and ops.',
+        tags: ['n8n', 'CI/CD', 'API Integration', 'Python Scripting'],
     },
     {
         number: '04',
-        title: 'Threat Modelling & Compliance',
-        desc: 'Identifying attack surfaces early in the SDLC, building security frameworks, and achieving compliance with standards like SOC 2, ISO 27001, and CIS Benchmarks.',
-        tags: ['STRIDE', 'OWASP', 'SOC 2', 'CIS'],
+        title: 'Infrastructure & Deployment',
+        desc: 'Managing live production environments and networking configurations. I handle end-to-end deployment, ensuring high availability, secure defaults, and continuous maintenance for active websites.',
+        tags: ['Linux', 'Networking', 'Server Admin', 'Deployment'],
     },
 ]
 
@@ -81,7 +81,7 @@ export default function Skills() {
                 {/* Scrolling marquee */}
                 <div className="skills__marquee" aria-hidden="true">
                     <div className="skills__marquee-track">
-                        {['DevSecOps', 'CI/CD Security', 'SAST', 'DAST', 'Kubernetes', 'Docker', 'AWS', 'Terraform', 'Snyk', 'OWASP', 'Zero Trust', 'SRE', 'DevSecOps', 'CI/CD Security', 'SAST', 'DAST', 'Kubernetes', 'Docker', 'AWS', 'Terraform', 'Snyk', 'OWASP', 'Zero Trust', 'SRE'].map((t, i) => (
+                        {['Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing', 'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security', 'Linux Admin', 'CI/CD', 'Burp Suite', 'Live Deployment'].map((t, i) => (
                             <span key={i}>{t} <em>·</em></span>
                         ))}
                     </div>
