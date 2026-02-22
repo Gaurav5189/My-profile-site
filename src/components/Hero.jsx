@@ -8,6 +8,12 @@ const fadeUp = {
     visible: (delay = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay } }),
 }
 
+// Evaluated once at module load — no hook needed
+const isMobile =
+    typeof window !== 'undefined' &&
+    (window.matchMedia('(pointer: coarse)').matches ||
+        window.matchMedia('(max-width: 900px)').matches)
+
 export default function Hero() {
     return (
         <section className="hero section-pad" id="hero">
@@ -17,6 +23,7 @@ export default function Hero() {
                 <spline-viewer
                     url="/scene-clean.splinecode"
                     loading-anim-type="none"
+                    {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
                 />
             </div>
 

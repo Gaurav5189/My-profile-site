@@ -24,9 +24,23 @@
     animation: lg-morph 7s ease-in-out infinite;
 }
 
-@media (pointer: fine) {
+/* ── Enable ONLY on true pointer + non-mobile viewport ──────────
+   pointer: fine   = real mouse / trackpad (never a touchscreen)
+   min-width: 901px = tablet/phone breakpoint is fully excluded
+   Both must be true. This is the safest cross-device kill switch.
+   ──────────────────────────────────────────────────────────────── */
+@media (pointer: fine) and (min-width: 901px) {
     .lgc {
         display: block;
+    }
+}
+
+/* Explicit belt-and-suspenders: always hide on small screens
+   regardless of pointer type (e.g. Windows tablet with stylus) */
+@media (max-width: 900px) {
+    .lgc {
+        display: none !important;
+        animation: none !important;
     }
 }
 

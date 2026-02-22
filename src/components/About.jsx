@@ -57,7 +57,7 @@ export default function About() {
                     >
                         <div className="about__image-frame" id="about-photo">
                             <img
-                                src="/gaurav.jpg"
+                                src="/gaurav.webp"
                                 alt="Gaurav — DevSecOps Engineer"
                                 className="about__photo"
                             />

@@ -14,7 +14,7 @@ const PROJECTS = [
         tags: ['Django', 'Python', 'Cloudflare', 'Web Security'],
         placeholder: 'Live Web Application',
         link: 'http://ravenshawalumnisystem.dpdns.org',
-        image: '/ravenshaw-site.png'
+        image: '/ravenshaw-site.webp'
     },
     {
         id: 'p2',
@@ -26,7 +26,7 @@ const PROJECTS = [
         tags: ['Python 3', 'Linux', 'Asynchronous I/O', 'Self-Hosted'],
         placeholder: 'Open Source Tool',
         link: 'https://github.com/Gaurav5189/PyCloud-Server',
-        image: '/pycloud-img.png'
+        image: '/pycloud-img.webp'
     },
     {
         id: 'p3',

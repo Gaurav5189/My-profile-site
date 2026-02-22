@@ -30,9 +30,9 @@ My-profile-site/
 ├── requirements.txt            ← Plain text list of all project dependencies
 ├── public/                     ← Static assets (served directly at root /)
 │   ├── favicon.svg
-│   ├── gaurav.jpg              
-│   ├── pycloud-img.png
-│   ├── ravenshaw-site.png
+│   ├── gaurav.webp             
+│   ├── pycloud-img.webp
+│   ├── ravenshaw-site.webp
 │   └── scene-clean.splinecode  ← Local 3D Spline scene file
 └── src/
     ├── main.jsx                ← React bootstrap file
