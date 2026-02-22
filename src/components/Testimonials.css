@@ -1,0 +1,124 @@
+.testimonials {
+    background: var(--dark);
+}
+
+.testimonials__inner {
+    padding-top: 80px;
+    max-width: 760px;
+}
+
+.testimonials__heading {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--cream);
+    line-height: 1.08;
+    margin-top: 16px;
+    margin-bottom: 56px;
+}
+
+.testimonials__card {
+    border: 1px solid var(--gray-dark);
+    padding: 52px 48px;
+    background: var(--black);
+    margin-bottom: 40px;
+}
+
+.testimonials__quote {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    color: var(--cream);
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.testimonials__author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.testimonials__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gray-dark);
+    border: 1px solid var(--gray-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--cream);
+    flex-shrink: 0;
+}
+
+.testimonials__name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--cream);
+}
+
+.testimonials__role {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--gray-light);
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+}
+
+/* Controls */
+.testimonials__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.testimonials__dots {
+    display: flex;
+    gap: 10px;
+}
+
+.testimonials__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gray-mid);
+    transition: background var(--transition), transform var(--transition);
+}
+
+.testimonials__dot--active {
+    background: var(--cream);
+    transform: scale(1.4);
+}
+
+.testimonials__arrows {
+    display: flex;
+    gap: 8px;
+}
+
+.testimonials__arrow {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--gray-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-light);
+    transition: border-color var(--transition), color var(--transition), background var(--transition);
+}
+
+.testimonials__arrow:hover {
+    border-color: var(--cream);
+    color: var(--cream);
+    background: rgba(245, 240, 232, 0.05);
+}
+
+@media (max-width: 600px) {
+    .testimonials__card {
+        padding: 32px 24px;
+    }
+}
