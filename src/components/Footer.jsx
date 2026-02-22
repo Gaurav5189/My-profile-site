@@ -9,7 +9,7 @@ const NAV_LINKS = [
     { label: 'Contact', to: 'contact' },
 ]
 
-const SERVICES = ['UI / UX Design', 'Front-End Dev', 'Brand Identity', '3D & Motion']
+const SERVICES = ['Back-End Dev', 'Security', 'Automation', 'Deployment']
 
 export default function Footer() {
     const year = new Date().getFullYear()
@@ -24,12 +24,12 @@ export default function Footer() {
                             G<span>.</span>
                         </Link>
                         <p className="footer__tagline">
-                            Designing and building digital experiences<br />that make a difference.
+                            I build systems that are resilient by design<br />and automated by necessity.
                         </p>
                         <div className="footer__socials">
                             {[
-                                { icon: <FiGithub size={16} />, href: 'https://github.com', label: 'GitHub', id: 'footer-github' },
-                                { icon: <FiLinkedin size={16} />, href: 'https://linkedin.com', label: 'LinkedIn', id: 'footer-linkedin' },
+                                { icon: <FiGithub size={16} />, href: 'https://github.com/Gaurav5189', label: 'GitHub', id: 'footer-github' },
+                                { icon: <FiLinkedin size={16} />, href: 'https://www.linkedin.com/in/gaurav-s-4b36b624b', label: 'LinkedIn', id: 'footer-linkedin' },
                                 { icon: <FiTwitter size={16} />, href: 'https://twitter.com', label: 'Twitter', id: 'footer-twitter' },
                                 { icon: <FiInstagram size={16} />, href: 'https://instagram.com', label: 'Instagram', id: 'footer-instagram' },
                             ].map(({ icon, href, label, id }) => (
