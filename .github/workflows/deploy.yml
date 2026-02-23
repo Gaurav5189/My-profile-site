@@ -1,34 +1,59 @@
-name: Deploy Portfolio
+name: DevSecOps Portfolio Pipeline
+
 on:
   push:
-    branches:
-      - main  # Triggers only on push to main
+    branches: [main]
 
 jobs:
-  build-and-deploy:
+  # 1. Quality & Security Check
+  security-audit:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install and Build
+      - name: Install Dependencies
+        run: npm install
+
+      # Static Code Analysis (Linting)
+      - name: Run Linter
+        run: npm run lint || echo "Linting failed but continuing..."
+
+      # Software Composition Analysis (SCA)
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high # Pipeline fails only if HIGH/CRITICAL vulns are found
+
+  # 2. Build and Deploy (Only runs if security-audit passes)
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: security-audit # This is the "Shift Left" gate
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build
         run: |
           npm install
-          npm run build  # Creates the 'dist' folder
+          npm run build
 
       - name: Deploy to Alwaysdata
-        uses: appleboy/scp-action@v1
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
           source: "dist/*"
           target: "/home/sudo-server/www/"
-          strip_components: 1  # Uploads contents of dist, not the folder itself
-          rm: true  # Cleans the destination before uploading
+          strip_components: 1
+          overwrite: true
+          rm: true
