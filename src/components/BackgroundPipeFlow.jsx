@@ -2,41 +2,43 @@ import { useEffect, useState } from 'react'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import './BackgroundPipeFlow.css'
 
-/**
- * BackgroundPipeFlow
- * ------------------
- * Dynamically draws neon pipes as the user scrolls.
- * 
- * Rules applied from requirements:
- * 1. Starts at "About" section, ends exactly before "Contact"
- * 2. Dynamically draws (grows) as you scroll down
- * 3. Does not overlap text (pipes stay strictly in gutters/edges)
- * 4. Fixed positioning overlay behind/alongside content, no opaque backgrounds blocking it.
- */
 export default function BackgroundPipeFlow() {
-    const [bounds, setBounds] = useState({ start: 700, end: 5700, height: 6000 })
+    const [bounds, setBounds] = useState({ start: 1800, end: 5700, height: 6000 })
     const [vpWidth, setVpWidth] = useState(1440)
     const [vpHeight, setVpHeight] = useState(800)
+    const [quoteCard, setQuoteCard] = useState(null) // { left, top, right, bottom }
 
     // ── Measure section bounds dynamically ────────────────────────────
     useEffect(() => {
         const measure = () => {
-            const about = document.querySelector('.about') || document.getElementById('about') || document.querySelector('section:nth-of-type(2)')
+            const skills = document.querySelector('.skills') || document.getElementById('skills')
             const contact = document.querySelector('.contact') || document.getElementById('contact')
             const testimonials = document.querySelector('.testimonials') || document.getElementById('testimonials')
+            const card = document.querySelector('.philosophy__card')
 
-            const startY = about ? about.offsetTop : 730
-            // End exact at the start of Contact, or bottom of Testimonials
-            const endY = contact ? contact.offsetTop : (testimonials ? testimonials.offsetTop + testimonials.offsetHeight : 5700)
+            // Start at the Skills section
+            const startY = skills ? skills.offsetTop : 1800
+            // End at the bottom of Testimonials (before Contact)
+            const endY = testimonials ? testimonials.offsetTop + testimonials.offsetHeight : (contact ? contact.offsetTop : 5700)
 
             const docH = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
+
+            // Measure the philosophy quote card position (absolute page coords)
+            if (card) {
+                const rect = card.getBoundingClientRect()
+                setQuoteCard({
+                    left: rect.left + window.scrollX,
+                    top: rect.top + window.scrollY,
+                    right: rect.right + window.scrollX,
+                    bottom: rect.bottom + window.scrollY,
+                })
+            }
 
             setBounds({ start: startY, end: endY, height: docH })
             setVpWidth(window.innerWidth)
             setVpHeight(window.innerHeight)
         }
 
-        // Measure after render 
         const t1 = setTimeout(measure, 300)
         const t2 = setTimeout(measure, 1000)
         window.addEventListener('resize', measure)
@@ -47,20 +49,16 @@ export default function BackgroundPipeFlow() {
         }
     }, [])
 
-    // ── Scroll Progress & Spring Physics ──────────────────────────────
     const { scrollY } = useScroll()
 
-    // We want the pipe to draw roughly down to where the bottom of the screen is.
-    // So current "scanline" is scrollY + vpHeight
-    // We start drawing when scanline hits bounds.start, and finish when scanline hits bounds.end + padding
+    // Draw starts when the viewport bottom reaches Skills section
     const drawProgressRaw = useTransform(
         scrollY,
-        [Math.max(0, bounds.start - vpHeight), bounds.end - vpHeight * 0.5],
+        [Math.max(0, bounds.start - vpHeight), bounds.end - vpHeight * 0.3],
         [0, 1],
         { clamp: true }
     )
 
-    // Smooth "Antigravity" feeling spring
     const drawProgress = useSpring(drawProgressRaw, {
         stiffness: 80,
         damping: 30,
@@ -68,99 +66,85 @@ export default function BackgroundPipeFlow() {
     })
 
     // ── Pipe definitions ──────────────────────────────────────────────
-    // Since pipes go behind the content (z-index: -1), they can weave freely
-    // across the page width. We distribute them across vpWidth.
+    // Each pipe gets its OWN unique turn pattern so they look different
     const pipes = [
-        { x: vpWidth * 0.12, color: '#00ff88', turns: [0.12, 0.40, 0.68] },
-        { x: vpWidth * 0.35, color: '#ff3eb5', turns: [0.20, 0.48, 0.77] },
-        { x: vpWidth * 0.65, color: '#a855f7', turns: [0.15, 0.45, 0.72] },
-        { x: vpWidth * 0.88, color: '#38bdf8', turns: [0.25, 0.55, 0.80] },
+        {
+            id: 1,
+            color: '#00ff88',
+            side: 'left',
+            // Unique staggered turns for green — more organic, asymmetric
+            turns: [0.06, 0.19, 0.35, 0.52, 0.68, 0.82, 0.95],
+            jogSizes: [160, 200, 150, 190, 170, 220, 160],
+        },
+        {
+            id: 2,
+            color: '#ff3eb5',
+            side: 'right',
+            // Different rhythm for pink — offset from green for visual variety
+            turns: [0.10, 0.28, 0.42, 0.60, 0.75, 0.90],
+            jogSizes: [180, 160, 220, 170, 200, 150],
+        },
     ]
 
-    // ── Build SVG path data, anchored between bounds.start and bounds.end
-    // Now with horizontal entry/exit from the edges of the screen!
     const buildPath = (pipe) => {
-        const r = 32         // Larger, smoother elbow curve
-        const jog = 140      // Much larger zig-zags in background
-        let cx = pipe.x
+        const r = 64
 
         const startTy = bounds.start
         const endTy = bounds.end
         const totalH = endTy - startTy
 
-        // Entry logic (comes from off-screen side towards x)
-        const isLeft = cx < vpWidth / 2
-        const sideX = isLeft ? -100 : vpWidth + 100
-        const entryDir = isLeft ? 1 : -1
+        // Start position based on viewport width (responsive)
+        const margin = Math.max(20, vpWidth * 0.04)
+        let cx = pipe.side === 'left' ? margin : vpWidth - margin
+
+        // Entry from off-screen side
+        const sideX = pipe.side === 'left' ? -100 : vpWidth + 100
+        const entryDir = pipe.side === 'left' ? 1 : -1
 
         let d = `M ${sideX} ${startTy.toFixed(1)}`
-        // Line moving horizontal from side coords towards x
         d += ` L ${(cx - entryDir * r).toFixed(1)} ${startTy.toFixed(1)}`
-        // Turn 90deg downwards
         d += ` Q ${cx.toFixed(1)} ${startTy.toFixed(1)} ${cx.toFixed(1)} ${(startTy + r).toFixed(1)}`
 
-        let dir = isLeft ? 1 : -1 // alternating jog direction
+        // Each pipe has its own turn fractions and jog sizes
+        // Direction alternates, but starts differently per pipe
+        let dir = pipe.side === 'left' ? 1 : -1
+        let insertedQuotePass = false
 
-        // ── Highlight Detour for About Me paragraphs ──────────────────────────
-        // The About heading is at ~978, ends ~1217. (startTy + 248 to startTy + 487)
-        // The About paragraph is at ~1245, ends ~1526. (startTy + 515 to startTy + 796)
-
-        if (pipe.color === '#ff3eb5') {
-            // PINK PIPE: Detours RIGHT around the text block
-            // It normally starts at vpWidth * 0.35, which is ~504px. So turning right pushes it to 540px.
-            const detourStartTy = startTy + 490
-            const detourEndTy = startTy + 950
-
-            // Paragraph right edge is ~513px. 
-            const detourRightX = 540
-            const detourDir = 1 // go right
-
-            d += ` L ${cx.toFixed(1)} ${(detourStartTy - r).toFixed(1)}`
-            d += ` Q ${cx.toFixed(1)} ${detourStartTy.toFixed(1)} ${(cx + detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
-            d += ` L ${(detourRightX - detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
-            d += ` Q ${detourRightX.toFixed(1)} ${detourStartTy.toFixed(1)} ${detourRightX.toFixed(1)} ${(detourStartTy + r).toFixed(1)}`
-
-            d += ` L ${detourRightX.toFixed(1)} ${(detourEndTy - r).toFixed(1)}`
-            d += ` Q ${detourRightX.toFixed(1)} ${detourEndTy.toFixed(1)} ${(detourRightX - detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
-            d += ` L ${(cx + detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
-            d += ` Q ${cx.toFixed(1)} ${detourEndTy.toFixed(1)} ${cx.toFixed(1)} ${(detourEndTy + r).toFixed(1)}`
-        }
-
-        if (pipe.color === '#00ff88') {
-            // GREEN PIPE: Detours LEFT around the text block
-            // It normally starts at vpWidth * 0.12, which is ~172px. So turning left pushes it backwards to 24px.
-            const detourStartTy = startTy + 490
-            const detourEndTy = startTy + 950
-
-            // Paragraph left edge is ~44px.
-            const detourLeftX = 24
-            const detourDir = -1 // go left
-
-            d += ` L ${cx.toFixed(1)} ${(detourStartTy - r).toFixed(1)}`
-            d += ` Q ${cx.toFixed(1)} ${detourStartTy.toFixed(1)} ${(cx + detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
-            d += ` L ${(detourLeftX - detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
-            d += ` Q ${detourLeftX.toFixed(1)} ${detourStartTy.toFixed(1)} ${detourLeftX.toFixed(1)} ${(detourStartTy + r).toFixed(1)}`
-
-            d += ` L ${detourLeftX.toFixed(1)} ${(detourEndTy - r).toFixed(1)}`
-            d += ` Q ${detourLeftX.toFixed(1)} ${detourEndTy.toFixed(1)} ${(detourLeftX - detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
-            d += ` L ${(cx + detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
-            d += ` Q ${cx.toFixed(1)} ${detourEndTy.toFixed(1)} ${cx.toFixed(1)} ${(detourEndTy + r).toFixed(1)}`
-        }
-
-        pipe.turns.forEach((frac) => {
+        pipe.turns.forEach((frac, i) => {
             const ty = startTy + frac * totalH
-            // Avoid generating zig-zags inside the detour zone for the pink pipe
-            if (pipe.color === '#ff3eb5' && ty > startTy + 400 && ty < startTy + 1000) {
+            const jog = pipe.jogSizes[i] || 140
+
+            // ── Special: Green pipe passes through the philosophy quote card ──
+            // Insert a jog to the card's left edge right before the card's top
+            if (pipe.side === 'left' && quoteCard && !insertedQuotePass && ty > quoteCard.top - 50) {
+                insertedQuotePass = true
+                const cardTop = quoteCard.top
+                const cardLeftX = quoteCard.left // left edge of the card
+
+                // Jog rightward to reach the card's left edge
+                const ad = cardLeftX > cx ? 1 : -1
+                d += ` L ${cx.toFixed(1)} ${(cardTop - r).toFixed(1)}`
+                d += ` Q ${cx.toFixed(1)} ${cardTop.toFixed(1)} ${(cx + ad * r).toFixed(1)} ${cardTop.toFixed(1)}`
+                d += ` L ${(cardLeftX - ad * r).toFixed(1)} ${cardTop.toFixed(1)}`
+                d += ` Q ${cardLeftX.toFixed(1)} ${cardTop.toFixed(1)} ${cardLeftX.toFixed(1)} ${(cardTop + r).toFixed(1)}`
+
+                cx = cardLeftX
+                // Continue downward from the card's left edge
+            }
+
+            // Calculate target X, clamped to screen bounds
+            const rawTx = Math.min(Math.max(cx + dir * jog, r + 10), vpWidth - r - 10)
+
+            // Ensure the horizontal jog is wide enough for smooth curves (at least 2*r + 20)
+            const minJog = 2 * r + 20
+            const dist = Math.abs(rawTx - cx)
+            if (dist < minJog) {
+                // Skip this turn — not enough room for two smooth corners
+                dir *= -1
                 return
             }
 
-            // Match the skip zone for the green pipe too
-            if (pipe.color === '#00ff88' && ty > startTy + 400 && ty < startTy + 1000) {
-                return
-            }
-
-            // Ensure we don't jog off screen completely
-            const tx = Math.min(Math.max(cx + dir * jog, r), vpWidth - r)
+            const tx = rawTx
             const ad = tx > cx ? 1 : -1
 
             d += ` L ${cx.toFixed(1)} ${(ty - r).toFixed(1)}`
@@ -172,51 +156,72 @@ export default function BackgroundPipeFlow() {
             dir *= -1
         })
 
-        // Exit logic (turns horizontal and goes off-screen)
+        // Exit logic — pipe exits off the nearest side
         const exitIsLeft = cx < vpWidth / 2
         const exitSideX = exitIsLeft ? -100 : vpWidth + 100
         const exitDir = exitIsLeft ? 1 : -1
 
         d += ` L ${cx.toFixed(1)} ${(endTy - r).toFixed(1)}`
-        // Turn 90deg towards edge
         d += ` Q ${cx.toFixed(1)} ${endTy.toFixed(1)} ${(cx - exitDir * r).toFixed(1)} ${endTy.toFixed(1)}`
         d += ` L ${exitSideX} ${endTy.toFixed(1)}`
 
         return d
     }
 
-    // Translate the SVG so it scrolls with the Document, mapping coordinates perfectly
-    const yTransform = useTransform(scrollY, (y) => -y)
-
     return (
-        <motion.div
-            className="pipe-wrapper"
-            aria-hidden="true"
-            style={{ y: yTransform, height: bounds.height }}
-        >
+        <div className="pipe-wrapper">
             <svg
                 className="pipe-svg"
-                viewBox={`0 0 ${vpWidth} ${bounds.height}`}
                 width={vpWidth}
                 height={bounds.height}
                 xmlns="http://www.w3.org/2000/svg"
             >
-                {pipes.map((pipe, i) => (
-                    <motion.path
-                        key={i}
-                        d={buildPath(pipe)}
-                        stroke={pipe.color}
-                        strokeWidth={4}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        fill="none"
-                        style={{
-                            pathLength: drawProgress,
-                            filter: `drop-shadow(0 0 6px ${pipe.color}dd) drop-shadow(0 0 16px ${pipe.color}66)`,
-                        }}
-                    />
-                ))}
+                <defs>
+                    <filter id="neon-glow-green" x="-200%" y="-200%" width="500%" height="500%">
+                        <feGaussianBlur stdDeviation="10" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <filter id="neon-glow-pink" x="-200%" y="-200%" width="500%" height="500%">
+                        <feGaussianBlur stdDeviation="10" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                {pipes.map((pipe) => {
+                    const filterId = pipe.color === '#00ff88' ? 'url(#neon-glow-green)' : 'url(#neon-glow-pink)'
+                    return (
+                        <g key={pipe.id}>
+                            {/* Outer glow layer */}
+                            <motion.path
+                                d={buildPath(pipe)}
+                                fill="none"
+                                stroke={pipe.color}
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                filter={filterId}
+                                style={{ pathLength: drawProgress }}
+                            />
+                            {/* Inner bright core */}
+                            <motion.path
+                                d={buildPath(pipe)}
+                                fill="none"
+                                stroke="#ffffff"
+                                strokeWidth="1.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ pathLength: drawProgress, opacity: 0.7 }}
+                            />
+                        </g>
+                    )
+                })}
             </svg>
-        </motion.div>
+        </div>
     )
 }
