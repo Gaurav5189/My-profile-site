@@ -96,6 +96,11 @@ h4 {
 /* =============================================
    LAYOUT
    ============================================= */
+.foreground-layer {
+  position: relative;
+  z-index: 100;
+}
+
 .container {
   width: var(--container-width);
   margin-inline: auto;
