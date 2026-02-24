@@ -101,8 +101,64 @@ export default function BackgroundPipeFlow() {
 
         let dir = isLeft ? 1 : -1 // alternating jog direction
 
+        // ── Highlight Detour for About Me paragraphs ──────────────────────────
+        // The About heading is at ~978, ends ~1217. (startTy + 248 to startTy + 487)
+        // The About paragraph is at ~1245, ends ~1526. (startTy + 515 to startTy + 796)
+
+        if (pipe.color === '#ff3eb5') {
+            // PINK PIPE: Detours RIGHT around the text block
+            // It normally starts at vpWidth * 0.35, which is ~504px. So turning right pushes it to 540px.
+            const detourStartTy = startTy + 490
+            const detourEndTy = startTy + 950
+
+            // Paragraph right edge is ~513px. 
+            const detourRightX = 540
+            const detourDir = 1 // go right
+
+            d += ` L ${cx.toFixed(1)} ${(detourStartTy - r).toFixed(1)}`
+            d += ` Q ${cx.toFixed(1)} ${detourStartTy.toFixed(1)} ${(cx + detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
+            d += ` L ${(detourRightX - detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
+            d += ` Q ${detourRightX.toFixed(1)} ${detourStartTy.toFixed(1)} ${detourRightX.toFixed(1)} ${(detourStartTy + r).toFixed(1)}`
+
+            d += ` L ${detourRightX.toFixed(1)} ${(detourEndTy - r).toFixed(1)}`
+            d += ` Q ${detourRightX.toFixed(1)} ${detourEndTy.toFixed(1)} ${(detourRightX - detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
+            d += ` L ${(cx + detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
+            d += ` Q ${cx.toFixed(1)} ${detourEndTy.toFixed(1)} ${cx.toFixed(1)} ${(detourEndTy + r).toFixed(1)}`
+        }
+
+        if (pipe.color === '#00ff88') {
+            // GREEN PIPE: Detours LEFT around the text block
+            // It normally starts at vpWidth * 0.12, which is ~172px. So turning left pushes it backwards to 24px.
+            const detourStartTy = startTy + 490
+            const detourEndTy = startTy + 950
+
+            // Paragraph left edge is ~44px.
+            const detourLeftX = 24
+            const detourDir = -1 // go left
+
+            d += ` L ${cx.toFixed(1)} ${(detourStartTy - r).toFixed(1)}`
+            d += ` Q ${cx.toFixed(1)} ${detourStartTy.toFixed(1)} ${(cx + detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
+            d += ` L ${(detourLeftX - detourDir * r).toFixed(1)} ${detourStartTy.toFixed(1)}`
+            d += ` Q ${detourLeftX.toFixed(1)} ${detourStartTy.toFixed(1)} ${detourLeftX.toFixed(1)} ${(detourStartTy + r).toFixed(1)}`
+
+            d += ` L ${detourLeftX.toFixed(1)} ${(detourEndTy - r).toFixed(1)}`
+            d += ` Q ${detourLeftX.toFixed(1)} ${detourEndTy.toFixed(1)} ${(detourLeftX - detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
+            d += ` L ${(cx + detourDir * r).toFixed(1)} ${detourEndTy.toFixed(1)}`
+            d += ` Q ${cx.toFixed(1)} ${detourEndTy.toFixed(1)} ${cx.toFixed(1)} ${(detourEndTy + r).toFixed(1)}`
+        }
+
         pipe.turns.forEach((frac) => {
             const ty = startTy + frac * totalH
+            // Avoid generating zig-zags inside the detour zone for the pink pipe
+            if (pipe.color === '#ff3eb5' && ty > startTy + 400 && ty < startTy + 1000) {
+                return
+            }
+
+            // Match the skip zone for the green pipe too
+            if (pipe.color === '#00ff88' && ty > startTy + 400 && ty < startTy + 1000) {
+                return
+            }
+
             // Ensure we don't jog off screen completely
             const tx = Math.min(Math.max(cx + dir * jog, r), vpWidth - r)
             const ad = tx > cx ? 1 : -1
