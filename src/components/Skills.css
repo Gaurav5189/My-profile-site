@@ -1,5 +1,5 @@
 .skills {
-    background: transparent;
+    background: var(--black);
 }
 
 .skills__header {

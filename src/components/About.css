@@ -1,5 +1,5 @@
 .about {
-    background: transparent;
+    background: var(--black);
 }
 
 .about__inner {

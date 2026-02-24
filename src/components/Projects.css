@@ -1,5 +1,5 @@
 .projects {
-    background: transparent;
+    background: var(--black);
 }
 
 .projects__header {

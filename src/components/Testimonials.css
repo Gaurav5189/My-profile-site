@@ -3,7 +3,7 @@
    ================================================================ */
 
 .testimonials {
-    background: transparent;
+    background: var(--dark);
 }
 
 .testimonials__inner {
