@@ -1,5 +1,5 @@
 import { Link } from 'react-scroll'
-import { FiGithub, FiLinkedin, FiTwitter, FiInstagram } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi'
 import './Footer.css'
 
 const NAV_LINKS = [
@@ -30,8 +30,7 @@ export default function Footer() {
                             {[
                                 { icon: <FiGithub size={16} />, href: 'https://github.com/Gaurav5189', label: 'GitHub', id: 'footer-github' },
                                 { icon: <FiLinkedin size={16} />, href: 'https://www.linkedin.com/in/gaurav-s-4b36b624b', label: 'LinkedIn', id: 'footer-linkedin' },
-                                { icon: <FiTwitter size={16} />, href: 'https://twitter.com', label: 'Twitter', id: 'footer-twitter' },
-                                { icon: <FiInstagram size={16} />, href: 'https://instagram.com', label: 'Instagram', id: 'footer-instagram' },
+                                { icon: <FiInstagram size={16} />, href: 'https://www.instagram.com/gaurav_s.716?igsh=Z3llN2s2bTNjNmdt', label: 'Instagram', id: 'footer-instagram' },
                             ].map(({ icon, href, label, id }) => (
                                 <a key={label} href={href} className="footer__social-link" aria-label={label} id={id} target="_blank" rel="noopener noreferrer">
                                     {icon}

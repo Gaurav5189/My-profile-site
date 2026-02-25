@@ -86,14 +86,10 @@ export default function Projects() {
                                     </div>
                                 )}
                                 <div className="project-card__overlay">
-                                    {link ? (
+                                    {link && (
                                         <a href={link} target="_blank" rel="noopener noreferrer" className="project-card__view-btn" id={`project-view-btn-${i + 1}`}>
                                             View Project <HiArrowUpRight />
                                         </a>
-                                    ) : (
-                                        <button className="project-card__view-btn" id={`project-view-btn-${i + 1}`}>
-                                            View Project <HiArrowUpRight />
-                                        </button>
                                     )}
                                 </div>
                             </div>
@@ -113,7 +109,7 @@ export default function Projects() {
                     ))}
                 </div>
 
-                {/* All projects link */}
+                {/* All projects link (TODO: add later)
                 <motion.div
                     className="projects__footer"
                     variants={anim}
@@ -125,6 +121,7 @@ export default function Projects() {
                         View all projects <HiArrowUpRight />
                     </a>
                 </motion.div>
+                */}
             </div>
         </section>
     )
