@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-scroll'
 import { HiArrowDown } from 'react-icons/hi'
@@ -55,9 +56,7 @@ export default function Hero() {
                         initial="hidden"
                         animate="visible"
                     >
-                        Securing systems,<br />
-                        <span className="hero__heading--outlined">shifting left,</span><br />
-                        building trust.
+                        <TypewriterHeading />
                     </motion.h1>
 
                     <motion.p
@@ -103,5 +102,115 @@ export default function Hero() {
             {/* Background decorative text */}
             <div className="hero__bg-text" aria-hidden="true">PORTFOLIO</div>
         </section>
+    )
+}
+
+/* ── Typewriter Heading — type forward, backtype at end ──── */
+const LINES = [
+    { text: 'Securing systems,', outlined: false },
+    { text: 'shifting left,', outlined: true },
+    { text: 'building trust.', outlined: false },
+]
+
+const TYPE_SPEED = 65    // ms per character typing
+const ERASE_SPEED = 35    // ms per character erasing
+const PAUSE_LINE = 300   // ms pause between lines
+const PAUSE_COMPLETE = 3000  // ms all 3 lines stay visible before erase
+const PAUSE_RESTART = 500   // ms pause after fully erased before restart
+
+// phases: 'typing' → 'paused' → 'erasing' → 'done'
+function TypewriterHeading() {
+    const [phase, setPhase] = useState('typing')   // current phase
+    const [lineIdx, setLineIdx] = useState(0)          // active line (typing or erasing)
+    const [charIdx, setCharIdx] = useState(0)          // chars shown on active line
+    const [lineChars, setLineChars] = useState([0, 0, 0])  // char count per line
+
+    useEffect(() => {
+        let t
+
+        if (phase === 'typing') {
+            const { text } = LINES[lineIdx]
+            if (charIdx < text.length) {
+                // Type next character
+                t = setTimeout(() => {
+                    setCharIdx(c => c + 1)
+                    setLineChars(lc => { const n = [...lc]; n[lineIdx] = charIdx + 1; return n })
+                }, TYPE_SPEED)
+            } else if (lineIdx < LINES.length - 1) {
+                // Line done, move to next
+                t = setTimeout(() => {
+                    setLineIdx(i => i + 1)
+                    setCharIdx(0)
+                }, PAUSE_LINE)
+            } else {
+                // All lines typed → pause
+                t = setTimeout(() => setPhase('paused'), PAUSE_LINE)
+            }
+        }
+
+        else if (phase === 'paused') {
+            // Hold all 3 lines visible, then start erasing from line 3
+            t = setTimeout(() => {
+                setPhase('erasing')
+                setLineIdx(LINES.length - 1)
+                setCharIdx(LINES[LINES.length - 1].text.length)
+            }, PAUSE_COMPLETE)
+        }
+
+        else if (phase === 'erasing') {
+            if (charIdx > 0) {
+                // Erase one character
+                t = setTimeout(() => {
+                    setCharIdx(c => c - 1)
+                    setLineChars(lc => { const n = [...lc]; n[lineIdx] = charIdx - 1; return n })
+                }, ERASE_SPEED)
+            } else if (lineIdx > 0) {
+                // Line fully erased, move to previous line
+                t = setTimeout(() => {
+                    const prevLine = lineIdx - 1
+                    setLineIdx(prevLine)
+                    setCharIdx(LINES[prevLine].text.length)
+                }, PAUSE_LINE / 2)
+            } else {
+                // All lines erased → done
+                t = setTimeout(() => setPhase('done'), PAUSE_RESTART)
+            }
+        }
+
+        else if (phase === 'done') {
+            // Reset and restart the loop
+            setLineChars([0, 0, 0])
+            setLineIdx(0)
+            setCharIdx(0)
+            setPhase('typing')
+        }
+
+        return () => clearTimeout(t)
+    }, [phase, lineIdx, charIdx])
+
+    return (
+        <span className="hero__typewriter">
+            {LINES.map((ln, i) => {
+                const shown = lineChars[i]
+                const content = ln.text.slice(0, shown)
+
+                // Cursor shows on the active line during typing & erasing
+                const isActiveLine =
+                    (phase === 'typing' && i === lineIdx) ||
+                    (phase === 'erasing' && i === lineIdx) ||
+                    (phase === 'paused' && i === LINES.length - 1)
+
+                return (
+                    <span key={i} className="hero__type-line">
+                        <span className={ln.outlined ? 'hero__heading--outlined' : ''}>
+                            {content}
+                        </span>
+                        {isActiveLine && (
+                            <span className="hero__cursor" aria-hidden="true">|</span>
+                        )}
+                    </span>
+                )
+            })}
+        </span>
     )
 }

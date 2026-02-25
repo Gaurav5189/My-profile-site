@@ -78,6 +78,43 @@
     color: transparent;
 }
 
+/* ── Typewriter blinking cursor ──────────────────────────────────── */
+.hero__cursor {
+    display: inline-block;
+    font-weight: 300;
+    color: var(--cream);
+    animation: cursor-blink 0.75s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes cursor-blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* ── Typewriter wrapper — smooth fade between cycles ─────────────── */
+.hero__typewriter {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+}
+
+.hero__typewriter--fading {
+    opacity: 0;
+}
+
+.hero__type-line {
+    display: block;
+    min-height: 1.1em;
+}
+
 /* ── Sub copy ─────────────────────────────────────────────────────── */
 .hero__sub {
     font-size: clamp(0.88rem, 1.1vw, 1.05rem);
@@ -152,21 +189,26 @@
     }
 }
 
-/* ── Decorative BG text ──────────────────────────────────────────── */
+/* ── Decorative BG text — subtle gray stroke, full-width ──────────── */
 .hero__bg-text {
     position: absolute;
-    bottom: -30px;
-    right: -20px;
+    bottom: -10px;
+    left: -10px;
+    width: 100%;
+    text-align: center;
     font-family: var(--font-heading);
-    font-size: clamp(6rem, 18vw, 18rem);
+    font-size: 15vw;
     font-weight: 900;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(245, 240, 232, 0.04);
+    letter-spacing: 0.12em;
     line-height: 1;
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
     z-index: 1;
+
+    /* Transparent fill — only the stroke border is visible */
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.20);
 }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
