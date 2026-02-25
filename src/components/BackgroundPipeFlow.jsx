@@ -176,41 +176,43 @@ export default function BackgroundPipeFlow() {
                 height={bounds.height}
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <defs>
-                    <filter id="neon-glow-green" x="-200%" y="-200%" width="500%" height="500%">
-                        <feGaussianBlur stdDeviation="10" result="coloredBlur" />
-                        <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-                    <filter id="neon-glow-pink" x="-200%" y="-200%" width="500%" height="500%">
-                        <feGaussianBlur stdDeviation="10" result="coloredBlur" />
-                        <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-                </defs>
-
                 {pipes.map((pipe) => {
-                    const filterId = pipe.color === '#00ff88' ? 'url(#neon-glow-green)' : 'url(#neon-glow-pink)'
+                    const path = buildPath(pipe)
                     return (
                         <g key={pipe.id}>
-                            {/* Outer glow layer */}
+                            {/* Wide soft outer glow — very cheap for GPU */}
                             <motion.path
-                                d={buildPath(pipe)}
+                                d={path}
+                                fill="none"
+                                stroke={pipe.color}
+                                strokeWidth="16"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ pathLength: drawProgress, opacity: 0.12 }}
+                            />
+                            {/* Medium glow ring */}
+                            <motion.path
+                                d={path}
+                                fill="none"
+                                stroke={pipe.color}
+                                strokeWidth="8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ pathLength: drawProgress, opacity: 0.3 }}
+                            />
+                            {/* Core colored line */}
+                            <motion.path
+                                d={path}
                                 fill="none"
                                 stroke={pipe.color}
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                filter={filterId}
                                 style={{ pathLength: drawProgress }}
                             />
-                            {/* Inner bright core */}
+                            {/* Bright white center */}
                             <motion.path
-                                d={buildPath(pipe)}
+                                d={path}
                                 fill="none"
                                 stroke="#ffffff"
                                 strokeWidth="1.2"
