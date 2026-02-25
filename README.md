@@ -4,7 +4,6 @@ This is a premium, high-performance personal portfolio website built with React 
 
 ## 🚀 Key Features
 - **Spline 3D Integration:** Seamless, lightweight loading of a 3D power icon scene using the official web component.
-- **Pure CSS Liquid Glass Cursor:** A custom GPU-accelerated tracking cursor that uses `backdrop-filter` and advanced CSS layer masking to create a highly realistic, refractive liquid lens effect—without relying on heavy WebGL libraries.
 - **Responsive "Glassmorphic" Design:** Modern dark theme utilizing precise CSS custom properties for sleek, frosted glass UI components throughout.
 - **Dynamic Animations:** Scroll-triggered element reveals and buttery-smooth layouts using `framer-motion`.
 - **Fully Functional Contact Form:** Integrated with Web3Forms to capture messages directly to email without a backend database.
@@ -41,7 +40,6 @@ My-profile-site/
     │   └── global.css          ← Core design tokens, CSS variables, utility classes
     └── components/
         ├── Hero.jsx / .css              ← Responsive two-column 3D & text hero
-        ├── LiquidGlassCursor.jsx / .css ← Pure CSS refractive tracking cursor
         ├── Navbar.jsx / .css            ← Sticky nav with glassmorphism & mobile menu
         ├── About.jsx / .css             ← Bio, philosophy, and profile photo
         ├── Skills.jsx / .css            ← Service grid and technology layout
