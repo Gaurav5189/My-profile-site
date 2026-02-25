@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { Link } from 'react-scroll'
 import { HiArrowDown } from 'react-icons/hi'
 import './Hero.css'
@@ -16,16 +16,22 @@ const isMobile =
         window.matchMedia('(max-width: 900px)').matches)
 
 export default function Hero() {
-    return (
-        <section className="hero section-pad" id="hero">
+    const heroRef = useRef(null)
+    // Unmount Spline when the hero scrolls out of view (with 200px buffer)
+    const isHeroInView = useInView(heroRef, { margin: '200px' })
 
-            {/* === Spline 3D background — fills left portion === */}
+    return (
+        <section ref={heroRef} className="hero section-pad" id="hero">
+
+            {/* === Spline 3D background — only rendered when in view === */}
             <div className="hero__spline-wrap" aria-hidden="true">
-                <spline-viewer
-                    url="/scene-clean.splinecode"
-                    loading-anim-type="none"
-                    {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
-                />
+                {isHeroInView && (
+                    <spline-viewer
+                        url="/scene-clean.splinecode"
+                        loading-anim-type="none"
+                        {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
+                    />
+                )}
             </div>
 
             {/* Overlay: transparent left (3D), dark right (text) */}

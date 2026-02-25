@@ -60,9 +60,9 @@ export default function BackgroundPipeFlow() {
     )
 
     const drawProgress = useSpring(drawProgressRaw, {
-        stiffness: 80,
-        damping: 30,
-        restDelta: 0.001
+        stiffness: 40,
+        damping: 20,
+        restDelta: 0.002
     })
 
     // ── Pipe definitions ──────────────────────────────────────────────
@@ -188,7 +188,7 @@ export default function BackgroundPipeFlow() {
                                 strokeWidth="16"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{ pathLength: drawProgress, opacity: 0.12 }}
+                                style={{ pathLength: drawProgress, opacity: 0.12, willChange: 'stroke-dashoffset' }}
                             />
                             {/* Medium glow ring */}
                             <motion.path
@@ -198,7 +198,7 @@ export default function BackgroundPipeFlow() {
                                 strokeWidth="8"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{ pathLength: drawProgress, opacity: 0.3 }}
+                                style={{ pathLength: drawProgress, opacity: 0.3, willChange: 'stroke-dashoffset' }}
                             />
                             {/* Core colored line */}
                             <motion.path
@@ -208,7 +208,7 @@ export default function BackgroundPipeFlow() {
                                 strokeWidth="3"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{ pathLength: drawProgress }}
+                                style={{ pathLength: drawProgress, willChange: 'stroke-dashoffset' }}
                             />
                             {/* Bright white center */}
                             <motion.path
@@ -218,7 +218,7 @@ export default function BackgroundPipeFlow() {
                                 strokeWidth="1.2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{ pathLength: drawProgress, opacity: 0.7 }}
+                                style={{ pathLength: drawProgress, opacity: 0.7, willChange: 'stroke-dashoffset' }}
                             />
                         </g>
                     )
