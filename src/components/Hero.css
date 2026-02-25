@@ -99,7 +99,7 @@
     }
 }
 
-/* ── Typewriter wrapper — smooth fade between cycles ─────────────── */
+/* ── Typewriter layout stability + fade ──────────────────────────── */
 .hero__typewriter {
     display: block;
     opacity: 1;
@@ -112,7 +112,13 @@
 
 .hero__type-line {
     display: block;
-    min-height: 1.1em;
+    position: relative;
+}
+
+.hero__type-line-text {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* ── Sub copy ─────────────────────────────────────────────────────── */
@@ -239,6 +245,8 @@
     .hero__heading {
         font-size: clamp(2.8rem, 8vw, 4.5rem);
     }
+
+
 
     .hero__actions {
         flex-direction: column;

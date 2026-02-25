@@ -208,12 +208,19 @@ function TypewriterHeading() {
 
                 return (
                     <span key={i} className="hero__type-line">
-                        <span className={ln.outlined ? 'hero__heading--outlined' : ''}>
-                            {content}
+                        {/* Hidden full text — always reserves the exact space */}
+                        <span className={ln.outlined ? 'hero__heading--outlined' : ''} aria-hidden="true" style={{ visibility: 'hidden' }}>
+                            {ln.text}
                         </span>
-                        {isActiveLine && (
-                            <span className="hero__cursor" aria-hidden="true">|</span>
-                        )}
+                        {/* Visible typed portion overlaid on top */}
+                        <span className="hero__type-line-text">
+                            <span className={ln.outlined ? 'hero__heading--outlined' : ''}>
+                                {content}
+                            </span>
+                            {isActiveLine && (
+                                <span className="hero__cursor" aria-hidden="true">|</span>
+                            )}
+                        </span>
                     </span>
                 )
             })}
