@@ -17,8 +17,25 @@ export default function About() {
             <div className="container">
                 <div className="divider" />
                 <div className="about__inner">
-                    {/* Left: text */}
-                    <div className="about__text">
+                    {/* Left column: The moving frame with a fixed background image */}
+                    <motion.aside
+                        className="about__col-left"
+                        variants={anim}
+                        custom={0.2}
+                        initial="hidden"
+                        animate={isInView ? 'visible' : 'hidden'}
+                    >
+                        <div className="about__image-window">
+                            <div
+                                className="about__photo-fixed"
+                                aria-label="Gaurav — DevSecOps Engineer"
+                                role="img"
+                            ></div>
+                        </div>
+                    </motion.aside>
+
+                    {/* Right column: Bio and stats (scrolls normally) */}
+                    <div className="about__col-right">
                         <motion.p className="section-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             About Me
                         </motion.p>
@@ -26,16 +43,15 @@ export default function About() {
                             Securing by Building,<br />Hardening by Default.
                         </motion.h3>
                         <motion.p className="about__body" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Hi, I’m <strong>Gaurav</strong>. I’m a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective.
+                            Hi, I'm <strong>Gaurav</strong>. I'm a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective.
                         </motion.p>
                         <motion.p className="about__body" variants={anim} custom={0.3} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             I don't just build apps; I manage their entire lifecycle—from secure code commits to live production maintenance. By leveraging n8n for security automation, I bridge the gap between development and operations, creating systems that are not only scalable but resilient against modern threats.
                         </motion.p>
 
-                        {/* Stats */}
                         <motion.div className="about__stats" variants={anim} custom={0.4} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             {[
-                                { value: '3+', label: 'Years in DevSecOps' },
+                                { value: '2+', label: 'Years in DevSecOps' },
                                 { value: '3+', label: 'Live Apps & Services' },
                                 { value: '10+', label: 'Automations' },
                             ].map(({ value, label }) => (
@@ -46,24 +62,6 @@ export default function About() {
                             ))}
                         </motion.div>
                     </div>
-
-                    {/* Right: photo */}
-                    <motion.div
-                        className="about__image-wrap"
-                        variants={anim}
-                        custom={0.2}
-                        initial="hidden"
-                        animate={isInView ? 'visible' : 'hidden'}
-                    >
-                        <div className="about__image-frame" id="about-photo">
-                            <img
-                                src="/gaurav.webp"
-                                alt="Gaurav — DevSecOps Engineer"
-                                className="about__photo"
-                            />
-                        </div>
-                        <div className="about__image-border" />
-                    </motion.div>
                 </div>
             </div>
         </section>
