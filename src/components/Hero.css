@@ -16,30 +16,34 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.hero__spline-wrap--ready {
+    opacity: 1;
 }
 
 .hero__spline-wrap spline-viewer {
     display: block;
     width: 100%;
     height: 100%;
-    pointer-events: none;
 }
 
-/* ── Overlay: clear on left (3D icon), dark on right (text) ────── */
+/* ── Overlay: dark left (text), clear right (3D) ────── */
 .hero__overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
     background: linear-gradient(90deg,
-            rgba(10, 10, 10, 0.00) 0%,
-            /* fully clear — 3D fully visible  */
-            rgba(10, 10, 10, 0.10) 45%,
-            /* slight tint starts              */
-            rgba(10, 10, 10, 0.78) 58%,
-            /* fades to dark — text starts     */
-            rgba(10, 10, 10, 0.92) 100%
-            /* dark behind right-side text     */
+            rgba(10, 10, 10, 0.95) 0%,
+            /* fully dark behind text  */
+            rgba(10, 10, 10, 0.85) 45%,
+            /* fade out starts         */
+            rgba(10, 10, 10, 0.20) 65%,
+            /* becoming clear          */
+            rgba(10, 10, 10, 0.00) 100%
+            /* 3D fully visible        */
         );
     pointer-events: none;
 }
@@ -50,19 +54,21 @@
     z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* 50% 3D spacer | 50% text */
+    /* 50% text | 50% 3D spacer */
     align-items: center;
     gap: 0;
     width: 100%;
     max-width: var(--container-width);
+    pointer-events: none;
 }
 
-/* Left col — visually empty, lets 3D icon show through (styled via media query) */
-
-/* Right col — all text content */
-.hero__right {
-    padding-left: 48px;
+/* Left col — all text content */
+.hero__content {
+    padding-right: 48px;
+    pointer-events: auto;
 }
+
+/* Right col — visually empty, lets 3D icon show through (styled via media query) */
 
 /* ── Heading ─────────────────────────────────────────────────────── */
 .hero__heading {
@@ -222,16 +228,35 @@
 
     /* Stack vertically on tablets — 3D on top, text below */
     .hero__inner {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    /* Reposition Spline model to be centered and slightly higher */
+    .hero__spline-wrap {
+        /* Reset any layout overrides and rely purely on CSS transform to shift the visual canvas. */
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+
+        /* Scale the model up and translate it left/up.
+           We use scale(1.8) and translate(-20%) so that the right edge of the 
+           canvas doesn't get dragged inside the screen, which was creating the 'sidebar' gap. */
+        transform-origin: center center;
+        transform: scale(1.8) translate(-15%, -8%);
     }
 
     /* On mobile show a spacer so 3D has room at top */
-    .hero__left {
+    .hero__spacer {
         height: 260px;
+        width: 100%;
     }
 
-    .hero__right {
-        padding-left: 0;
+    .hero__content {
+        padding-right: 0;
     }
 
     .hero__overlay {

@@ -17,18 +17,91 @@ const isMobile =
 
 export default function Hero() {
     const heroRef = useRef(null)
+    const splineWrapRef = useRef(null)
+    const [splineReady, setSplineReady] = useState(false)
     // Unmount Spline when the hero scrolls out of view (with 200px buffer)
     const isHeroInView = useInView(heroRef, { margin: '200px' })
+
+    // Poll shadow DOM: remove logo + detect when the scene is actually loaded
+    useEffect(() => {
+        if (!isHeroInView) return
+
+        let logoRemoved = false
+        let sceneDetected = false
+
+        let interval = setInterval(() => {
+            const splineViewer = document.querySelector('spline-viewer')
+            if (!splineViewer || !splineViewer.shadowRoot) return
+
+            // Remove the "Built with Spline" logo
+            if (!logoRemoved) {
+                const logo = splineViewer.shadowRoot.querySelector('#logo')
+                if (logo) {
+                    logo.remove()
+                    logoRemoved = true
+                }
+            }
+
+            // Detect when the canvas has actually rendered (scene loaded)
+            if (!sceneDetected) {
+                const canvas = splineViewer.shadowRoot.querySelector('canvas')
+                if (canvas) {
+                    sceneDetected = true
+                    setSplineReady(true)
+                }
+            }
+
+            if (logoRemoved && sceneDetected) clearInterval(interval)
+        }, 100)
+
+        // Stop polling after 8 seconds to avoid infinite loop
+        let timeout = setTimeout(() => {
+            clearInterval(interval)
+            // Even if polling timed out, show whatever is there
+            setSplineReady(true)
+        }, 8000)
+
+        return () => {
+            clearInterval(interval)
+            clearTimeout(timeout)
+        }
+    }, [isHeroInView])
+
+    // Allow scrolling over the 3D model without breaking hover interactions
+    useEffect(() => {
+        const wrap = splineWrapRef.current
+        if (!wrap) return
+
+        const stopScroll = (e) => {
+            // Stop the wheel/touch events from reaching the Spline viewer in the capture phase,
+            // which prevents it from swallowing the scroll, allowing native page scrolling to work.
+            e.stopPropagation()
+        }
+
+        wrap.addEventListener('wheel', stopScroll, { capture: true, passive: true })
+        wrap.addEventListener('touchmove', stopScroll, { capture: true, passive: true })
+        wrap.addEventListener('touchstart', stopScroll, { capture: true, passive: true })
+
+        return () => {
+            wrap.removeEventListener('wheel', stopScroll, { capture: true })
+            wrap.removeEventListener('touchmove', stopScroll, { capture: true })
+            wrap.removeEventListener('touchstart', stopScroll, { capture: true })
+        }
+    }, [])
 
     return (
         <section ref={heroRef} className="hero section-pad" id="hero">
 
-            {/* === Spline 3D background — only rendered when in view === */}
-            <div className="hero__spline-wrap" aria-hidden="true">
+            {/* === Spline 3D background — hidden until scene is loaded === */}
+            <div
+                ref={splineWrapRef}
+                className={`hero__spline-wrap ${splineReady ? 'hero__spline-wrap--ready' : ''}`}
+                aria-hidden="true"
+            >
                 {isHeroInView && (
                     <spline-viewer
-                        url="/scene-clean.splinecode"
-                        loading-anim-type="none"
+                        url="https://prod.spline.design/MVfQ6oP6J8ivuI7e/scene.splinecode"
+                        loading-anim-type="spinner-small-dark"
                         {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
                     />
                 )}
@@ -37,14 +110,11 @@ export default function Hero() {
             {/* Overlay: transparent left (3D), dark right (text) */}
             <div className="hero__overlay" aria-hidden="true" />
 
-            {/* === Two-column layout: [3D spacer | text content] === */}
+            {/* === Two-column layout: [text content | 3D spacer] === */}
             <div className="container hero__inner">
 
-                {/* Left col — intentionally empty so 3D icon shows through */}
-                <div className="hero__left" aria-hidden="true" />
-
-                {/* Right col — all textual content */}
-                <div className="hero__right">
+                {/* Left col — all textual content */}
+                <div className="hero__content">
                     <motion.p
                         className="section-label"
                         variants={fadeUp}
@@ -103,6 +173,9 @@ export default function Hero() {
                         </Link>
                     </motion.div>
                 </div>
+
+                {/* Right col — intentionally empty so 3D icon shows through */}
+                <div className="hero__spacer" aria-hidden="true" />
             </div>
 
             {/* Background decorative text */}
