@@ -53,7 +53,7 @@ export default function About() {
                             {[
                                 { value: '2+', label: 'Years in DevSecOps' },
                                 { value: '3+', label: 'Live Apps & Services' },
-                                { value: '10+', label: 'Automations' },
+                                { value: '15+', label: 'Automations' },
                             ].map(({ value, label }) => (
                                 <div className="about__stat" key={label}>
                                     <span className="about__stat-value">{value}</span>

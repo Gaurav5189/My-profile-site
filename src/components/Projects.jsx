@@ -36,7 +36,8 @@ const PROJECTS = [
         year: '2025',
         desc: 'Designed automated CI/CD and security workflows bridging development and operations. Triggered automatic tasks and deployment alerts to ensure continuous, secure delivery and maintenance of live production applications.',
         tags: ['n8n', 'CI/CD', 'Workflow Automation', 'Webhooks'],
-        placeholder: 'Infrastructure Maintenance'
+        placeholder: 'Infrastructure Maintenance',
+        image: '/n8n-img.webp'
     }
 ]
 
