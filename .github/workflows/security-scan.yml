@@ -13,6 +13,6 @@ jobs:
         continue-on-error: true # We want n8n to handle the logic, not just fail the build
       - name: Notify n8n
         run: |
-          curl -X POST https://your-n8n-url.com/webhook/security-alert \
+          curl -X POST https://tom716-n8n-free.hf.space/webhook/security-alert \
           -H "Content-Type: application/json" \
           -d '{"status": "${{ job.status }}", "repo": "${{ github.repository }}", "commit": "${{ github.sha }}"}'
