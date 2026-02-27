@@ -14,20 +14,24 @@ export function TextScramble({
     ...props
 }) {
     const nodeRef = useRef(null);
-    const isInView = useInView(nodeRef, { once: true, margin: "0px 0px -25% 0px" });
+    const intervalRef = useRef(null);
+    const isScrambledRef = useRef(true); // Security lock: Only allow scramble if currently scrambled
+    // Triggers unscramble when entering the middle 50% of the screen (crosses 75% from bottom, or 25% from top)
+    const isTriggerZone = useInView(nodeRef, { once: false, margin: "-25% 0px -25% 0px" });
+
+    // Triggers reset ONLY when completely off-screen by at least 100px (safety buffer)
+    const isVisibleAtAll = useInView(nodeRef, { once: false, margin: "200px 0px 200px 0px" });
 
     const [displayText, setDisplayText] = useState(children);
-    const [isAnimating, setIsAnimating] = useState(false);
     const text = String(children);
 
-    const scramble = async () => {
-        if (isAnimating) return;
-        setIsAnimating(true);
-
+    const scramble = () => {
         const steps = duration / speed;
         let step = 0;
 
-        const interval = setInterval(() => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+
+        intervalRef.current = setInterval(() => {
             let scrambled = '';
             const progress = step / steps;
 
@@ -48,17 +52,18 @@ export function TextScramble({
             step++;
 
             if (step > steps) {
-                clearInterval(interval);
+                clearInterval(intervalRef.current);
                 setDisplayText(text);
-                setIsAnimating(false);
                 onScrambleComplete?.();
             }
         }, speed * 1000);
     };
 
     useEffect(() => {
-        if (!isInView) {
-            // Pre-fill with gibberish so it looks like hacker code when it becomes visible before scrambling
+        // If it's completely out of the viewport bounds (+200px), reset it silently to gibberish
+        if (!isVisibleAtAll) {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+
             let initialGibberish = '';
             for (let i = 0; i < text.length; i++) {
                 if (text[i] === ' ' || text[i] === '\n') {
@@ -68,12 +73,25 @@ export function TextScramble({
                 }
             }
             setDisplayText(initialGibberish);
+            isScrambledRef.current = true; // Lock opened: Text is officially scrambled
             return;
         }
 
-        // It crossed the 75% screen line — immediately resolve!
-        scramble();
-    }, [isInView]);
+        // If it crossed into the middle 50% target zone AND is currently scrambled, trigger it!
+        if (isTriggerZone) {
+            if (isScrambledRef.current) {
+                isScrambledRef.current = false; // Lock immediately closed: Animation has spent its token
+                scramble();
+            }
+        }
+
+        // If it leaves the target zone but is still isVisibleAtAll (i.e., exiting the screen),
+        // we deliberately do NOTHING! This keeps the text readable while leaving the frame.
+
+        return () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+        };
+    }, [isTriggerZone, isVisibleAtAll, text, characterSet, duration, speed]);
 
     return (
         <Component

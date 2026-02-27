@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import TextScramble from './ui/TextScramble'
+import TextGenerateEffect from './ui/TextGenerateEffect'
 import './Testimonials.css'
 
 const anim = {
@@ -50,11 +51,12 @@ export default function Testimonials() {
                         {/* Large decorative quotation mark */}
                         <span className="philosophy__mark" aria-hidden="true">&ldquo;</span>
 
-                        <p className="philosophy__quote">
-                            I believe security isn&apos;t a final checkpoint; it&apos;s a fundamental
-                            pillar of the architecture. My goal is to build systems that are resilient
-                            by design and automated by necessity.
-                        </p>
+                        <div className="philosophy__quote">
+                            <TextGenerateEffect
+                                words="I believe security isn't a final checkpoint; it's a fundamental pillar of the architecture. My goal is to build systems that are resilient by design and automated by necessity."
+                                duration={0.8}
+                            />
+                        </div>
 
                         <div className="philosophy__attribution">
                             <span className="philosophy__line" aria-hidden="true" />
