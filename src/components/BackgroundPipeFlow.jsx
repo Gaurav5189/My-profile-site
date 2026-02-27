@@ -73,7 +73,7 @@ export default function BackgroundPipeFlow() {
             color: '#ff3eb5',
             side: 'right',
             // Pink pipe path exact to the drawing
-            turns: [0.17, 0.24, 0.40, 0.55, 0.65, 0.76, 0.90],
+            turns: [0.17, 0.24, 0.41, 0.55, 0.65, 0.76, 0.90],
             xTargets: [0.65, 'left', 'right', 0.45, 'right', 0.20, 'right'],
         },
     ]

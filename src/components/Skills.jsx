@@ -39,6 +39,14 @@ export default function Skills() {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: '-80px' })
 
+    const skillsList = [
+        'Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing',
+        'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security',
+        'Linux Admin', 'CI/CD', 'Burp Suite', 'Live Deployment'
+    ]
+    // Duplicate the list so the animation can loop seamlessly without skipping
+    const doubledList = [...skillsList, ...skillsList]
+
     return (
         <section className="skills section-pad" id="skills" ref={ref}>
             <div className="container">
@@ -77,14 +85,14 @@ export default function Skills() {
                         </motion.div>
                     ))}
                 </div>
+            </div>
 
-                {/* Scrolling marquee */}
-                <div className="skills__marquee" aria-hidden="true">
-                    <div className="skills__marquee-track">
-                        {['Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing', 'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security', 'Linux Admin', 'CI/CD', 'Burp Suite', 'Live Deployment'].map((t, i) => (
-                            <span key={i}>{t} <em>·</em></span>
-                        ))}
-                    </div>
+            {/* Scrolling marquee - Placed outside the container to span full width */}
+            <div className="skills__marquee" aria-hidden="true">
+                <div className="skills__marquee-track">
+                    {doubledList.map((t, i) => (
+                        <span key={i}>{t} <em>▲</em></span>
+                    ))}
                 </div>
             </div>
         </section>
