@@ -1,0 +1,18 @@
+name: Security Scan
+on: [push]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Gitleaks Scan
+        id: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true # We want n8n to handle the logic, not just fail the build
+      - name: Notify n8n
+        run: |
+          curl -X POST https://your-n8n-url.com/webhook/security-alert \
+          -H "Content-Type: application/json" \
+          -d '{"status": "${{ job.status }}", "repo": "${{ github.repository }}", "commit": "${{ github.sha }}"}'
