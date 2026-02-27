@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import TextScramble from './ui/TextScramble'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import { FiMail, FiMapPin, FiPhone } from 'react-icons/fi'
 import { FiGithub, FiLinkedin, FiTwitter, FiInstagram } from 'react-icons/fi'
@@ -57,7 +58,7 @@ export default function Contact() {
                             Get In Touch
                         </motion.p>
                         <motion.h2 className="contact__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Ready to build something<br />
+                            Ready to <TextScramble trigger={isInView} className="inline-block" as="span">build</TextScramble> something<br />
                             <span className="contact__heading--outlined">great together?</span>
                         </motion.h2>
                         <motion.p className="contact__sub" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>

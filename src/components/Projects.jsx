@@ -1,5 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import TextScramble from './ui/TextScramble'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import './Projects.css'
 
@@ -59,7 +60,7 @@ export default function Projects() {
                         Featured Work
                     </motion.p>
                     <motion.h2 className="projects__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        Selected Projects
+                        <TextScramble trigger={isInView}>Selected Projects</TextScramble>
                     </motion.h2>
                 </div>
 

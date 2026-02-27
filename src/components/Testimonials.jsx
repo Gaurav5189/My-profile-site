@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import TextScramble from './ui/TextScramble'
 import './Testimonials.css'
 
 const anim = {
@@ -34,7 +35,7 @@ export default function Testimonials() {
                         initial="hidden"
                         animate={isInView ? 'visible' : 'hidden'}
                     >
-                        Engineering Philosophy
+                        <TextScramble trigger={isInView}>Engineering Philosophy</TextScramble>
                     </motion.h2>
 
                     {/* Single centered philosophy quote block */}

@@ -1,5 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import TextScramble from './ui/TextScramble'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import './Skills.css'
 
@@ -56,7 +57,7 @@ export default function Skills() {
                         What I Do
                     </motion.p>
                     <motion.h2 className="skills__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        Services & Skills
+                        <TextScramble trigger={isInView}>Services & Skills</TextScramble>
                     </motion.h2>
                 </div>
 

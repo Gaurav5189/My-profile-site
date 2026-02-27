@@ -28,33 +28,24 @@
     padding-bottom: 80px;
 }
 
-/* --- The Window Frame --- */
-/* clip-path is used instead of overflow:hidden because overflow:hidden
-   does NOT clip background-attachment:fixed backgrounds. clip-path does. */
-.about__image-window {
+/* --- The Tilt Wrapper --- */
+.about__tilt-wrap {
     width: 100%;
     aspect-ratio: 3 / 4;
-    overflow: hidden;
     border-radius: 16px;
     border: 1px solid var(--gray-dark);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.18);
     position: relative;
-    background: var(--gray-dark);
-    /* This is the key fix: clip-path properly clips fixed backgrounds */
-    clip-path: inset(0 round 16px);
+    overflow: hidden;
+    cursor: crosshair;
 }
 
-/* --- The Fixed Background Image --- */
-/* This is what creates the "Static inside the frame" effect */
-.about__photo-fixed {
+/* --- The Photo inside Tilt --- */
+.about__photo-tilt {
     width: 100%;
     height: 100%;
-    background-image: url('/gaurav.webp');
-    background-size: cover;
-    /* Shifts the viewport-fixed background exactly so its center lands in the left column window */
-    background-position: calc(50% - (var(--container-width) * 0.3)) 20%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    object-fit: cover;
+    display: block;
     filter: grayscale(8%) contrast(1.04);
 }
 
@@ -122,11 +113,6 @@
         width: 100%;
     }
 
-    /* Keep fixed parallax on mobile, with centered position */
-    .about__photo-fixed {
-        background-attachment: fixed;
-        background-position: center 20%;
-    }
 }
 
 @media (max-width: 500px) {

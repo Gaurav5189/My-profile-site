@@ -1,6 +1,8 @@
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import TextScramble from './ui/TextScramble'
+import Tilt from './ui/Tilt'
+import Spotlight from './ui/Spotlight'
 import './About.css'
 
 export default function About() {
@@ -25,13 +27,23 @@ export default function About() {
                         initial="hidden"
                         animate={isInView ? 'visible' : 'hidden'}
                     >
-                        <div className="about__image-window">
-                            <div
-                                className="about__photo-fixed"
-                                aria-label="Gaurav — DevSecOps Engineer"
-                                role="img"
-                            ></div>
-                        </div>
+                        <Tilt
+                            rotationFactor={6}
+                            isReverse
+                            className="about__tilt-wrap"
+                            springOptions={{ stiffness: 26.7, damping: 4.1, mass: 0.2 }}
+                            style={{ transformOrigin: 'center center' }}
+                        >
+                            <Spotlight
+                                size={280}
+                                springOptions={{ stiffness: 26.7, damping: 4.1, mass: 0.2 }}
+                            />
+                            <img
+                                src="/gaurav.webp"
+                                alt="Gaurav — DevSecOps Engineer"
+                                className="about__photo-tilt"
+                            />
+                        </Tilt>
                     </motion.aside>
 
                     {/* Right column: Bio and stats (scrolls normally) */}
@@ -40,7 +52,8 @@ export default function About() {
                             About Me
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Securing by Building,<br />Hardening by Default.
+                            <TextScramble trigger={isInView}>Securing by Building,</TextScramble><br />
+                            <TextScramble trigger={isInView}>Hardening by Default.</TextScramble>
                         </motion.h3>
                         <motion.p className="about__body" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             Hi, I'm <strong>Gaurav</strong>. I'm a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective.
