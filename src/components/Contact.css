@@ -70,13 +70,15 @@ a.contact__info-item:hover {
     align-items: center;
     justify-content: center;
     color: var(--gray-light);
-    transition: border-color var(--transition), color var(--transition), background var(--transition);
+    transition: border-color var(--transition), color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 .contact__social-link:hover {
     border-color: var(--cream);
     color: var(--cream);
     background: rgba(245, 240, 232, 0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(245, 240, 232, 0.08);
 }
 
 /* Form */
@@ -128,6 +130,7 @@ a.contact__info-item:hover {
 .contact__field input:focus,
 .contact__field textarea:focus {
     border-color: var(--gray-light);
+    box-shadow: 0 0 0 3px rgba(138, 138, 138, 0.08);
 }
 
 .contact__submit {

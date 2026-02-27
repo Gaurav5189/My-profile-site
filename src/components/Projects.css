@@ -33,11 +33,13 @@
     background: rgba(10, 10, 14, 0.45);
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    transition: background var(--transition);
+    transition: background var(--transition), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
 .project-card:hover {
     background: rgba(20, 20, 28, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Image area */
@@ -121,6 +123,7 @@
 .project-card__view-btn:hover {
     background: var(--cream);
     color: var(--black);
+    box-shadow: 0 0 20px rgba(245, 240, 232, 0.15);
 }
 
 /* Info area */

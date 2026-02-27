@@ -71,7 +71,7 @@ export default function Contact() {
                                 <FiMapPin /> <span>India 🇮🇳</span>
                             </div>
                             <div className="contact__info-item">
-                                <FiPhone /> <span>Available for freelance & full-time</span>
+                                <FiPhone /> <span>Available for freelance & part-time</span>
                             </div>
                         </motion.div>
 

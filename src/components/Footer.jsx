@@ -80,7 +80,7 @@ export default function Footer() {
 
                 <div className="footer__bottom">
                     <p className="footer__copy">© {year} Gaurav. All rights reserved.</p>
-                    <p className="footer__credit">Designed & built with ♥</p>
+                    <p className="footer__credit">My work. My craft.</p>
                 </div>
             </div>
         </footer>
