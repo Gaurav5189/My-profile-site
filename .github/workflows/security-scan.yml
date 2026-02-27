@@ -10,7 +10,7 @@ jobs:
       - name: Gitleaks Scan
         id: gitleaks
         uses: gitleaks/gitleaks-action@v2
-        continue-on-error: true # We want n8n to handle the logic, not just fail the build
+        continue-on-error: true
       - name: Notify n8n
         run: |
           curl -X POST https://tom716-n8n-free.hf.space/webhook/security-alert \
