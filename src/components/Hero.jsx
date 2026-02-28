@@ -105,13 +105,11 @@ export default function Hero({ onSplineReady }) {
                 className={`hero__spline-wrap ${splineReady ? 'hero__spline-wrap--ready' : ''}`}
                 aria-hidden="true"
             >
-                {isHeroInView && (
-                    <spline-viewer
-                        url="https://prod.spline.design/MVfQ6oP6J8ivuI7e/scene.splinecode"
-                        loading-anim-type="spinner-small-dark"
-                        {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
-                    />
-                )}
+                <spline-viewer
+                    url="https://prod.spline.design/MVfQ6oP6J8ivuI7e/scene.splinecode"
+                    loading-anim-type="spinner-small-dark"
+                    {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
+                />
             </div>
 
             {/* Overlay: transparent left (3D), dark right (text) */}
@@ -209,7 +207,6 @@ function TypewriterHeading() {
     const [phase, setPhase] = useState('typing')   // current phase
     const [lineIdx, setLineIdx] = useState(0)          // active line (typing or erasing)
     const [charIdx, setCharIdx] = useState(0)          // chars shown on active line
-    const [lineChars, setLineChars] = useState([0, 0, 0])  // char count per line
 
     useEffect(() => {
         let t
@@ -220,7 +217,6 @@ function TypewriterHeading() {
                 // Type next character
                 t = setTimeout(() => {
                     setCharIdx(c => c + 1)
-                    setLineChars(lc => { const n = [...lc]; n[lineIdx] = charIdx + 1; return n })
                 }, TYPE_SPEED)
             } else if (lineIdx < LINES.length - 1) {
                 // Line done, move to next
@@ -248,7 +244,6 @@ function TypewriterHeading() {
                 // Erase one character
                 t = setTimeout(() => {
                     setCharIdx(c => c - 1)
-                    setLineChars(lc => { const n = [...lc]; n[lineIdx] = charIdx - 1; return n })
                 }, ERASE_SPEED)
             } else if (lineIdx > 0) {
                 // Line fully erased, move to previous line
@@ -265,7 +260,6 @@ function TypewriterHeading() {
 
         else if (phase === 'done') {
             // Reset and restart the loop
-            setLineChars([0, 0, 0])
             setLineIdx(0)
             setCharIdx(0)
             setPhase('typing')
@@ -277,7 +271,14 @@ function TypewriterHeading() {
     return (
         <span className="hero__typewriter">
             {LINES.map((ln, i) => {
-                const shown = lineChars[i]
+                let shown = 0;
+                if (phase === 'done' || (phase === 'typing' && i > lineIdx) || (phase === 'erasing' && i > lineIdx)) {
+                    shown = 0;
+                } else if (phase === 'paused' || i < lineIdx) {
+                    shown = ln.text.length;
+                } else if (i === lineIdx) {
+                    shown = charIdx;
+                }
                 const content = ln.text.slice(0, shown)
 
                 // Cursor shows on the active line during typing & erasing
