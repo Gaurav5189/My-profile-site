@@ -11,7 +11,17 @@ A premium, high-performance personal portfolio website built with React and Vite
 - **Fully Functional Contact Form:** Integrated with Web3Forms API to deliver messages directly to email — no backend needed.
 - **Mobile Performance Optimised:** Spline pixel-ratio reduction and render-on-demand on touch / small-screen devices.
 - **SEO Ready:** Custom meta description, keywords, and semantic HTML tuned for DevSecOps / backend engineering search terms.
+- **Tetromino Preloader:** A custom, fully synchronized geometric preloader that guarantees a minimum display time while waiting for 3D assets to initialize.
+- **Cryptographic Text Scramble:** Interactive scrolling headers that decrypt into view natively using Framer Motion's intersection observers with strict bi-directional logic.
+- **Staggered Blur Text Effects:** Quote reveals utilizing `useAnimate` to create a smooth, cascading word-blur effect on scroll.
+- **Interactive 3D Profiling:** Replaced static images with a dynamic, cursor-following 3D Tilt container enhanced by a realistic Spotlight sheen.
+- **Extensive Micro-Animations:** Tastefully implemented CSS-driven interactions, including smooth section divider reveals, tactile button depressions, and glowing link lifts.
 
+## 🛡 DevSecOps Pipeline (Shift Left)
+- **Snyk (Software Composition Analysis - SCA):** This looks at your `package.json` to find out if the other people's code you are using (like React or Vite plugins) has known vulnerabilities (CVEs).
+- **Gitleaks (Secret Scanning):** This looks at your code to ensure you didn't accidentally commit a private API key, database password, or webhook URL.
+
+*A standard frontend developer might only use one (or neither). A DevSecOps engineer uses both to implement a true "Shift Left" pipeline.*
 ## 🛠 Tech Stack
 - **Framework:** React 18 + Vite 5
 - **Styling:** Vanilla CSS (custom properties, Grid & Flexbox)
@@ -27,6 +37,9 @@ A premium, high-performance personal portfolio website built with React and Vite
 
 ```text
 My-profile-site/
+├── .github/
+│   └── workflows/
+│       └── ci-pipeline.yml          ← Gitleaks & Snyk DevSecOps Action
 ├── index.html                       ← Entry point, fonts, Spline viewer & meta tags
 ├── vite.config.js                   ← Vite bundler configuration
 ├── package.json                     ← Dependencies & scripts
@@ -43,13 +56,18 @@ My-profile-site/
     ├── styles/
     │   └── global.css               ← Design tokens, CSS variables, utilities
     └── components/
+        ├── ui/                      ← Custom interactive UI micro-components
+        │   ├── Preloader.jsx / .css
+        │   ├── Spotlight.jsx
+        │   ├── TextGenerateEffect.jsx
+        │   ├── TextScramble.jsx
+        │   └── Tilt.jsx
         ├── Hero.jsx / .css          ← Two-column 3D hero + typewriter heading
         ├── BackgroundPipeFlow.jsx / .css ← Canvas-based animated pipe background
         ├── Navbar.jsx / .css        ← Sticky glassmorphism nav + mobile menu
-        ├── About.jsx / .css         ← Bio, philosophy, and profile photo
+        ├── About.jsx / .css         ← Bio, philosophy, and interactive 3D photo
         ├── Skills.jsx / .css        ← Service card grid + scrolling marquee
         ├── Projects.jsx / .css      ← Selected work showcase with images
-        ├── ThreeDViewer.jsx         ← React Three Fiber component
         ├── Testimonials.jsx / .css  ← Engineering Philosophy quote block
         ├── Contact.jsx / .css       ← Web3Forms functional contact form
         └── Footer.jsx / .css        ← Navigation links & social footprint
