@@ -79,7 +79,7 @@ export default function Projects() {
                             <div className="project-card__image">
                                 {image ? (
                                     <div className="project-card__image-cover">
-                                        <img src={image} alt={title} className="project-card__img" />
+                                        <img src={image} alt={title} className="project-card__img" loading="lazy" />
                                     </div>
                                 ) : (
                                     <div className="project-card__image-placeholder">
