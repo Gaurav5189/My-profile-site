@@ -16,8 +16,8 @@ export function TextScramble({
     const nodeRef = useRef(null);
     const intervalRef = useRef(null);
     const isScrambledRef = useRef(true); // Security lock: Only allow scramble if currently scrambled
-    // Triggers unscramble when entering the middle 50% of the screen (crosses 75% from bottom, or 25% from top)
-    const isTriggerZone = useInView(nodeRef, { once: false, margin: "-25% 0px -25% 0px" });
+    // Triggers unscramble when entering the middle 50% of the screen (crosses 80% from bottom, or 20% from top)
+    const isTriggerZone = useInView(nodeRef, { once: false, margin: "-20% 0px -20% 0px" });
 
     // Triggers reset ONLY when completely off-screen by at least 100px (safety buffer)
     const isVisibleAtAll = useInView(nodeRef, { once: false, margin: "200px 0px 200px 0px" });

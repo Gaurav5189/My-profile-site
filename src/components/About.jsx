@@ -52,8 +52,8 @@ export default function About() {
                             About Me
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            <TextScramble trigger={isInView}>Securing by Building,</TextScramble><br />
-                            <TextScramble trigger={isInView}>Hardening by Default.</TextScramble>
+                            Securing by <TextScramble trigger={isInView}>Building,</TextScramble><br />
+                            Hardening by <TextScramble trigger={isInView}>Default.</TextScramble>
                         </motion.h3>
                         <motion.p className="about__body" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             Hi, I'm <strong>Gaurav</strong>. I'm a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective.

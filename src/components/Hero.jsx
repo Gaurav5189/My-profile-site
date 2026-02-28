@@ -9,6 +9,11 @@ const fadeUp = {
     visible: (delay = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay } }),
 }
 
+const headingSlideUp = {
+    hidden: { y: 40 },
+    visible: (delay = 0) => ({ y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay } }),
+}
+
 // Evaluated once at module load — no hook needed
 const isMobile =
     typeof window !== 'undefined' &&
@@ -132,7 +137,7 @@ export default function Hero({ onSplineReady }) {
 
                     <motion.h1
                         className="hero__heading"
-                        variants={fadeUp}
+                        variants={headingSlideUp}
                         custom={0.25}
                         initial="hidden"
                         animate="visible"
