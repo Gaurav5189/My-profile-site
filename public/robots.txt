@@ -26,6 +26,6 @@ Disallow: /
 User-agent: FacebookBot
 Disallow: /
 
-# Host & Sitemap (TODO: Update these with your real domain)
+# Host & Sitemap
 Host: https://gauravsethi.is-a.dev/
 Sitemap: https://gauravsethi.is-a.dev/sitemap.xml
