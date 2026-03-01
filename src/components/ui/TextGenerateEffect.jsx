@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
 
 export const TextGenerateEffect = ({
-    words,
+    words = "",
     className = "",
     filter = true,
     duration = 0.5,
@@ -11,7 +11,7 @@ export const TextGenerateEffect = ({
     // Animation triggers at 80% of the screen exactly once
     const isInView = useInView(scope, { once: true, margin: "0px 0px -20% 0px" });
 
-    let wordsArray = words.split(" ");
+    const wordsArray = words.split(" ");
 
     useEffect(() => {
         if (isInView) {

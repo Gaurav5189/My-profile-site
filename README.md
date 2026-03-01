@@ -43,7 +43,6 @@ My-profile-site/
 ├── index.html                       ← Entry point, fonts, Spline viewer & meta tags
 ├── vite.config.js                   ← Vite bundler configuration
 ├── package.json                     ← Dependencies & scripts
-├── requirements.txt                 ← Plain text mirror of all project dependencies
 ├── public/                          ← Static assets (served at root /)
 │   ├── favicon.svg
 │   ├── gaurav.webp                  ← Profile photo (WebP optimised)
@@ -75,7 +74,7 @@ My-profile-site/
 
 ## 💻 Running Locally
 
-1. Install dependencies (listed in `package.json`, mirrored in `requirements.txt`):
+1. Install dependencies:
    ```bash
    npm install
    ```

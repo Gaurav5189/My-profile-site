@@ -60,6 +60,8 @@ body {
 img {
   max-width: 100%;
   display: block;
+  /* Prevent dragging images */
+  -webkit-user-drag: none;
 }
 
 a {
@@ -245,17 +247,9 @@ h4 {
 /* =============================================
    Security Improvements
    ============================================= */
-body {
-  /* Prevent text highlighting across the whole site */
+/* Apply user-select: none only to specific non-text UI elements if needed */
+.btn,
+.icon-button {
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-}
-
-img {
-  /* Prevent dragging images to the desktop */
-  -webkit-user-drag: none;
-  pointer-events: none;
-  /* Disables right-click menu on images */
 }

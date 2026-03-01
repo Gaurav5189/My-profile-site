@@ -14,7 +14,7 @@ const PROJECTS = [
         desc: 'Architected and deployed a dedicated alumni networking platform. Hardened the application by implementing core Django security protocols and routing traffic through Cloudflare for enhanced DDoS protection and DNS management.',
         tags: ['Django', 'Python', 'Cloudflare', 'Web Security'],
         placeholder: 'Live Web Application',
-        link: 'http://ravenshawalumnisystem.dpdns.org',
+        link: 'https://ravenshawalumnisystem.dpdns.org',
         image: '/ravenshaw-site.webp'
     },
     {
@@ -104,7 +104,7 @@ export default function Projects() {
                                 <h3 className="project-card__title">{title}</h3>
                                 <p className="project-card__desc">{desc}</p>
                                 <div className="project-card__tags">
-                                    {tags.map(tag => <span key={tag} className="skill-card__tag">{tag}</span>)}
+                                    {tags.map(tag => <span key={tag} className="project-card__tag">{tag}</span>)}
                                 </div>
                             </div>
                         </motion.div>

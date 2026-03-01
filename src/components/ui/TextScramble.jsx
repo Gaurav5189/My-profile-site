@@ -87,7 +87,7 @@ export function TextScramble({
 
         // If it leaves the target zone but is still isVisibleAtAll (i.e., exiting the screen),
         // we deliberately do NOTHING! This keeps the text readable while leaving the frame.
-    }, [isTriggerZone, isVisibleAtAll, text, characterSet, duration, speed]);
+    }, [isTriggerZone, isVisibleAtAll, text, characterSet, duration, speed, onScrambleComplete]);
 
     // Cleanup on unmount only
     useEffect(() => {

@@ -41,9 +41,9 @@ export default function Skills() {
     const isInView = useInView(ref, { once: true, margin: '-80px' })
 
     const skillsList = [
-        'Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing',
+        'Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing', 'Burp Suite',
         'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security',
-        'Linux Admin', 'CI/CD', 'Burp Suite', 'Live Deployment'
+        'Linux Admin', 'CI/CD', 'Live Deployment'
     ]
     // Duplicate the list so the animation can loop seamlessly without skipping
     const doubledList = [...skillsList, ...skillsList]

@@ -2,12 +2,10 @@ import React from 'react';
 import './Preloader.css';
 
 export default function Preloader({ isLoading }) {
-    if (!isLoading) {
-        // We render it fading out by adding a fade-out CSS class just before unmounting,
-        // but for simplicity, returning null or fading an active layer works.
-        // Let's rely on standard conditional rendering for unmount.
-        // Or keep it mounted and fade opacity. We'll keep it active and fade it.
-    }
+    // We render it fading out by adding a fade-out CSS class just before unmounting,
+    // but for simplicity, returning null or fading an active layer works.
+    // Let's rely on standard conditional rendering for unmount.
+    // Or keep it mounted and fade opacity. We'll keep it active and fade it.
 
     return (
         <div className={`preloader-fixed ${!isLoading ? 'fade-out' : ''}`}>

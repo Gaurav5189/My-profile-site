@@ -120,7 +120,10 @@ export default function BackgroundPipeFlow() {
             const minJog = 2 * r + 20
 
             // Skip the curve entirely if it's too short to draw the radiuses
-            if (dist < minJog) return
+            if (dist < minJog) {
+                cx = rawTx
+                return
+            }
 
             const tx = rawTx
             const ad = tx > cx ? 1 : -1

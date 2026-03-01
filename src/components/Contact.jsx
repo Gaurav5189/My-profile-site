@@ -27,7 +27,7 @@ export default function Contact() {
         setError('')
 
         const formData = new FormData(e.target)
-        formData.append('access_key', 'cf0934dc-8825-482d-be53-aeaad45da867')
+        formData.append('access_key', import.meta.env.VITE_WEB3FORMS_ACCESS_KEY)
 
         try {
             const res = await fetch('https://api.web3forms.com/submit', {
@@ -40,7 +40,8 @@ export default function Contact() {
             } else {
                 setError('Something went wrong. Please try again.')
             }
-        } catch {
+        } catch (err) {
+            console.error('Contact form submission error:', err)
             setError('Network error. Please check your connection.')
         } finally {
             setLoading(false)

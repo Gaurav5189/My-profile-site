@@ -43,6 +43,6 @@ jobs:
       - name: Notify n8n
         if: always() 
         run: |
-          curl -X POST https://tom716-n8n-free.hf.space/webhook/security-alert \
+          curl -X POST ${{ secrets.N8N_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
           -d '{"status": "${{ job.status }}", "repo": "${{ github.repository }}", "commit": "${{ github.sha }}"}'
