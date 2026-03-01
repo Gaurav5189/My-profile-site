@@ -1,0 +1,31 @@
+# User-agent: * allow all search engines to crawl everything
+User-agent: *
+Allow: /
+
+# Block development/temporary folders
+Disallow: /dist/
+Disallow: /node_modules/
+Disallow: /src/
+
+# Block common AI scrapers (Crucial for DevSecOps/Privacy)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# Host & Sitemap (TODO: Update these with your real domain)
+Host: https://gauravsethi.is-a.dev/
+Sitemap: https://gauravsethi.is-a.dev/sitemap.xml
