@@ -49,8 +49,8 @@ export default function About() {
 
                     {/* Right column: Bio and stats (scrolls normally) */}
                     <div className="about__col-right">
-                        <motion.p className="section-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            About Me
+                        <motion.p className="section-label text-neon" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                            // About Me
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             Securing by <TextScramble trigger={isInView}>Building,</TextScramble><br />

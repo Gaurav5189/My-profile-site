@@ -127,13 +127,13 @@ export default function Hero({ onSplineReady }) {
                 {/* Left col — all textual content */}
                 <div className="hero__content">
                     <motion.p
-                        className="section-label"
+                        className="section-label text-neon"
                         variants={fadeUp}
                         custom={.1}
                         initial="hidden"
                         animate="visible"
                     >
-                        DevSecOps Engineer &amp; Security Architect
+                        // DevSecOps Engineer &amp; Security Architect
                     </motion.p>
 
                     <motion.h1
@@ -161,7 +161,7 @@ export default function Hero({ onSplineReady }) {
                             <button className="btn btn-primary">View My Work</button>
                         </Link>
                         <Link to="contact" smooth duration={700} offset={-80} id="hero-contact-btn">
-                            <button className="btn btn-outline">Get in Touch</button>
+                            <button className="btn btn-outline">Initialize Contact</button>
                         </Link>
                     </motion.div>
 
