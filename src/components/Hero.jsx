@@ -143,7 +143,7 @@ export default function Hero({ onSplineReady }) {
                         initial="hidden"
                         animate="visible"
                     >
-                        <TypewriterHeading />
+                        <TypewriterHeading isHeroInView={isHeroInView} />
                     </motion.h1>
 
                     <p className="hero__sub">
@@ -203,12 +203,14 @@ const PAUSE_COMPLETE = 3000  // ms all 3 lines stay visible before erase
 const PAUSE_RESTART = 500   // ms pause after fully erased before restart
 
 // phases: 'typing' → 'paused' → 'erasing' → 'done'
-function TypewriterHeading() {
+function TypewriterHeading({ isHeroInView }) {
     const [phase, setPhase] = useState('typing')   // current phase
     const [lineIdx, setLineIdx] = useState(0)          // active line (typing or erasing)
     const [charIdx, setCharIdx] = useState(0)          // chars shown on active line
 
     useEffect(() => {
+        if (!isHeroInView) return;
+
         let t
 
         if (phase === 'typing') {
@@ -266,7 +268,7 @@ function TypewriterHeading() {
         }
 
         return () => clearTimeout(t)
-    }, [phase, lineIdx, charIdx])
+    }, [phase, lineIdx, charIdx, isHeroInView])
 
     return (
         <span className="hero__typewriter">

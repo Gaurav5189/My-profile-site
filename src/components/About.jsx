@@ -20,6 +20,11 @@ export default function About() {
             <div className="container">
                 <div className="divider" />
                 <div className="about__inner">
+                    {/* Mobile-only label so it can appear above the image */}
+                    <motion.p className="section-label text-neon about__mobile-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                        // About Me
+                    </motion.p>
+
                     {/* Left column: The moving frame with a fixed background image */}
                     <motion.aside
                         className="about__col-left"
@@ -49,7 +54,7 @@ export default function About() {
 
                     {/* Right column: Bio and stats (scrolls normally) */}
                     <div className="about__col-right">
-                        <motion.p className="section-label text-neon" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                        <motion.p className="section-label text-neon about__desktop-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             // About Me
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
