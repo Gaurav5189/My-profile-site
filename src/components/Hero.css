@@ -245,7 +245,8 @@
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
-    z-index: 0;
+    z-index: 1;
+    /* Raised to 1 to stay visible above the dark overlay */
 
     /* Transparent fill — only the stroke border is visible */
     color: transparent;
