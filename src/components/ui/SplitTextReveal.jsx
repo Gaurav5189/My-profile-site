@@ -5,7 +5,7 @@ export default function SplitTextReveal({ text, className = "", delay = 0, durat
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: "-10%" })
 
-    const words = text.split(" ")
+    const words = (text ?? "").split(" ")
 
     const containerVariants = {
         hidden: {},
