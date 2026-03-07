@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import TextScramble from './ui/TextScramble'
+import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import './Skills.css'
 
@@ -32,8 +33,8 @@ const SERVICES = [
 ]
 
 const anim = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut', delay: d } }),
+    hidden: { opacity: 0, y: 40 },
+    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
 }
 
 export default function Skills() {
@@ -76,13 +77,15 @@ export default function Skills() {
                                 <span className="skill-card__number">{number}</span>
                                 <HiArrowUpRight className="skill-card__arrow" />
                             </div>
-                            <h3 className="skill-card__title">{title}</h3>
-                            <p className="skill-card__desc">{desc}</p>
-                            <div className="skill-card__tags">
+                            <motion.h3 className="skill-card__title" variants={anim} custom={(i * .1) + .25} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>{title}</motion.h3>
+                            <p className="skill-card__desc">
+                                <SplitTextReveal delay={(i * .1) + .4} text={desc} />
+                            </p>
+                            <motion.div className="skill-card__tags" variants={anim} custom={(i * .1) + .55} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                                 {tags.map(tag => (
                                     <span key={tag} className="skill-card__tag">{tag}</span>
                                 ))}
-                            </div>
+                            </motion.div>
                         </motion.div>
                     ))}
                 </div>

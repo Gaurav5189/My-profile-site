@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import TextScramble from './ui/TextScramble'
+import SplitTextReveal from './ui/SplitTextReveal'
 import Tilt from './ui/Tilt'
 import Spotlight from './ui/Spotlight'
 import './About.css'
@@ -11,7 +12,7 @@ export default function About() {
 
     const anim = {
         hidden: { opacity: 0, y: 40 },
-        visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
+        visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
     }
 
     return (
@@ -51,18 +52,18 @@ export default function About() {
                         <motion.p className="section-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             About Me
                         </motion.p>
-                        <motion.h3 className="about__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                        <motion.h3 className="about__heading" variants={anim} custom={.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             Securing by <TextScramble trigger={isInView}>Building,</TextScramble><br />
                             Hardening by <TextScramble trigger={isInView}>Default.</TextScramble>
                         </motion.h3>
-                        <motion.p className="about__body" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Hi, I'm <strong>Gaurav</strong>. I'm a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective.
-                        </motion.p>
-                        <motion.p className="about__body" variants={anim} custom={0.3} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            I don't just build apps; I manage their entire lifecycle—from secure code commits to live production maintenance. By leveraging n8n for security automation, I bridge the gap between development and operations, creating systems that are not only scalable but resilient against modern threats.
-                        </motion.p>
+                        <p className="about__body">
+                            <SplitTextReveal delay={.4} text="Hi, I'm **Gaurav**. I'm a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective." />
+                        </p>
+                        <p className="about__body">
+                            <SplitTextReveal delay={.55} text="I don't just build apps; I manage their entire lifecycle—from secure code commits to live production maintenance. By leveraging n8n for security automation, I bridge the gap between development and operations, creating systems that are not only scalable but resilient against modern threats." />
+                        </p>
 
-                        <motion.div className="about__stats" variants={anim} custom={0.4} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                        <motion.div className="about__stats" variants={anim} custom={.7} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             {[
                                 { value: '2+', label: 'Years in DevSecOps' },
                                 { value: '3+', label: 'Live Apps & Services' },

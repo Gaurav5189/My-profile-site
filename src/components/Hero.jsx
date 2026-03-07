@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Link } from 'react-scroll'
 import { HiArrowDown } from 'react-icons/hi'
+import SplitTextReveal from './ui/SplitTextReveal'
 import './Hero.css'
 
 const fadeUp = {
@@ -128,7 +129,7 @@ export default function Hero({ onSplineReady }) {
                     <motion.p
                         className="section-label"
                         variants={fadeUp}
-                        custom={0.1}
+                        custom={.1}
                         initial="hidden"
                         animate="visible"
                     >
@@ -138,27 +139,21 @@ export default function Hero({ onSplineReady }) {
                     <motion.h1
                         className="hero__heading"
                         variants={headingSlideUp}
-                        custom={0.25}
+                        custom={.25}
                         initial="hidden"
                         animate="visible"
                     >
                         <TypewriterHeading />
                     </motion.h1>
 
-                    <motion.p
-                        className="hero__sub"
-                        variants={fadeUp}
-                        custom={0.4}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        I bridge the gap between offensive security and robust architecture. By combining Python backend development (Django/Flask) with automated threat modeling (n8n) and a hacker's mindset, I harden infrastructure so teams can ship faster without leaving doors open.
-                    </motion.p>
+                    <p className="hero__sub">
+                        <SplitTextReveal delay={1} text="I bridge the gap between offensive security and robust architecture. By combining Python backend development (Django/Flask) with automated threat modeling (n8n) and a hacker's mindset, I harden infrastructure so teams can ship faster without leaving doors open." />
+                    </p>
 
                     <motion.div
                         className="hero__actions"
                         variants={fadeUp}
-                        custom={0.55}
+                        custom={.55}
                         initial="hidden"
                         animate="visible"
                     >
@@ -173,7 +168,7 @@ export default function Hero({ onSplineReady }) {
                     <motion.div
                         className="hero__scroll"
                         variants={fadeUp}
-                        custom={0.7}
+                        custom={.7}
                         initial="hidden"
                         animate="visible"
                     >

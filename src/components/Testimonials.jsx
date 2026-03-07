@@ -5,8 +5,8 @@ import TextGenerateEffect from './ui/TextGenerateEffect'
 import './Testimonials.css'
 
 const anim = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut', delay: d } }),
+    hidden: { opacity: 0, y: 40 },
+    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
 }
 
 export default function Testimonials() {
