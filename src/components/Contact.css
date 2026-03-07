@@ -84,8 +84,15 @@ a.contact__info-item:hover {
 /* Form */
 .contact__form-wrap {
     padding: 52px 48px;
-    border: 1px solid var(--gray-dark);
-    background: var(--dark);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    /* Brighter glass edge */
+    background: rgba(10, 10, 14, 0.45);
+    backdrop-filter: blur(36px) saturate(200%);
+    -webkit-backdrop-filter: blur(36px) saturate(200%);
+    border-radius: 4px;
+    /* subtle softening */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    /* deep shadow to anchor the floating glass */
 }
 
 .contact__form {

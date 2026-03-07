@@ -11,11 +11,13 @@
 
 .navbar--scrolled {
     padding: 14px 0;
-    background: rgba(8, 8, 12, 0.55);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 4px 24px rgba(0, 0, 0, 0.4);
+    background: rgba(8, 8, 12, 0.50);
+    /* slightly more transparent to let blur do the work */
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    /* brighter edge highlight */
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
 .navbar__inner {
@@ -92,10 +94,10 @@
 .navbar__mobile {
     display: flex;
     flex-direction: column;
-    background: rgba(8, 8, 12, 0.72);
-    backdrop-filter: blur(28px) saturate(160%);
-    -webkit-backdrop-filter: blur(28px) saturate(160%);
-    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(8, 8, 12, 0.65);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     padding: 24px 0;
     animation: slideDown 0.3s ease;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);

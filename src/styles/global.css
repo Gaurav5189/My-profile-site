@@ -31,9 +31,12 @@
 
   /* ── Liquid Glass tokens ── */
   --glass-bg: rgba(10, 10, 14, 0.40);
-  --glass-border: rgba(255, 255, 255, 0.11);
-  --glass-blur: blur(22px) saturate(160%);
-  --glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.50), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --glass-border: rgba(255, 255, 255, 0.15);
+  /* Slightly brighter border */
+  --glass-blur: blur(32px) saturate(200%);
+  /* Increased blur and saturation */
+  --glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.50), 0 0 0 1px rgba(255, 255, 255, 0.10) inset;
+  /* enhanced inner shadow */
   --glass-radius: 20px;
 }
 

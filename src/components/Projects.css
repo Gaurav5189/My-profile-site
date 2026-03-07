@@ -31,8 +31,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 0;
     background: rgba(10, 10, 14, 0.45);
-    backdrop-filter: blur(24px) saturate(160%);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(36px) saturate(200%);
+    -webkit-backdrop-filter: blur(36px) saturate(200%);
     transition: background var(--transition), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
