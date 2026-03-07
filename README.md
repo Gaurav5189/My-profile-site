@@ -12,7 +12,7 @@ A premium, high-performance personal portfolio website built with React and Vite
 - **Mobile Performance Optimised:** Spline pixel-ratio reduction and render-on-demand on touch / small-screen devices.
 - **SEO Ready:** Custom meta description, keywords, and semantic HTML tuned for DevSecOps / backend engineering search terms.
 - **Tetromino Preloader:** A custom, fully synchronized geometric preloader that guarantees a minimum display time while waiting for 3D assets to initialize.
-- **Cryptographic Text Scramble:** Interactive scrolling headers that decrypt into view natively using Framer Motion's intersection observers with strict bi-directional logic.
+- **Animated Text Scramble Effect:** Interactive scrolling headers that decrypt into view natively using Framer Motion's intersection observers with strict bi-directional logic.
 - **Staggered Blur Text Effects:** Quote reveals utilizing `useAnimate` to create a smooth, cascading word-blur effect on scroll.
 - **Interactive 3D Profiling:** Replaced static images with a dynamic, cursor-following 3D Tilt container enhanced by a realistic Spotlight sheen.
 - **Extensive Micro-Animations:** Tastefully implemented CSS-driven interactions, including smooth section divider reveals, tactile button depressions, and glowing link lifts.

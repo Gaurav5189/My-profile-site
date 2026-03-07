@@ -33,7 +33,7 @@ jobs:
 
       # 5. Software Composition Analysis (Snyk)
       - name: Snyk Vulnerability Scan
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@0.4.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -43,7 +43,7 @@ jobs:
       - name: Notify n8n
         if: always() 
         run: |
-          curl -X POST ${{ secrets.N8N_WEBHOOK_URL }} \
+          curl -X POST "${{ secrets.N8N_WEBHOOK_URL }}" \
           -H "Content-Type: application/json" \
           --connect-timeout 10 \
           --max-time 30 \

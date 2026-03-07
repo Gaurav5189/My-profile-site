@@ -28,7 +28,7 @@ export default function ThreeDViewer() {
     const [dpr, setDpr] = useState(1)
 
     return (
-        <div className="threed-viewer" id="threed-viewer">
+        <div className="threed-viewer" id="threed-viewer" role="img" aria-label="Decorative interactive 3D visualization">
             <Canvas
                 camera={{ position: [0, 0, 4], fov: 45 }}
                 style={{ width: '100%', height: '100%' }}

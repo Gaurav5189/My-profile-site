@@ -157,11 +157,11 @@ export default function Hero({ onSplineReady }) {
                         initial="hidden"
                         animate="visible"
                     >
-                        <Link to="projects" smooth duration={700} offset={-80} id="hero-view-work-btn">
-                            <button className="btn btn-primary">View My Work</button>
+                        <Link to="projects" smooth duration={700} offset={-80} id="hero-view-work-btn" className="btn btn-primary" role="button">
+                            View My Work
                         </Link>
-                        <Link to="contact" smooth duration={700} offset={-80} id="hero-contact-btn">
-                            <button className="btn btn-outline">Initialize Contact</button>
+                        <Link to="contact" smooth duration={700} offset={-80} id="hero-contact-btn" className="btn btn-outline" role="button">
+                            Initialize Contact
                         </Link>
                     </motion.div>
 

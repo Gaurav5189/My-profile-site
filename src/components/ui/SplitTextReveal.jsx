@@ -37,13 +37,15 @@ export default function SplitTextReveal({ text, className = "", delay = 0, durat
     const renderWord = (word) => {
         if (word.includes("**")) {
             const parts = word.split("**");
-            return (
-                <>
-                    {parts[0]}
-                    <strong>{parts[1]}</strong>
-                    {parts[2]}
-                </>
-            );
+            if (parts.length === 3) {
+                return (
+                    <>
+                        {parts[0]}
+                        <strong>{parts[1]}</strong>
+                        {parts[2]}
+                    </>
+                );
+            }
         }
         return word;
     }
@@ -56,7 +58,7 @@ export default function SplitTextReveal({ text, className = "", delay = 0, durat
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             style={{ display: "inline-block", willChange: "transform, opacity" }}
-            aria-label={text.replace(/\*\*/g, '')}
+            aria-label={(text ?? "").replace(/\*\*/g, '')}
         >
             {words.map((word, i) => (
                 <span

@@ -245,7 +245,7 @@
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
-    z-index: 1;
+    z-index: 0;
 
     /* Transparent fill — only the stroke border is visible */
     color: transparent;
