@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '20'
 
-      # 3. Install packages for Snyk/Linting
+      # 3. Install packages for Snyk
       - name: Install Dependencies
         run: npm install
 
@@ -45,4 +45,6 @@ jobs:
         run: |
           curl -X POST ${{ secrets.N8N_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
+          --connect-timeout 10 \
+          --max-time 30 \
           -d '{"status": "${{ job.status }}", "repo": "${{ github.repository }}", "commit": "${{ github.sha }}"}'

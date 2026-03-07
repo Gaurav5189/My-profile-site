@@ -95,7 +95,7 @@ export default function Skills() {
             <div className="skills__marquee" aria-hidden="true">
                 <div className="skills__marquee-track">
                     {doubledList.map((t, i) => (
-                        <span key={i}>{t} <em>▲</em></span>
+                        <span key={`${t}-${i}`}>{t} <em>▲</em></span>
                     ))}
                 </div>
             </div>
