@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useInView } from 'framer-motion';
 
 const defaultChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
@@ -11,21 +11,48 @@ export function TextScramble({
     className = "",
     as: Component = 'span',
     onScrambleComplete,
+    whiteSpace = 'nowrap',
     ...props
 }) {
     const nodeRef = useRef(null);
     const intervalRef = useRef(null);
     const isScrambledRef = useRef(true); // Security lock: Only allow scramble if currently scrambled
+    // Ref pattern for onScrambleComplete to avoid unnecessary effect re-runs when an inline fn is passed
+    const onScrambleCompleteRef = useRef(onScrambleComplete);
+    useEffect(() => {
+        onScrambleCompleteRef.current = onScrambleComplete;
+    }, [onScrambleComplete]);
+
     // Triggers unscramble when entering the middle 50% of the screen (crosses 80% from bottom, or 20% from top)
     const isTriggerZone = useInView(nodeRef, { once: false, margin: "-20% 0px -20% 0px" });
 
     // Triggers reset ONLY when completely off-screen by at least 100px (safety buffer)
     const isVisibleAtAll = useInView(nodeRef, { once: false, margin: "200px 0px 200px 0px" });
 
-    const [displayText, setDisplayText] = useState(children);
-    const text = String(children);
+    // Safe children-to-string conversion — guard against React elements and null/undefined
+    const text = (() => {
+        if (children === null || children === undefined) return '';
+        if (typeof children === 'string' || typeof children === 'number') return String(children);
+        console.warn('TextScramble: children must be a string or number, received:', typeof children);
+        return '';
+    })();
 
-    const scramble = () => {
+    // Initialize displayText with gibberish to match isScrambledRef = true, avoiding a readable flash
+    const getInitialGibberish = (src) => {
+        let g = '';
+        for (let i = 0; i < src.length; i++) {
+            if (src[i] === ' ' || src[i] === '\n') {
+                g += src[i];
+            } else {
+                g += characterSet[Math.floor(Math.random() * characterSet.length)];
+            }
+        }
+        return g;
+    };
+
+    const [displayText, setDisplayText] = useState(() => getInitialGibberish(text));
+
+    const scramble = useCallback(() => {
         const steps = duration / speed;
         let step = 0;
 
@@ -54,10 +81,10 @@ export function TextScramble({
             if (step > steps) {
                 clearInterval(intervalRef.current);
                 setDisplayText(text);
-                onScrambleComplete?.();
+                onScrambleCompleteRef.current?.();
             }
         }, speed * 1000);
-    };
+    }, [text, characterSet, duration, speed]);
 
     useEffect(() => {
         // If it's completely out of the viewport bounds (+200px), reset it silently to gibberish
@@ -87,7 +114,7 @@ export function TextScramble({
 
         // If it leaves the target zone but is still isVisibleAtAll (i.e., exiting the screen),
         // we deliberately do NOTHING! This keeps the text readable while leaving the frame.
-    }, [isTriggerZone, isVisibleAtAll, text, characterSet, duration, speed, onScrambleComplete]);
+    }, [isTriggerZone, isVisibleAtAll, text, characterSet, duration, speed, scramble]);
 
     // Cleanup on unmount only
     useEffect(() => {
@@ -101,14 +128,14 @@ export function TextScramble({
             ref={nodeRef}
             className={className}
             {...props}
-            style={{ position: 'relative', display: 'inline-block', ...props.style }}
+            style={{ ...props.style, position: 'relative', display: 'inline-block' }}
         >
             {/* Invisible original text acts as a strict structural dummy, locking in the final exact width/height 
                 so the layout never shifts, pushes, or jumps while characters scramble. */}
             <span style={{ visibility: 'hidden' }}>{text}</span>
 
             {/* The actual visible scrambling text is absolutely positioned directly over the dummy space. */}
-            <span style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', whiteSpace: 'nowrap' }}>
+            <span style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', whiteSpace }}>
                 {displayText}
             </span>
         </Component>

@@ -10,37 +10,63 @@
 
 .about__inner {
     display: flex;
-    flex-direction: row-reverse;
     align-items: flex-start;
     gap: 80px;
     padding-top: 80px;
 }
 
-/* --- Left column (40%) --- */
+/* --- Left column (40%) — visually on the left, placed second in DOM --- */
 .about__col-left {
     flex: 0 0 40%;
     max-width: 40%;
     /* Frame moves with the site now, not sticky to viewport */
     position: relative;
+    order: 2;
 }
 
-/* --- Right column (60%) --- */
+/* --- Right column (60%) — visually on the right, placed first in DOM --- */
 .about__col-right {
     flex: 1 1 60%;
     min-width: 0;
     padding-bottom: 80px;
+    order: 1;
 }
 
 /* --- The Tilt Wrapper --- */
 .about__tilt-wrap {
     width: 100%;
     aspect-ratio: 3 / 4;
-    border-radius: 16px;
-    border: 1px solid var(--gray-dark);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.18);
+    border-radius: 4px;
+    border: 1px solid var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
     position: relative;
     overflow: hidden;
     cursor: crosshair;
+}
+
+.about__tilt-wrap::before,
+.about__tilt-wrap::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--neon-cyan);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.about__tilt-wrap::before {
+    top: 10px;
+    left: 10px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.about__tilt-wrap::after {
+    bottom: 10px;
+    right: 10px;
+    border-left: none;
+    border-top: none;
 }
 
 /* --- The Photo inside Tilt --- */
@@ -58,15 +84,16 @@
     font-weight: 800;
     color: var(--cream);
     margin-bottom: 28px;
-    line-height: 1.08;
+    line-height: 1.2;
 }
 
 .about__body {
-    font-size: 0.98rem;
+    font-size: 0.95rem;
     color: var(--gray-light);
-    line-height: 1.85;
+    line-height: 1.7;
     margin-bottom: 20px;
-    max-width: 540px;
+    max-width: 580px;
+    font-family: var(--font-body);
 }
 
 .about__body strong {
@@ -103,11 +130,13 @@
     transition: transform 0.3s ease;
 }
 
-.about__stat:hover {
+.about__stat:hover,
+.about__stat:focus-visible {
     transform: translateY(-2px);
 }
 
-.about__stat:hover .about__stat-value {
+.about__stat:hover .about__stat-value,
+.about__stat:focus-visible .about__stat-value {
     text-shadow: 0 0 20px rgba(245, 240, 232, 0.15);
 }
 

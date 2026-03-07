@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import TextScramble from './ui/TextScramble'
+import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import { FiMail, FiMapPin, FiPhone } from 'react-icons/fi'
 import { FiGithub, FiLinkedin, FiTwitter, FiInstagram } from 'react-icons/fi'
 import './Contact.css'
 
 const anim = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.65, ease: 'easeOut', delay: d } }),
+    hidden: { opacity: 0, y: 40 },
+    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
 }
 
 export default function Contact() {
@@ -62,11 +63,11 @@ export default function Contact() {
                             Ready to <TextScramble trigger={isInView} className="inline-block" as="span">build</TextScramble> something<br />
                             <span className="contact__heading--outlined">great together?</span>
                         </motion.h2>
-                        <motion.p className="contact__sub" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Whether you have a project in mind, a question, or just want to say hi — my inbox is always open.
-                        </motion.p>
+                        <p className="contact__sub">
+                            <SplitTextReveal delay={0.4} text="Whether you have a project in mind, a question, or just want to say hi — my inbox is always open." />
+                        </p>
 
-                        <motion.div className="contact__info" variants={anim} custom={0.3} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                        <motion.div className="contact__info" variants={anim} custom={0.55} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
 
                             <div className="contact__info-item">
                                 <FiMapPin /> <span>India 🇮🇳</span>
@@ -77,7 +78,7 @@ export default function Contact() {
                         </motion.div>
 
                         {/* Social Links */}
-                        <motion.div className="contact__socials" variants={anim} custom={0.4} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
+                        <motion.div className="contact__socials" variants={anim} custom={.7} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             {[
                                 { icon: <FiGithub size={18} />, href: 'https://github.com/Gaurav5189', label: 'GitHub', id: 'social-github' },
                                 { icon: <FiLinkedin size={18} />, href: 'https://www.linkedin.com/in/gaurav-s-4b36b624b', label: 'LinkedIn', id: 'social-linkedin' },

@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '20'
 
-      # 3. Install packages for Snyk/Linting
+      # 3. Install packages for Snyk
       - name: Install Dependencies
         run: npm install
 
@@ -33,7 +33,7 @@ jobs:
 
       # 5. Software Composition Analysis (Snyk)
       - name: Snyk Vulnerability Scan
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@0.4.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -43,6 +43,8 @@ jobs:
       - name: Notify n8n
         if: always() 
         run: |
-          curl -X POST ${{ secrets.N8N_WEBHOOK_URL }} \
+          curl -X POST "${{ secrets.N8N_WEBHOOK_URL }}" \
           -H "Content-Type: application/json" \
+          --connect-timeout 10 \
+          --max-time 30 \
           -d '{"status": "${{ job.status }}", "repo": "${{ github.repository }}", "commit": "${{ github.sha }}"}'

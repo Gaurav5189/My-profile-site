@@ -27,7 +27,15 @@ function App() {
             setMinTimePassed(true)
         }, 1000)
 
-        return () => clearTimeout(minTimer)
+        // Fallback: force preloader to hide after 10s even if Spline never loads
+        const maxTimer = setTimeout(() => {
+            setSplineReady(true)
+        }, 10000)
+
+        return () => {
+            clearTimeout(minTimer)
+            clearTimeout(maxTimer)
+        }
     }, [])
 
     const isAppLoading = !(splineReady && minTimePassed)

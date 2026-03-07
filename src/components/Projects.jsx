@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import TextScramble from './ui/TextScramble'
+import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import './Projects.css'
 
@@ -43,8 +44,8 @@ const PROJECTS = [
 ]
 
 const anim = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.65, ease: 'easeOut', delay: d } }),
+    hidden: { opacity: 0, y: 40 },
+    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
 }
 
 export default function Projects() {
@@ -96,16 +97,18 @@ export default function Projects() {
                                 </div>
                             </div>
                             <div className="project-card__info">
-                                <div className="project-card__meta">
+                                <motion.div className="project-card__meta" variants={anim} custom={(i * .1) + .1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                                     <span className="project-card__number">{number}</span>
                                     <span className="project-card__category">{category}</span>
                                     <span className="project-card__year">{year}</span>
-                                </div>
-                                <h3 className="project-card__title">{title}</h3>
-                                <p className="project-card__desc">{desc}</p>
-                                <div className="project-card__tags">
+                                </motion.div>
+                                <motion.h3 className="project-card__title" variants={anim} custom={(i * .1) + .25} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>{title}</motion.h3>
+                                <p className="project-card__desc">
+                                    <SplitTextReveal delay={(i * .1) + .4} text={desc} />
+                                </p>
+                                <motion.div className="project-card__tags" variants={anim} custom={(i * .1) + .55} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                                     {tags.map(tag => <span key={tag} className="project-card__tag">{tag}</span>)}
-                                </div>
+                                </motion.div>
                             </div>
                         </motion.div>
                     ))}

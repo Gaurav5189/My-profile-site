@@ -26,6 +26,5 @@ Disallow: /
 User-agent: FacebookBot
 Disallow: /
 
-# Host & Sitemap
-Host: https://gauravsethi.is-a.dev/
+# Sitemap
 Sitemap: https://gauravsethi.is-a.dev/sitemap.xml

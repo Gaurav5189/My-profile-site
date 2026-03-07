@@ -46,6 +46,7 @@ export function Tilt({
         const rect = ref.current.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
+        if (width === 0 || height === 0) return;
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
