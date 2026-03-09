@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import TextScramble from './ui/TextScramble'
+import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import './Skills.css'
@@ -58,7 +58,7 @@ export default function Skills() {
                         What I Do
                     </motion.p>
                     <motion.h2 className="skills__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        Services & <TextScramble trigger={isInView}>Skills</TextScramble>
+                        <GradualSpacing text="Services & Skills" />
                     </motion.h2>
                 </div>
 

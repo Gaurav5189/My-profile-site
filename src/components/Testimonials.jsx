@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import TextScramble from './ui/TextScramble'
+import GradualSpacing from './ui/GradualSpacing'
 import TextGenerateEffect from './ui/TextGenerateEffect'
 import './Testimonials.css'
 
@@ -36,7 +36,7 @@ export default function Testimonials() {
                         initial="hidden"
                         animate={isInView ? 'visible' : 'hidden'}
                     >
-                        <TextScramble trigger={isInView}>Engineering Philosophy</TextScramble>
+                        <GradualSpacing text="Engineering Philosophy" />
                     </motion.h2>
 
                     {/* Single centered philosophy quote block */}

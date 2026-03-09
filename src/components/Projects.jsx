@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import TextScramble from './ui/TextScramble'
+import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import './Projects.css'
@@ -61,7 +61,7 @@ export default function Projects() {
                         Featured Work
                     </motion.p>
                     <motion.h2 className="projects__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        Selected <TextScramble trigger={isInView}>Projects</TextScramble>
+                        <GradualSpacing text="Selected Projects" />
                     </motion.h2>
                 </div>
 

@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import TextScramble from './ui/TextScramble'
+import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
 import Tilt from './ui/Tilt'
 import Spotlight from './ui/Spotlight'
@@ -58,8 +58,8 @@ export default function About() {
                             // About Me
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Building from <TextScramble trigger={isInView}>ground up,</TextScramble><br />
-                            securing at <TextScramble trigger={isInView}>every layer</TextScramble>
+                            <GradualSpacing text="Building from ground up," /><br />
+                            <GradualSpacing text="securing at every layer" />
                         </motion.h3>
                         <p className="about__body">
                             <SplitTextReveal delay={.4} text="Hi, I'm ^Gaurav^. I'm a ^full-stack developer who specializes in backend architecture^. Because of my practical experience in ^penetration testing^, I approach development with a strong focus on system integrity. I know how to implement modern security protocols to protect applications against the latest vulnerabilities." />

@@ -140,7 +140,7 @@ export default function Hero() {
                     </motion.h1>
 
                     <p className="hero__sub">
-                        <SplitTextReveal delay={1} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
+                        <SplitTextReveal delay={0.6} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
                     </p>
 
                     <motion.div
