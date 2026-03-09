@@ -21,17 +21,10 @@ const isMobile =
     (window.matchMedia('(pointer: coarse)').matches ||
         window.matchMedia('(max-width: 900px)').matches)
 
-export default function Hero({ onSplineReady }) {
+export default function Hero() {
     const heroRef = useRef(null)
     const splineWrapRef = useRef(null)
     const [splineReady, setSplineReady] = useState(false)
-
-    // Notify parent App when Spline is ready for the preloader
-    useEffect(() => {
-        if (splineReady && onSplineReady) {
-            onSplineReady()
-        }
-    }, [splineReady, onSplineReady])
     // Unmount Spline when the hero scrolls out of view (with 200px buffer)
     const isHeroInView = useInView(heroRef, { margin: '200px' })
 
