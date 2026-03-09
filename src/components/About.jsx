@@ -58,14 +58,14 @@ export default function About() {
                             // About Me
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Securing by <TextScramble trigger={isInView}>Building,</TextScramble><br />
-                            Hardening by <TextScramble trigger={isInView}>Default.</TextScramble>
+                            Building from <TextScramble trigger={isInView}>ground up,</TextScramble><br />
+                            securing at <TextScramble trigger={isInView}>every layer</TextScramble>
                         </motion.h3>
                         <p className="about__body">
-                            <SplitTextReveal delay={.4} text="Hi, I'm **Gaurav**. I'm a Backend Engineer who thinks like a Hacker. I specialize in building robust web architectures using Django and Flask, while ensuring every line of code is written with an adversarial perspective." />
+                            <SplitTextReveal delay={.4} text="Hi, I'm ^Gaurav^. I'm a ^full-stack developer who specializes in backend architecture^. Because of my practical experience in ^penetration testing^, I approach development with a strong focus on system integrity. I know how to implement modern security protocols to protect applications against the latest vulnerabilities." />
                         </p>
                         <p className="about__body">
-                            <SplitTextReveal delay={.55} text="I don't just build apps; I manage their entire lifecycle—from secure code commits to live production maintenance. By leveraging n8n for security automation, I bridge the gap between development and operations, creating systems that are not only scalable but resilient against modern threats." />
+                            <SplitTextReveal delay={.55} text="Whether I'm building REST APIs with Django and Flask, managing live server deployments, or setting up workflow automations with n8n, my goal is simple: to write clean code and build systems that are both highly functional and inherently secure." />
                         </p>
 
                         <motion.div className="about__stats" variants={anim} custom={.7} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
