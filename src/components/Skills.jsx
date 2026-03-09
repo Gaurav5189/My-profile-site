@@ -58,7 +58,7 @@ export default function Skills() {
                         What I Do
                     </motion.p>
                     <motion.h2 className="skills__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        <TextScramble trigger={isInView}>Services & Skills</TextScramble>
+                        Services & <TextScramble trigger={isInView}>Skills</TextScramble>
                     </motion.h2>
                 </div>
 

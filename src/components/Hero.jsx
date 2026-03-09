@@ -147,7 +147,7 @@ export default function Hero({ onSplineReady }) {
                     </motion.h1>
 
                     <p className="hero__sub">
-                        <SplitTextReveal delay={1} text="I bridge the gap between offensive security and robust architecture. By combining Python backend development (Django/Flask) with automated threat modeling (n8n) and a hacker's mindset, I harden infrastructure so teams can ship faster without leaving doors open." />
+                        <SplitTextReveal delay={1} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
                     </p>
 
                     <motion.div

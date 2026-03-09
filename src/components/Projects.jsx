@@ -61,7 +61,7 @@ export default function Projects() {
                         Featured Work
                     </motion.p>
                     <motion.h2 className="projects__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        <TextScramble trigger={isInView}>Selected Projects</TextScramble>
+                        Selected <TextScramble trigger={isInView}>Projects</TextScramble>
                     </motion.h2>
                 </div>
 
