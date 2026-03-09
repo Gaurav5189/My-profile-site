@@ -98,6 +98,18 @@ export default function Hero() {
     return (
         <section ref={heroRef} className="hero section-pad" id="hero">
 
+            {/* === Preloader Overlay === */}
+            <motion.div
+                className="hero__preloader"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: splineReady ? 0 : 1, pointerEvents: splineReady ? 'none' : 'auto' }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                aria-hidden={splineReady}
+            >
+                <div className="hero__preloader-spinner"></div>
+                <div className="hero__preloader-text">INITIALIZING SCENE...</div>
+            </motion.div>
+
             {/* === Spline 3D background — hidden until scene is loaded === */}
             <div
                 ref={splineWrapRef}
@@ -106,7 +118,7 @@ export default function Hero() {
             >
                 <spline-viewer
                     url="https://prod.spline.design/MVfQ6oP6J8ivuI7e/scene.splinecode"
-                    loading-anim-type="spinner-small-dark"
+                    loading-anim-type="none"
                     {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
                 />
             </div>
