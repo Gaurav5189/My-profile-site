@@ -262,12 +262,19 @@ export default function BackgroundPipeFlow() {
         }, 500)
 
         // ── Animation loop ────────────────────────────────────────
-        function animate() {
+        let prevT = null
+        function animate(t) {
             if (disposed) return
             requestAnimationFrame(animate)
 
-            // Smooth interpolation towards target
-            drawProgress += (targetProgress - drawProgress) * 0.06
+            // Calculate time-based interpolation factor
+            if (prevT === null) prevT = t
+            const dt = Math.max(0, Math.min((t - prevT) / 1000, 0.1)) // clamp to 100ms
+            prevT = t
+            const timeFactor = 1 - Math.exp(-3.6 * dt)
+
+            // Smooth interpolation towards target (now frame-rate independent)
+            drawProgress += (targetProgress - drawProgress) * timeFactor
 
             // Move camera frustum to follow page scroll
             const scroll = window.scrollY
