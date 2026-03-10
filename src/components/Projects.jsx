@@ -40,6 +40,7 @@ function wa(el, frames, opts) {
     return new Promise(res => {
         const a = el.animate(frames, opts)
         a.onfinish = () => res()
+        a.oncancel = () => res()
     })
 }
 
@@ -182,8 +183,7 @@ export default function Projects() {
         // However, we are animating the container. 
         imgCurRef.current.src = nextImgSrc
         imgCurRef.current.style.cssText = `transform:${imgEnter}; opacity:0;`
-        bgCardRef.current.style.cssText = `transform:${cardEnter}; opacity:0;`
-
+        if (bgCardRef.current) bgCardRef.current.style.cssText = `transform:${cardEnter}; opacity:0;`
         await new Promise(r => setTimeout(r, 16))
 
         /* ── PHASE 2: everything enters ── */
@@ -257,12 +257,14 @@ export default function Projects() {
                                         />
                                     </svg>
                                 )}
-                                <div
+                                <button
+                                    type="button"
                                     className="av"
                                     onClick={() => goTo(i, i > curRef.current)}
+                                    aria-label={`Go to ${p.title}`}
                                 >
                                     <img src={p.image} alt={p.title} />
-                                </div>
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -291,8 +293,8 @@ export default function Projects() {
                 {/* Row 3 */}
                 <div className="bt-left">
                     <div className="controls">
-                        <button className="ctrl" onClick={() => prevSlide()}>
-                            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+                        <button className="ctrl" onClick={() => prevSlide()} aria-label="Previous">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
                         </button>
                         <button
                             className="ctrl"
@@ -300,13 +302,13 @@ export default function Projects() {
                             onClick={togglePause}
                         >
                             {isPaused ? (
-                                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
                             ) : (
-                                <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
                             )}
                         </button>
-                        <button className="ctrl" onClick={() => nextSlide()}>
-                            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" /></svg>
+                        <button className="ctrl" onClick={() => nextSlide()} aria-label="Next">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
                         </button>
                     </div>
                     <div className="dots">
