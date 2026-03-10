@@ -298,7 +298,7 @@ export default function BackgroundPipeFlow() {
 
             renderer.render(scene, camera)
         }
-        animate()
+        requestAnimationFrame(animate)
 
         // ── Cleanup ───────────────────────────────────────────────
         return () => {
