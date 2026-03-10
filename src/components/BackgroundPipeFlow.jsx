@@ -144,6 +144,7 @@ export default function BackgroundPipeFlow() {
         let drawProgress = 0
         let targetProgress = 0
         let disposed = false
+        let prevT = null
 
         // ── Renderer ──────────────────────────────────────────────
         const renderer = new THREE.WebGLRenderer({
@@ -262,12 +263,21 @@ export default function BackgroundPipeFlow() {
         }, 500)
 
         // ── Animation loop ────────────────────────────────────────
-        function animate() {
+        function animate(t) {
             if (disposed) return
             requestAnimationFrame(animate)
 
-            // Smooth interpolation towards target
-            drawProgress += (targetProgress - drawProgress) * 0.06
+            // Initialize or compute delta time for frame-rate independent interpolation
+            if (prevT === null) {
+                prevT = t
+            }
+            const dt = Math.min((t - prevT) / 1000, 0.016) // Cap at 16ms to avoid large jumps
+            prevT = t
+
+            // Time-based exponential smoothing: 1 - exp(-k * dt)
+            // k ≈ 3.7 provides smooth relaxation behavior
+            const timeFactor = 1 - Math.exp(-3.7 * dt)
+            drawProgress += (targetProgress - drawProgress) * timeFactor
 
             // Move camera frustum to follow page scroll
             const scroll = window.scrollY
