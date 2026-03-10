@@ -59,13 +59,13 @@ export default function About() {
                         </motion.p>
                         <motion.h3 className="about__heading" variants={anim} custom={.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             <GradualSpacing text="Building from ground up," /><br />
-                            <GradualSpacing text="securing at every layer" />
+                            <GradualSpacing delay={0.4} text="securing at every layer" />
                         </motion.h3>
                         <p className="about__body">
-                            <SplitTextReveal delay={.4} text="Hi, I'm ^Gaurav^. I'm a ^full-stack developer who specializes in backend architecture^. Because of my practical experience in ^penetration testing^, I approach development with a strong focus on system integrity. I know how to implement modern security protocols to protect applications against the latest vulnerabilities." />
+                            <SplitTextReveal delay={.5} text="Hi, I'm ^Gaurav^. I'm a ^full-stack developer who specializes in backend architecture^. Because of my practical experience in ^penetration testing^, I approach development with a strong focus on system integrity. I know how to implement modern security protocols to protect applications against the latest vulnerabilities." />
                         </p>
                         <p className="about__body">
-                            <SplitTextReveal delay={.55} text="Whether I'm building REST APIs with Django and Flask, managing live server deployments, or setting up workflow automations with n8n, my goal is simple: to write clean code and build systems that are both highly functional and inherently secure." />
+                            <SplitTextReveal delay={.6} text="Whether I'm building REST APIs with Django and Flask, managing live server deployments, or setting up workflow automations with n8n, my goal is simple: to write clean code and build systems that are both highly functional and inherently secure." />
                         </p>
 
                         <motion.div className="about__stats" variants={anim} custom={.7} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>

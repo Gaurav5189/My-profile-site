@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 
 export default function GradualSpacing({
-    text,
+    text = "",
     duration = 0.5,
     delayMultiple = 0.04,
     delay = 0,
@@ -15,6 +15,12 @@ export default function GradualSpacing({
 }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-10%" });
+
+    if (!text) {
+        return (
+            <Component ref={ref} className={`gradual-spacing ${className}`} style={{ display: 'inline-flex', justifyContent: 'center', flexWrap: 'wrap' }} />
+        );
+    }
 
     return (
         <Component ref={ref} className={`gradual-spacing ${className}`} style={{ display: 'inline-flex', justifyContent: 'center', flexWrap: 'wrap' }}>

@@ -104,7 +104,7 @@ export default function Hero() {
                 initial={{ opacity: 1 }}
                 animate={{ opacity: splineReady ? 0 : 1, pointerEvents: splineReady ? 'none' : 'auto' }}
                 transition={{ duration: 0.6, ease: 'easeInOut' }}
-                aria-hidden={splineReady}
+                aria-hidden={splineReady ? 'true' : 'false'}
             >
                 <div className="hero__preloader-spinner"></div>
                 <div className="hero__preloader-text">INITIALIZING SCENE...</div>
@@ -152,7 +152,7 @@ export default function Hero() {
                     </motion.h1>
 
                     <p className="hero__sub">
-                        <SplitTextReveal delay={0.6} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
+                        <SplitTextReveal delay={0.8} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
                     </p>
 
                     <motion.div
