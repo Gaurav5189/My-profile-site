@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { HiArrowUpRight } from 'react-icons/hi2'
+import GradualSpacing from './ui/GradualSpacing'
 import './Projects.css'
+
+const anim = {
+    hidden: { opacity: 0, y: 40 },
+    visible: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay: d } }),
+}
 
 const PROJECTS = [
     {
@@ -57,6 +64,7 @@ export default function Projects() {
     const DELAY = 5000
 
     const sectionRef = useRef(null)
+    const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
     const bgCardRef = useRef(null)
     const imgCurRef = useRef(null)
     const quoteRef = useRef(null)
@@ -231,16 +239,38 @@ export default function Projects() {
             <div className="page-grid">
                 {/* Row 1 */}
                 <div className="hd-left">
-                    <p className="section-label">Featured Work</p>
-                    <h2 className="page-title">Selected Projects</h2>
+                    <motion.p
+                        className="section-label"
+                        variants={anim}
+                        custom={0}
+                        initial="hidden"
+                        animate={isInView ? 'visible' : 'hidden'}
+                    >
+                        Featured Work
+                    </motion.p>
+                    <motion.h2
+                        className="page-title"
+                        variants={anim}
+                        custom={0.1}
+                        initial="hidden"
+                        animate={isInView ? 'visible' : 'hidden'}
+                    >
+                        <GradualSpacing text="Selected Projects" />
+                    </motion.h2>
                 </div>
-                <div className="hd-right">
+                <motion.div
+                    className="hd-right"
+                    variants={anim}
+                    custom={0.2}
+                    initial="hidden"
+                    animate={isInView ? 'visible' : 'hidden'}
+                >
                     {currentProject.link && (
                         <a href={currentProject.link} target="_blank" rel="noopener noreferrer" className="apply-btn">
                             View Project <HiArrowUpRight />
                         </a>
                     )}
-                </div>
+                </motion.div>
 
                 {/* Row 2 Left */}
                 <div className="main-left">
