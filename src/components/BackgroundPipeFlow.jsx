@@ -169,8 +169,8 @@ export default function BackgroundPipeFlow() {
         // ── Responsive sizing ────────────────────────────────────
         function getSizing(w) {
             if (w < 768) {
-                // On mobile: thin pipes pushed to screen edges, subtle glow
-                return { cornerRadius: 24, coreRadius: 0.8, midRadius: 1.5, glowRadius: 3, activeWidthRatio: 1.0, glowOpacity: 0.12, midOpacity: 0.2 }
+                // On mobile: original pipeline thickness, pushed to absolute screen edges
+                return { cornerRadius: 32, coreRadius: 1.5, midRadius: 4, glowRadius: 8, activeWidthRatio: 1.0, glowOpacity: 0.18, midOpacity: 0.35 }
             }
             return { cornerRadius: 64, coreRadius: 1.5, midRadius: 4, glowRadius: 8, activeWidthRatio: 0.8, glowOpacity: 0.18, midOpacity: 0.35 }
         }

@@ -8,7 +8,7 @@ import './Skills.css'
 const CATEGORIZED_SKILLS = [
     {
         category: "Backend & Core",
-        skills: ["Python", "Django", "Flask", "System Architecture", "RESTful APIs", "Redis", "PostgreSQL", "Data Security"]
+        skills: ["Python", "Django", "Flask", "System Architecture", "RESTful APIs", "Redis", "PostgreSQL", "Data Security", "React Js"]
     },
     {
         category: "Offensive Security",
@@ -64,7 +64,7 @@ export default function Skills() {
     ]
 
     const skillsList = [
-        'Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing', 'Burp Suite',
+        'Python', 'Django', 'Flask', 'React Js', 'Ethical Hacking', 'Penetration Testing', 'Burp Suite',
         'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security',
         'Linux Admin', 'CI/CD', 'Live Deployment'
     ]
