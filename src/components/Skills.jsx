@@ -1,36 +1,28 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useRef, useState } from 'react'
 import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
-import { HiArrowUpRight } from 'react-icons/hi2'
+import { HiArrowUpRight, HiXMark } from 'react-icons/hi2'
 import './Skills.css'
 
-const SERVICES = [
+const CATEGORIZED_SKILLS = [
     {
-        number: '01',
-        title: 'Secure Backend Development',
-        desc: 'Architecting and building robust, scalable server-side applications. I focus on writing clean code with security baked in from day one, mitigating vulnerabilities at the framework level.',
-        tags: ['Django', 'Flask', 'Python', 'REST APIs'],
+        category: "Backend & Core",
+        skills: ["Python", "Django", "Flask", "System Architecture", "RESTful APIs", "Redis", "PostgreSQL", "Data Security"]
     },
     {
-        number: '02',
-        title: 'Offensive Security & Pen Testing',
-        desc: 'Leveraging a hacker\'s mindset to proactively hunt for vulnerabilities in web applications and networks. I identify and patch OWASP Top 10 flaws before they reach production.',
-        tags: ['Penetration Testing', 'OWASP', 'Burp Suite', 'Nmap'],
+        category: "Offensive Security",
+        skills: ["Ethical Hacking", "Penetration Testing", "Burp Suite", "Nmap", "Vulnerability Assessment", "OWASP Top 10"]
     },
     {
-        number: '03',
-        title: 'Workflow & Dev Automation',
-        desc: 'Designing intelligent, automated workflows to streamline operations. From triggering automatic security scans on code commits to managing alert systems, I bridge the gap between development and ops.',
-        tags: ['n8n', 'CI/CD', 'API Integration', 'Python Scripting'],
+        category: "Automation & Ops",
+        skills: ["n8n", "Workflow Automation", "CI/CD Pipelines", "Bash Scripting", "Linux Server Admin", "Docker", "DevSecOps"]
     },
     {
-        number: '04',
-        title: 'Infrastructure & Deployment',
-        desc: 'Managing live production environments and networking configurations. I handle end-to-end deployment, ensuring high availability, secure defaults, and continuous maintenance for active websites.',
-        tags: ['Linux', 'Networking', 'Server Admin', 'Deployment'],
-    },
-]
+        category: "Security Tools",
+        skills: ["Git / GitHub", "Cloudflare WAF", "Network Hardening", "Burp Suite", "Nmap", "Metasploit", "Wireshark"]
+    }
+];
 
 const anim = {
     hidden: { opacity: 0, y: 40 },
@@ -38,8 +30,36 @@ const anim = {
 }
 
 export default function Skills() {
+    const [isPopupOpen, setIsPopupOpen] = useState(false)
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: '-80px' })
+
+    const SERVICES = [
+        {
+            number: '01',
+            title: 'Secure Backend Development',
+            desc: 'Architecting and building robust, scalable server-side applications. I focus on writing clean code with security baked in from day one, mitigating vulnerabilities at the framework level.',
+            tags: ['Django', 'Flask', 'Python', 'REST APIs'],
+        },
+        {
+            number: '02',
+            title: 'Offensive Security & Pen Testing',
+            desc: 'Leveraging a hacker\'s mindset to proactively hunt for vulnerabilities in web applications and networks. I identify and patch OWASP Top 10 flaws before they reach production.',
+            tags: ['Penetration Testing', 'OWASP', 'Burp Suite', 'Nmap'],
+        },
+        {
+            number: '03',
+            title: 'Workflow & Dev Automation',
+            desc: 'Designing intelligent, automated workflows to streamline operations. From triggering automatic security scans on code commits to managing alert systems, I bridge the gap between development and ops.',
+            tags: ['n8n', 'CI/CD', 'API Integration', 'Python Scripting'],
+        },
+        {
+            number: '04',
+            title: 'Infrastructure & Deployment',
+            desc: 'Managing live production environments and networking configurations. I handle end-to-end deployment, ensuring high availability, secure defaults, and continuous maintenance for active websites.',
+            tags: ['Linux', 'Networking', 'Server Admin', 'Deployment'],
+        },
+    ]
 
     const skillsList = [
         'Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing', 'Burp Suite',
@@ -99,6 +119,52 @@ export default function Skills() {
                     ))}
                 </div>
             </div>
+
+            <div className="skills__view-all-wrap">
+                <button
+                    className="view-all-btn"
+                    onClick={() => setIsPopupOpen(true)}
+                >
+                    View All My Skills
+                </button>
+            </div>
+
+            <AnimatePresence>
+                {isPopupOpen && (
+                    <div className="skills-modal-overlay" onClick={() => setIsPopupOpen(false)}>
+                        <motion.div
+                            className="skills-modal glass"
+                            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 30 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button className="close-modal" onClick={() => setIsPopupOpen(false)}>
+                                <HiXMark />
+                            </button>
+
+                            <div className="modal-header">
+                                <h2 className="modal-title">Complete Skills Matrix</h2>
+                                <p className="modal-subtitle">Comprehensive overview of my core competencies and tool stack.</p>
+                            </div>
+
+                            <div className="modal-grid">
+                                {CATEGORIZED_SKILLS.map((cat, idx) => (
+                                    <div key={cat.category} className="modal-category">
+                                        <h3 className="category-title">{cat.category}</h3>
+                                        <div className="category-skills-list">
+                                            {cat.skills.map(skill => (
+                                                <span key={skill} className="skill-pill">{skill}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </section>
     )
 }
