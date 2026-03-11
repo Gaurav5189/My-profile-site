@@ -27,6 +27,7 @@
   --neon-pink: #ff00ff;
   --neon-green: #39ff14;
   --neon-blue: #4d4dff;
+  --neon-red: #ff0000;
   --grid-color: rgba(0, 243, 255, 0.05);
 
   /* ── Liquid Glass tokens ── */
@@ -54,9 +55,8 @@
 html {
   font-size: 16px;
   overflow-x: hidden;
-  width: 100vw;
+  width: 100%;
 }
-
 body {
   font-family: var(--font-body);
   background-color: var(--black);

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
-import TextScramble from './ui/TextScramble'
+import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import { FiMail, FiMapPin, FiPhone } from 'react-icons/fi'
@@ -60,11 +60,12 @@ export default function Contact() {
                             Get In Touch
                         </motion.p>
                         <motion.h2 className="contact__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                            Ready to <TextScramble trigger={isInView} className="inline-block" as="span">build</TextScramble> something<br />
-                            <span className="contact__heading--outlined">great together?</span>
+                            <GradualSpacing className="inline-block" as="span" text="Ready to build" />
+                            <GradualSpacing delay={0.3} text="something" /><br />
+                            <GradualSpacing delay={0.6} className="contact__heading--outlined" text="great together?" />
                         </motion.h2>
                         <p className="contact__sub">
-                            <SplitTextReveal delay={0.4} text="Whether you have a project in mind, a question, or just want to say hi — my inbox is always open." />
+                            <SplitTextReveal delay={0.6} text="Whether you have a project in mind, a question, or just want to say hi — my inbox is always open." />
                         </p>
 
                         <motion.div className="contact__info" variants={anim} custom={0.55} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>

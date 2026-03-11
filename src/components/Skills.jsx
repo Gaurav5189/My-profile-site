@@ -1,36 +1,28 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-import TextScramble from './ui/TextScramble'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
-import { HiArrowUpRight } from 'react-icons/hi2'
+import { HiArrowUpRight, HiXMark } from 'react-icons/hi2'
 import './Skills.css'
 
-const SERVICES = [
+const CATEGORIZED_SKILLS = [
     {
-        number: '01',
-        title: 'Secure Backend Development',
-        desc: 'Architecting and building robust, scalable server-side applications. I focus on writing clean code with security baked in from day one, mitigating vulnerabilities at the framework level.',
-        tags: ['Django', 'Flask', 'Python', 'REST APIs'],
+        category: "Backend & Core",
+        skills: ["Python", "Django", "Flask", "System Architecture", "RESTful APIs", "Redis", "PostgreSQL", "Data Security", "React Js"]
     },
     {
-        number: '02',
-        title: 'Offensive Security & Pen Testing',
-        desc: 'Leveraging a hacker\'s mindset to proactively hunt for vulnerabilities in web applications and networks. I identify and patch OWASP Top 10 flaws before they reach production.',
-        tags: ['Penetration Testing', 'OWASP', 'Burp Suite', 'Nmap'],
+        category: "Offensive Security",
+        skills: ["Ethical Hacking", "Penetration Testing", "Burp Suite", "Nmap", "Vulnerability Assessment", "OWASP Top 10"]
     },
     {
-        number: '03',
-        title: 'Workflow & Dev Automation',
-        desc: 'Designing intelligent, automated workflows to streamline operations. From triggering automatic security scans on code commits to managing alert systems, I bridge the gap between development and ops.',
-        tags: ['n8n', 'CI/CD', 'API Integration', 'Python Scripting'],
+        category: "Automation & Ops",
+        skills: ["n8n", "Workflow Automation", "CI/CD Pipelines", "Bash Scripting", "Linux Server Admin", "Docker", "DevSecOps"]
     },
     {
-        number: '04',
-        title: 'Infrastructure & Deployment',
-        desc: 'Managing live production environments and networking configurations. I handle end-to-end deployment, ensuring high availability, secure defaults, and continuous maintenance for active websites.',
-        tags: ['Linux', 'Networking', 'Server Admin', 'Deployment'],
-    },
-]
+        category: "Security Tools",
+        skills: ["Git / GitHub", "Cloudflare WAF", "Network Hardening", "Burp Suite", "Nmap", "Metasploit", "Wireshark"]
+    }
+];
 
 const anim = {
     hidden: { opacity: 0, y: 40 },
@@ -38,16 +30,82 @@ const anim = {
 }
 
 export default function Skills() {
+    const [isPopupOpen, setIsPopupOpen] = useState(false)
     const ref = useRef(null)
+    const modalRef = useRef(null)
+    const openButtonRef = useRef(null)
     const isInView = useInView(ref, { once: true, margin: '-80px' })
 
+    const SERVICES = [
+        {
+            number: '01',
+            title: 'Secure Backend Development',
+            desc: 'Architecting and building robust, scalable server-side applications. I focus on writing clean code with security baked in from day one, mitigating vulnerabilities at the framework level.',
+            tags: ['Django', 'Flask', 'Python', 'REST APIs'],
+        },
+        {
+            number: '02',
+            title: 'Offensive Security & Pen Testing',
+            desc: 'Leveraging a hacker\'s mindset to proactively hunt for vulnerabilities in web applications and networks. I identify and patch OWASP Top 10 flaws before they reach production.',
+            tags: ['Penetration Testing', 'OWASP', 'Burp Suite', 'Nmap'],
+        },
+        {
+            number: '03',
+            title: 'Workflow & Dev Automation',
+            desc: 'Designing intelligent, automated workflows to streamline operations. From triggering automatic security scans on code commits to managing alert systems, I bridge the gap between development and ops.',
+            tags: ['n8n', 'CI/CD', 'API Integration', 'Python Scripting'],
+        },
+        {
+            number: '04',
+            title: 'Infrastructure & Deployment',
+            desc: 'Managing live production environments and networking configurations. I handle end-to-end deployment, ensuring high availability, secure defaults, and continuous maintenance for active websites.',
+            tags: ['Linux', 'Networking', 'Server Admin', 'Deployment'],
+        },
+    ]
+
     const skillsList = [
-        'Python', 'Django', 'Flask', 'Ethical Hacking', 'Penetration Testing', 'Burp Suite',
+        'Python', 'Django', 'Flask', 'React Js', 'Ethical Hacking', 'Penetration Testing', 'Burp Suite',
         'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security',
         'Linux Admin', 'CI/CD', 'Live Deployment'
     ]
     // Duplicate the list so the animation can loop seamlessly without skipping
     const doubledList = [...skillsList, ...skillsList]
+
+    // Handle Escape key and modal focusing
+    useEffect(() => {
+        const handleEscapeKey = (e) => {
+            if (e.key === 'Escape') {
+                setIsPopupOpen(false)
+            }
+        }
+
+        if (isPopupOpen) {
+            // Add keyboard listener and focus modal
+            window.addEventListener('keydown', handleEscapeKey)
+            // Short delay to allow modal to render before focusing
+            setTimeout(() => {
+                if (modalRef.current) {
+                    modalRef.current.focus()
+                }
+            }, 0)
+        }
+
+        return () => {
+            window.removeEventListener('keydown', handleEscapeKey)
+        }
+    }, [isPopupOpen])
+
+    // Restore focus when modal closes
+    const wasModalOpenRef = useRef(false)
+    useEffect(() => {
+        if (wasModalOpenRef.current && !isPopupOpen) {
+            // Modal just closed, restore focus to opener button
+            if (openButtonRef.current) {
+                openButtonRef.current.focus()
+            }
+        }
+        wasModalOpenRef.current = isPopupOpen
+    }, [isPopupOpen])
 
     return (
         <section className="skills section-pad" id="skills" ref={ref}>
@@ -58,7 +116,7 @@ export default function Skills() {
                         What I Do
                     </motion.p>
                     <motion.h2 className="skills__heading" variants={anim} custom={0.1} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
-                        Services & <TextScramble trigger={isInView}>Skills</TextScramble>
+                        <GradualSpacing text="Services & Skills" />
                     </motion.h2>
                 </div>
 
@@ -99,6 +157,58 @@ export default function Skills() {
                     ))}
                 </div>
             </div>
+
+            <div className="skills__view-all-wrap">
+                <button
+                    ref={openButtonRef}
+                    className="view-all-btn"
+                    onClick={() => setIsPopupOpen(true)}
+                >
+                    View All My Skills
+                </button>
+            </div>
+
+            <AnimatePresence>
+                {isPopupOpen && (
+                    <div className="skills-modal-overlay" onClick={() => setIsPopupOpen(false)}>
+                        <motion.div
+                            ref={modalRef}
+                            className="skills-modal glass"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="modal-title"
+                            tabIndex={-1}
+                            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 30 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button className="close-modal" onClick={() => setIsPopupOpen(false)} aria-label="Close dialog">
+                                <HiXMark />
+                            </button>
+
+                            <div className="modal-header">
+                                <h2 className="modal-title" id="modal-title">Complete Skills Matrix</h2>
+                                <p className="modal-subtitle">Comprehensive overview of my core competencies and tool stack.</p>
+                            </div>
+
+                            <div className="modal-grid">
+                                {CATEGORIZED_SKILLS.map((cat, idx) => (
+                                    <div key={cat.category} className="modal-category">
+                                        <h3 className="category-title">{cat.category}</h3>
+                                        <div className="category-skills-list">
+                                            {cat.skills.map(skill => (
+                                                <span key={skill} className="skill-pill">{skill}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </section>
     )
 }

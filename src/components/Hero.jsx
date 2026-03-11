@@ -21,17 +21,10 @@ const isMobile =
     (window.matchMedia('(pointer: coarse)').matches ||
         window.matchMedia('(max-width: 900px)').matches)
 
-export default function Hero({ onSplineReady }) {
+export default function Hero() {
     const heroRef = useRef(null)
     const splineWrapRef = useRef(null)
     const [splineReady, setSplineReady] = useState(false)
-
-    // Notify parent App when Spline is ready for the preloader
-    useEffect(() => {
-        if (splineReady && onSplineReady) {
-            onSplineReady()
-        }
-    }, [splineReady, onSplineReady])
     // Unmount Spline when the hero scrolls out of view (with 200px buffer)
     const isHeroInView = useInView(heroRef, { margin: '200px' })
 
@@ -105,6 +98,18 @@ export default function Hero({ onSplineReady }) {
     return (
         <section ref={heroRef} className="hero section-pad" id="hero">
 
+            {/* === Preloader Overlay === */}
+            <motion.div
+                className="hero__preloader"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: splineReady ? 0 : 1, pointerEvents: splineReady ? 'none' : 'auto' }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                aria-hidden={splineReady ? 'true' : 'false'}
+            >
+                <div className="hero__preloader-spinner"></div>
+                <div className="hero__preloader-text">INITIALIZING SCENE...</div>
+            </motion.div>
+
             {/* === Spline 3D background — hidden until scene is loaded === */}
             <div
                 ref={splineWrapRef}
@@ -113,7 +118,7 @@ export default function Hero({ onSplineReady }) {
             >
                 <spline-viewer
                     url="https://prod.spline.design/MVfQ6oP6J8ivuI7e/scene.splinecode"
-                    loading-anim-type="spinner-small-dark"
+                    loading-anim-type="none"
                     {...(isMobile ? { 'pixel-ratio': '1', 'render-on-demand': '' } : {})}
                 />
             </div>
@@ -147,7 +152,7 @@ export default function Hero({ onSplineReady }) {
                     </motion.h1>
 
                     <p className="hero__sub">
-                        <SplitTextReveal delay={1} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
+                        <SplitTextReveal delay={0.8} text="I am a full-stack developer specializing in Python (Django/Flask). With a background in ethical hacking, I build web applications that are scalable, efficient, and secure by design from day one." />
                     </p>
 
                     <motion.div
