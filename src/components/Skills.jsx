@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import GradualSpacing from './ui/GradualSpacing'
 import SplitTextReveal from './ui/SplitTextReveal'
 import { HiArrowUpRight, HiXMark } from 'react-icons/hi2'
@@ -32,6 +32,8 @@ const anim = {
 export default function Skills() {
     const [isPopupOpen, setIsPopupOpen] = useState(false)
     const ref = useRef(null)
+    const modalRef = useRef(null)
+    const openButtonRef = useRef(null)
     const isInView = useInView(ref, { once: true, margin: '-80px' })
 
     const SERVICES = [
@@ -68,6 +70,36 @@ export default function Skills() {
     ]
     // Duplicate the list so the animation can loop seamlessly without skipping
     const doubledList = [...skillsList, ...skillsList]
+
+    // Handle Escape key and focus management for modal accessibility
+    useEffect(() => {
+        const handleEscapeKey = (e) => {
+            if (e.key === 'Escape' && isPopupOpen) {
+                setIsPopupOpen(false)
+            }
+        }
+
+        if (isPopupOpen) {
+            // Store reference to button that opened modal
+            openButtonRef.current = document.activeElement
+            // Focus modal and add keyboard listener
+            window.addEventListener('keydown', handleEscapeKey)
+            // Short delay to allow modal to render before focusing
+            setTimeout(() => {
+                if (modalRef.current) {
+                    modalRef.current.focus()
+                }
+            }, 0)
+        }
+
+        return () => {
+            window.removeEventListener('keydown', handleEscapeKey)
+            // Return focus to the button that opened the modal
+            if (!isPopupOpen && openButtonRef.current) {
+                openButtonRef.current.focus()
+            }
+        }
+    }, [isPopupOpen])
 
     return (
         <section className="skills section-pad" id="skills" ref={ref}>
@@ -122,6 +154,7 @@ export default function Skills() {
 
             <div className="skills__view-all-wrap">
                 <button
+                    ref={openButtonRef}
                     className="view-all-btn"
                     onClick={() => setIsPopupOpen(true)}
                 >
@@ -133,19 +166,24 @@ export default function Skills() {
                 {isPopupOpen && (
                     <div className="skills-modal-overlay" onClick={() => setIsPopupOpen(false)}>
                         <motion.div
+                            ref={modalRef}
                             className="skills-modal glass"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="modal-title"
+                            tabIndex={-1}
                             initial={{ opacity: 0, scale: 0.9, y: 30 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 30 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button className="close-modal" onClick={() => setIsPopupOpen(false)}>
+                            <button className="close-modal" onClick={() => setIsPopupOpen(false)} aria-label="Close dialog">
                                 <HiXMark />
                             </button>
 
                             <div className="modal-header">
-                                <h2 className="modal-title">Complete Skills Matrix</h2>
+                                <h2 className="modal-title" id="modal-title">Complete Skills Matrix</h2>
                                 <p className="modal-subtitle">Comprehensive overview of my core competencies and tool stack.</p>
                             </div>
 
