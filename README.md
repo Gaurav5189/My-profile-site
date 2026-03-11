@@ -1,8 +1,4 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Shield.png" alt="Shield" width="80" />
-  
-  # <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&pause=1000&color=00FF88&center=true&vCenter=true&width=600&lines=Gaurav+—+DevSecOps+Engineer;Security+Architect;Backend+Specialist;Building+secure+pipelines." alt="Typing SVG" /></a>
-
   <p>A personal portfolio website built with <strong>React</strong> and <strong>Vite</strong>. Showcases projects, threat modeling, and technical skills as a security-aware backend engineer.</p>
 </div>
 
