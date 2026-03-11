@@ -98,16 +98,21 @@ export default function Hero() {
     return (
         <section ref={heroRef} className="hero section-pad" id="hero">
 
-            {/* === Preloader Overlay === */}
+            {/* === Intro Overlay === */}
             <motion.div
-                className="hero__preloader"
-                initial={{ opacity: 1 }}
-                animate={{ opacity: splineReady ? 0 : 1, pointerEvents: splineReady ? 'none' : 'auto' }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                className="hero__intro-overlay"
+                initial={{ opacity: 1, y: 0 }}
+                animate={{
+                    opacity: splineReady ? 0 : 1,
+                    pointerEvents: splineReady ? 'none' : 'auto',
+                    y: splineReady ? -30 : 0
+                }}
+                transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1], delay: splineReady ? 0.3 : 0 }}
                 aria-hidden={splineReady ? 'true' : 'false'}
             >
-                <div className="hero__preloader-spinner"></div>
-                <div className="hero__preloader-text">INITIALIZING SCENE...</div>
+                <div style={{ textAlign: 'center', padding: '0 20px' }}>
+                    <TypewriterIntro text="Hey there, welcome to my portfolio." />
+                </div>
             </motion.div>
 
             {/* === Spline 3D background — hidden until scene is loaded === */}
@@ -313,5 +318,46 @@ function TypewriterHeading({ isHeroInView }) {
                 )
             })}
         </span>
+    )
+}
+
+/* ── Typewriter Intro (Hey there...) ──── */
+function TypewriterIntro({ text }) {
+    const chars = text.split("");
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', fontWeight: '500', fontSize: 'clamp(1.4rem, 4vw, 2.5rem)', color: 'var(--cream)', letterSpacing: '0.05em' }}>
+                {chars.map((char, index) => (
+                    <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{
+                            duration: 0.4,
+                            delay: index * 0.04,
+                            ease: "easeOut"
+                        }}
+                        style={{ whiteSpace: char === " " ? "pre" : "normal", display: 'inline-block' }}
+                    >
+                        {char}
+                    </motion.span>
+                ))}
+            </span>
+
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.8, duration: 1 }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--neon-cyan)', letterSpacing: '0.2em', textTransform: 'uppercase' }}
+            >
+                <motion.span
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ display: 'inline-block' }}
+                >
+                    Loading environment...
+                </motion.span>
+            </motion.div>
+        </div>
     )
 }
