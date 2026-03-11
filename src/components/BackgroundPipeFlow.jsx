@@ -2,48 +2,71 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import './BackgroundPipeFlow.css'
 
-// ── Pipe definitions ──────────────────────────────────────────────
-const PIPES = [
-    {
-        color: '#00ff88',
-        side: 'left',
-        turns: [0.08, 0.20, 0.43, 0.52, 0.65, 0.83, 0.94],
-        xTargets: [0.39, 0.85, 'left', 0.55, 'left', 0.80, 'left'],
-    },
-    {
-        color: '#ff3eb5',
-        side: 'right',
-        turns: [0.17, 0.24, 0.41, 0.55, 0.65, 0.76, 0.90],
-        xTargets: [0.65, 'left', 'right', 0.45, 'right', 0.20, 'right'],
-    },
-]
+// ── Easy-to-edit configuration for pipelines ─────────────────────
+// You can control the direction, color, and turns of pipes for each section here.
+export const PIPES_CONFIG = {
+    skills: [
+        {
+            id: 'sk-1',
+            color: '#00ff88',
+            side: 'left', // Starts from the left side
+            turns: [0.2, 0.5, 0.8], // Percentage down the section to turn
+            xTargets: [0.8, 0.4, 'left'], // Where to turn to (percentage of screen width, or 'left'/'right'/'center')
+        },
+        {
+            id: 'sk-2',
+            color: '#ff3eb5',
+            side: 'right',
+            turns: [0.3, 0.6, 0.9],
+            xTargets: ['left', 'center', 'right'],
+        },
+    ],
+    projects: [
+        {
+            id: 'pr-1',
+            color: '#00ccff',
+            side: 'left',
+            turns: [0.5, 0.7],
+            xTargets: ['left', 'right'],
+        },
+    ],
+    threatModel: [
+        {
+            id: 'tm-1',
+            color: '#ff3b3b',
+            side: 'right',
+            turns: [0.25, 0.6],
+            xTargets: ['center', 'left'],
+        },
+    ],
+}
 
-// ── Build a CatmullRom curve matching the original SVG path logic ─
-function buildCurve(pipe, bounds, vpW) {
+// ── Build a CurvePath with straight lines and sharp rounded corners ─
+function buildCurve(pipe, sectionBounds, vpW) {
     const r = 64
-    const startTy = bounds.start
-    const endTy = bounds.end
+    const startTy = sectionBounds.start
+    const endTy = sectionBounds.end
     const totalH = endTy - startTy
-    const margin = Math.max(20, vpW * 0.04)
 
-    let cx = pipe.side === 'left' ? margin : vpW - margin
+    // Constrain the visual area to 80% of the screen width (max 1240px wide content column)
+    const activeWidth = Math.min(1240, vpW * 0.8)
+    const margin = (vpW - activeWidth) / 2
+
+    let cx = pipe.side === 'left' ? margin : (vpW - margin)
+
+    // Starting off-screen so the neon line doesn't abruptly spawn on-screen
     const sideX = pipe.side === 'left' ? -100 : vpW + 100
     const entryDir = pipe.side === 'left' ? 1 : -1
 
-    // Build a CurvePath of straight lines + quadratic bezier corners
-    // This exactly matches the original SVG M/L/Q path commands
     const path = new THREE.CurvePath()
     const v = (x, y) => new THREE.Vector3(x, -y, 0)
 
-    // ── Entry: M sideX,startTy  L cx-entryDir*r,startTy  Q cx,startTy cx,startTy+r
     let cursor = v(sideX, startTy)
 
-    // L to edge
     let next = v(cx - entryDir * r, startTy)
     path.add(new THREE.LineCurve3(cursor, next))
     cursor = next
 
-    // Q rounded corner: down
     const qCtrl = v(cx, startTy)
     const qEnd = v(cx, startTy + r)
     path.add(new THREE.QuadraticBezierCurve3(cursor, qCtrl, qEnd))
@@ -57,7 +80,10 @@ function buildCurve(pipe, bounds, vpW) {
         if (target === 'left') rawTx = margin
         else if (target === 'right') rawTx = vpW - margin
         else if (target === 'center') rawTx = vpW / 2
-        else if (typeof target === 'number') rawTx = vpW * target
+        else if (typeof target === 'number') {
+            // A number like 0.8 now targets 80% of the constrained active width, not the whole screen
+            rawTx = margin + (activeWidth * target)
+        }
 
         rawTx = Math.min(Math.max(rawTx, r + 10), vpW - r - 10)
 
@@ -66,23 +92,19 @@ function buildCurve(pipe, bounds, vpW) {
         const tx = rawTx
         const ad = tx > cx ? 1 : -1
 
-        // L straight down to ty - r
         let p1 = v(cx, ty - r)
         path.add(new THREE.LineCurve3(cursor, p1))
         cursor = p1
 
-        // Q corner: turn horizontal
         let ctrl1 = v(cx, ty)
         let end1 = v(cx + ad * r, ty)
         path.add(new THREE.QuadraticBezierCurve3(cursor, ctrl1, end1))
         cursor = end1
 
-        // L straight horizontal to tx - ad*r
         let p2 = v(tx - ad * r, ty)
         path.add(new THREE.LineCurve3(cursor, p2))
         cursor = p2
 
-        // Q corner: turn back down
         let ctrl2 = v(tx, ty)
         let end2 = v(tx, ty + r)
         path.add(new THREE.QuadraticBezierCurve3(cursor, ctrl2, end2))
@@ -91,43 +113,44 @@ function buildCurve(pipe, bounds, vpW) {
         cx = tx
     })
 
-    // ── Exit
     const exitIsLeft = cx < vpW / 2
     const exitSideX = exitIsLeft ? -100 : vpW + 100
     const exitDir = exitIsLeft ? 1 : -1
 
-    // L straight down to endTy - r
     let pExit1 = v(cx, endTy - r)
     path.add(new THREE.LineCurve3(cursor, pExit1))
     cursor = pExit1
 
-    // Q corner: turn horizontal to exit
     let ctrlExit = v(cx, endTy)
     let endExit = v(cx - exitDir * r, endTy)
     path.add(new THREE.QuadraticBezierCurve3(cursor, ctrlExit, endExit))
     cursor = endExit
 
-    // L straight off-screen
     let pExitFinal = v(exitSideX, endTy)
     path.add(new THREE.LineCurve3(cursor, pExitFinal))
 
     return path
 }
 
-// ── Measure section positions on the page ─────────────────────────
-function measureBounds() {
-    const skills = document.querySelector('.skills') || document.getElementById('skills')
-    const contact = document.querySelector('.contact') || document.getElementById('contact')
-    const testimonials = document.querySelector('.testimonials') || document.getElementById('testimonials')
+// ── Measure all section positions on the page ─────────────────────────
+function measureSectionBounds() {
+    const pipePadding = 100 // Create a ~200px total gap between sections (~8 lines)
+    const getBounds = (selector, fallbackStart, fallbackHeight) => {
+        const el = document.querySelector(selector) || document.getElementById(selector.replace('.', ''))
+        if (el) {
+            return {
+                start: el.offsetTop + pipePadding,
+                end: el.offsetTop + el.offsetHeight - pipePadding,
+            }
+        }
+        return { start: fallbackStart + pipePadding, end: fallbackStart + fallbackHeight - pipePadding }
+    }
 
-    const start = skills ? skills.offsetTop : 1800
-    const end = testimonials
-        ? testimonials.offsetTop + testimonials.offsetHeight
-        : contact
-            ? contact.offsetTop
-            : 5700
-
-    return { start, end }
+    return {
+        skills: getBounds('.skills', 1000, 1500),
+        projects: getBounds('.projects', 2500, 2000),
+        threatModel: getBounds('.threat-model', 4500, 1000),
+    }
 }
 
 export default function BackgroundPipeFlow() {
@@ -137,15 +160,11 @@ export default function BackgroundPipeFlow() {
         const container = containerRef.current
         if (!container) return
 
-        // ── State ─────────────────────────────────────────────────
-        let bounds = measureBounds()
+        let sectionBounds = measureSectionBounds()
         let vpW = window.innerWidth
         let vpH = window.innerHeight
-        let drawProgress = 0
-        let targetProgress = 0
         let disposed = false
 
-        // ── Renderer ──────────────────────────────────────────────
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
             alpha: true,
@@ -155,21 +174,15 @@ export default function BackgroundPipeFlow() {
         renderer.setSize(vpW, vpH)
         container.appendChild(renderer.domElement)
 
-        // ── Scene ─────────────────────────────────────────────────
         const scene = new THREE.Scene()
-
-        // ── Camera ────────────────────────────────────────────────
-        // Orthographic: x = 0…vpW (left→right), y = 0…−vpH (top→bottom)
-        // Updating top/bottom each frame to follow window.scrollY
         const camera = new THREE.OrthographicCamera(0, vpW, 0, -vpH, 0.1, 2000)
         camera.position.set(0, 0, 1000)
 
-        // ── Build pipe meshes ─────────────────────────────────────
-        let pipeMeshes = [] // { core, glow }[]
+        // { sectionName: { pipeData, core, glow, mid } }
+        let pipesData = []
 
         function rebuildPipes() {
-            // Dispose old — ALL three mesh types per pipe
-            for (const p of pipeMeshes) {
+            for (const p of pipesData) {
                 for (const key of ['core', 'glow', 'mid']) {
                     if (p[key]) {
                         p[key].geometry.dispose()
@@ -178,119 +191,99 @@ export default function BackgroundPipeFlow() {
                     }
                 }
             }
-            pipeMeshes = []
+            pipesData = []
 
-            for (const pipe of PIPES) {
-                const curve = buildCurve(pipe, bounds, vpW)
-                const segments = Math.max(64, Math.floor(curve.getLength() / 8))
-                const color = new THREE.Color(pipe.color)
+            for (const [sectionKey, pipesArr] of Object.entries(PIPES_CONFIG)) {
+                const bounds = sectionBounds[sectionKey]
+                if (!bounds) continue
 
-                // Core tube — thin, bright, emissive
-                const coreGeo = new THREE.TubeGeometry(curve, segments, 1.5, 8, false)
-                const coreMat = new THREE.MeshBasicMaterial({
-                    color: 0xffffff,
-                    transparent: true,
-                    opacity: 1,
-                })
-                const coreMesh = new THREE.Mesh(coreGeo, coreMat)
-                scene.add(coreMesh)
+                for (const pipe of pipesArr) {
+                    const curve = buildCurve(pipe, bounds, vpW)
+                    const segments = Math.max(64, Math.floor(curve.getLength() / 8))
+                    const color = new THREE.Color(pipe.color)
 
-                // Glow tube — wider, soft, additive blended
-                const glowGeo = new THREE.TubeGeometry(curve, segments, 8, 8, false)
-                const glowMat = new THREE.MeshBasicMaterial({
-                    color: color,
-                    transparent: true,
-                    opacity: 0.18,
-                    blending: THREE.AdditiveBlending,
-                    depthWrite: false,
-                })
-                const glowMesh = new THREE.Mesh(glowGeo, glowMat)
-                scene.add(glowMesh)
+                    const coreGeo = new THREE.TubeGeometry(curve, segments, 1.5, 8, false)
+                    const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 })
+                    const coreMesh = new THREE.Mesh(coreGeo, coreMat)
+                    scene.add(coreMesh)
 
-                // Extra mid glow ring
-                const midGeo = new THREE.TubeGeometry(curve, segments, 4, 8, false)
-                const midMat = new THREE.MeshBasicMaterial({
-                    color: color,
-                    transparent: true,
-                    opacity: 0.35,
-                    blending: THREE.AdditiveBlending,
-                    depthWrite: false,
-                })
-                const midMesh = new THREE.Mesh(midGeo, midMat)
-                scene.add(midMesh)
+                    const glowGeo = new THREE.TubeGeometry(curve, segments, 8, 8, false)
+                    const glowMat = new THREE.MeshBasicMaterial({
+                        color: color, transparent: true, opacity: 0.18, blending: THREE.AdditiveBlending, depthWrite: false
+                    })
+                    const glowMesh = new THREE.Mesh(glowGeo, glowMat)
+                    scene.add(glowMesh)
 
-                pipeMeshes.push({ core: coreMesh, glow: glowMesh, mid: midMesh })
+                    const midGeo = new THREE.TubeGeometry(curve, segments, 4, 8, false)
+                    const midMat = new THREE.MeshBasicMaterial({
+                        color: color, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false
+                    })
+                    const midMesh = new THREE.Mesh(midGeo, midMat)
+                    scene.add(midMesh)
+
+                    pipesData.push({
+                        section: sectionKey,
+                        bounds,
+                        core: coreMesh,
+                        glow: glowMesh,
+                        mid: midMesh
+                    })
+                }
             }
         }
 
         rebuildPipes()
 
-        // ── Scroll handler ────────────────────────────────────────
-        function onScroll() {
-            const scroll = window.scrollY
-            const raw = (scroll - (bounds.start - vpH)) / (bounds.end - bounds.start)
-            targetProgress = Math.min(1, Math.max(0, raw))
-        }
-        window.addEventListener('scroll', onScroll, { passive: true })
-
-        // ── Resize handler ────────────────────────────────────────
         function onResize() {
             vpW = window.innerWidth
             vpH = window.innerHeight
             renderer.setSize(vpW, vpH)
             camera.right = vpW
             camera.updateProjectionMatrix()
-            bounds = measureBounds()
+            sectionBounds = measureSectionBounds()
             rebuildPipes()
-            onScroll()
         }
         window.addEventListener('resize', onResize)
 
-        // ── ResizeObserver for content reflows ─────────────────────
         const observer = new ResizeObserver(() => {
-            bounds = measureBounds()
+            sectionBounds = measureSectionBounds()
             rebuildPipes()
-            onScroll()
         })
         observer.observe(document.body)
 
-        // Initial measurement after fonts/images load
         const t1 = setTimeout(() => {
-            bounds = measureBounds()
+            sectionBounds = measureSectionBounds()
             rebuildPipes()
-            onScroll()
         }, 500)
 
         // ── Animation loop ────────────────────────────────────────
-        let prevT = null
-        function animate(t) {
+        function animate() {
             if (disposed) return
             requestAnimationFrame(animate)
 
-            // Calculate time-based interpolation factor
-            if (prevT === null) prevT = t
-            const dt = Math.max(0, Math.min((t - prevT) / 1000, 0.1)) // clamp to 100ms
-            prevT = t
-            const timeFactor = 1 - Math.exp(-3.6 * dt)
-
-            // Smooth interpolation towards target (now frame-rate independent)
-            drawProgress += (targetProgress - drawProgress) * timeFactor
-
-            // Move camera frustum to follow page scroll
             const scroll = window.scrollY
             camera.top = -scroll
             camera.bottom = -(scroll + vpH)
             camera.updateProjectionMatrix()
 
-            // Update draw ranges based on progress
-            for (const p of pipeMeshes) {
+            for (const p of pipesData) {
+                // Anchor the pipeline tip so it stays consistently at 75% of the viewport height as you scroll
+                const viewportLevel = vpH * 0.75
+                const currentY = scroll + viewportLevel
+
+                let rawProgress = 0
+                if (p.bounds.end > p.bounds.start) {
+                    rawProgress = (currentY - p.bounds.start) / (p.bounds.end - p.bounds.start)
+                }
+                const progress = Math.min(1, Math.max(0, rawProgress))
+
                 for (const key of ['core', 'glow', 'mid']) {
                     const mesh = p[key]
                     if (!mesh) continue
                     const geo = mesh.geometry
                     if (geo.index) {
                         const total = geo.index.count
-                        const limit = Math.floor(total * drawProgress)
+                        const limit = Math.floor(total * progress)
                         geo.setDrawRange(0, limit - (limit % 3))
                     }
                 }
@@ -298,17 +291,16 @@ export default function BackgroundPipeFlow() {
 
             renderer.render(scene, camera)
         }
-        requestAnimationFrame(animate)
+        animate()
 
         // ── Cleanup ───────────────────────────────────────────────
         return () => {
             disposed = true
             observer.disconnect()
             clearTimeout(t1)
-            window.removeEventListener('scroll', onScroll)
             window.removeEventListener('resize', onResize)
 
-            for (const p of pipeMeshes) {
+            for (const p of pipesData) {
                 for (const key of ['core', 'glow', 'mid']) {
                     const mesh = p[key]
                     if (!mesh) continue
