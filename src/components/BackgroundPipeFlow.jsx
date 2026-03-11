@@ -42,14 +42,15 @@ export const PIPES_CONFIG = {
 }
 
 // ── Build a CurvePath with straight lines and sharp rounded corners ─
-function buildCurve(pipe, sectionBounds, vpW) {
-    const r = 64
+// Accepts a `sizing` object for responsive radius/tube sizes
+function buildCurve(pipe, sectionBounds, vpW, sizing) {
+    const r = sizing.cornerRadius
     const startTy = sectionBounds.start
     const endTy = sectionBounds.end
     const totalH = endTy - startTy
 
-    // Constrain the visual area to 80% of the screen width (max 1240px wide content column)
-    const activeWidth = Math.min(1240, vpW * 0.8)
+    // Constrain the visual area (wider on mobile so pipes don't overlap content)
+    const activeWidth = Math.min(1240, vpW * sizing.activeWidthRatio)
     const margin = (vpW - activeWidth) / 2
 
     let cx = pipe.side === 'left' ? margin : (vpW - margin)
@@ -165,6 +166,16 @@ export default function BackgroundPipeFlow() {
         let vpH = window.innerHeight
         let disposed = false
 
+        // ── Responsive sizing ────────────────────────────────────
+        function getSizing(w) {
+            if (w < 768) {
+                // On mobile: thin pipes pushed to screen edges, subtle glow
+                return { cornerRadius: 24, coreRadius: 0.8, midRadius: 1.5, glowRadius: 3, activeWidthRatio: 1.0, glowOpacity: 0.12, midOpacity: 0.2 }
+            }
+            return { cornerRadius: 64, coreRadius: 1.5, midRadius: 4, glowRadius: 8, activeWidthRatio: 0.8, glowOpacity: 0.18, midOpacity: 0.35 }
+        }
+        let sizing = getSizing(vpW)
+
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
             alpha: true,
@@ -198,25 +209,25 @@ export default function BackgroundPipeFlow() {
                 if (!bounds) continue
 
                 for (const pipe of pipesArr) {
-                    const curve = buildCurve(pipe, bounds, vpW)
+                    const curve = buildCurve(pipe, bounds, vpW, sizing)
                     const segments = Math.max(64, Math.floor(curve.getLength() / 8))
                     const color = new THREE.Color(pipe.color)
 
-                    const coreGeo = new THREE.TubeGeometry(curve, segments, 1.5, 8, false)
+                    const coreGeo = new THREE.TubeGeometry(curve, segments, sizing.coreRadius, 8, false)
                     const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 })
                     const coreMesh = new THREE.Mesh(coreGeo, coreMat)
                     scene.add(coreMesh)
 
-                    const glowGeo = new THREE.TubeGeometry(curve, segments, 8, 8, false)
+                    const glowGeo = new THREE.TubeGeometry(curve, segments, sizing.glowRadius, 8, false)
                     const glowMat = new THREE.MeshBasicMaterial({
-                        color: color, transparent: true, opacity: 0.18, blending: THREE.AdditiveBlending, depthWrite: false
+                        color: color, transparent: true, opacity: sizing.glowOpacity, blending: THREE.AdditiveBlending, depthWrite: false
                     })
                     const glowMesh = new THREE.Mesh(glowGeo, glowMat)
                     scene.add(glowMesh)
 
-                    const midGeo = new THREE.TubeGeometry(curve, segments, 4, 8, false)
+                    const midGeo = new THREE.TubeGeometry(curve, segments, sizing.midRadius, 8, false)
                     const midMat = new THREE.MeshBasicMaterial({
-                        color: color, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false
+                        color: color, transparent: true, opacity: sizing.midOpacity, blending: THREE.AdditiveBlending, depthWrite: false
                     })
                     const midMesh = new THREE.Mesh(midGeo, midMat)
                     scene.add(midMesh)
@@ -237,6 +248,7 @@ export default function BackgroundPipeFlow() {
         function onResize() {
             vpW = window.innerWidth
             vpH = window.innerHeight
+            sizing = getSizing(vpW)
             renderer.setSize(vpW, vpH)
             camera.right = vpW
             camera.updateProjectionMatrix()

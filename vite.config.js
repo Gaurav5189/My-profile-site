@@ -26,6 +26,9 @@ export default defineConfig({
     esbuild: {
         target: 'esnext',
     },
+    resolve: {
+        dedupe: ['three'],
+    },
     optimizeDeps: {
         noDiscovery: true,
         include: [
@@ -40,8 +43,6 @@ export default defineConfig({
             'react-icons/hi2',
             'react-icons/fi',
             'three',
-            '@react-three/fiber',
-            '@react-three/drei',
         ],
         esbuildOptions: {
             target: 'esnext',
