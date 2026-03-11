@@ -71,18 +71,16 @@ export default function Skills() {
     // Duplicate the list so the animation can loop seamlessly without skipping
     const doubledList = [...skillsList, ...skillsList]
 
-    // Handle Escape key and focus management for modal accessibility
+    // Handle Escape key and modal focusing
     useEffect(() => {
         const handleEscapeKey = (e) => {
-            if (e.key === 'Escape' && isPopupOpen) {
+            if (e.key === 'Escape') {
                 setIsPopupOpen(false)
             }
         }
 
         if (isPopupOpen) {
-            // Store reference to button that opened modal
-            openButtonRef.current = document.activeElement
-            // Focus modal and add keyboard listener
+            // Add keyboard listener and focus modal
             window.addEventListener('keydown', handleEscapeKey)
             // Short delay to allow modal to render before focusing
             setTimeout(() => {
@@ -94,11 +92,19 @@ export default function Skills() {
 
         return () => {
             window.removeEventListener('keydown', handleEscapeKey)
-            // Return focus to the button that opened the modal
-            if (!isPopupOpen && openButtonRef.current) {
+        }
+    }, [isPopupOpen])
+
+    // Restore focus when modal closes
+    const wasModalOpenRef = useRef(false)
+    useEffect(() => {
+        if (wasModalOpenRef.current && !isPopupOpen) {
+            // Modal just closed, restore focus to opener button
+            if (openButtonRef.current) {
                 openButtonRef.current.focus()
             }
         }
+        wasModalOpenRef.current = isPopupOpen
     }, [isPopupOpen])
 
     return (
