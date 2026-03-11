@@ -4,7 +4,7 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
-import Testimonials from './components/Testimonials'
+import ThreatModel from './components/ThreatModel'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import BackgroundPipeFlow from './components/BackgroundPipeFlow'
@@ -30,7 +30,7 @@ function App() {
                     <About />
                     <Skills />
                     <Projects />
-                    <Testimonials />
+                    <ThreatModel />
                     <Contact />
                 </main>
                 <Footer />
