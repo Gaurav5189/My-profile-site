@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import './BackgroundPipeFlow.css'
 
-// ── Easy-to-edit configuration for pipelines ─────────────────────
-// You can control the direction, color, and turns of pipes for each section here.
+// Configuration for 3D animated pipelines
+// Define pipe colors, direction, and turning points per section.
 export const PIPES_CONFIG = {
     skills: [
         {
@@ -41,21 +41,21 @@ export const PIPES_CONFIG = {
     ],
 }
 
-// ── Build a CurvePath with straight lines and sharp rounded corners ─
-// Accepts a `sizing` object for responsive radius/tube sizes
+// Generate curved paths for the 3D pipes
+// Create straight segments with rounded corners based on screen size
 function buildCurve(pipe, sectionBounds, vpW, sizing) {
     const r = sizing.cornerRadius
     const startTy = sectionBounds.start
     const endTy = sectionBounds.end
     const totalH = endTy - startTy
 
-    // Constrain the visual area (wider on mobile so pipes don't overlap content)
+    // Keep pipes within visible boundaries, avoiding overlap with main content
     const activeWidth = Math.min(1240, vpW * sizing.activeWidthRatio)
     const margin = (vpW - activeWidth) / 2
 
     let cx = pipe.side === 'left' ? margin : (vpW - margin)
 
-    // Starting off-screen so the neon line doesn't abruptly spawn on-screen
+    // Start pipes outside the viewport for smooth entry
     const sideX = pipe.side === 'left' ? -100 : vpW + 100
     const entryDir = pipe.side === 'left' ? 1 : -1
 
@@ -82,7 +82,7 @@ function buildCurve(pipe, sectionBounds, vpW, sizing) {
         else if (target === 'right') rawTx = vpW - margin
         else if (target === 'center') rawTx = vpW / 2
         else if (typeof target === 'number') {
-            // A number like 0.8 now targets 80% of the constrained active width, not the whole screen
+            // Calculate target position based on constrained width instead of full screen width
             rawTx = margin + (activeWidth * target)
         }
 
@@ -133,9 +133,9 @@ function buildCurve(pipe, sectionBounds, vpW, sizing) {
     return path
 }
 
-// ── Measure all section positions on the page ─────────────────────────
+// Calculate exact coordinates of page sections
 function measureSectionBounds() {
-    const pipePadding = 100 // Create a ~200px total gap between sections (~8 lines)
+    // Add padding gap between pipe sections
     const getBounds = (selector, fallbackStart, fallbackHeight) => {
         const el = document.querySelector(selector) || document.getElementById(selector.replace('.', ''))
         if (el) {
@@ -166,10 +166,10 @@ export default function BackgroundPipeFlow() {
         let vpH = window.innerHeight
         let disposed = false
 
-        // ── Responsive sizing ────────────────────────────────────
+        // Responsive sizing configuration
         function getSizing(w) {
             if (w < 768) {
-                // On mobile: original pipeline thickness, pushed to absolute screen edges
+                // Adjust pipe thickness and position for mobile screens
                 return { cornerRadius: 32, coreRadius: 1.5, midRadius: 4, glowRadius: 8, activeWidthRatio: 1.0, glowOpacity: 0.18, midOpacity: 0.35 }
             }
             return { cornerRadius: 64, coreRadius: 1.5, midRadius: 4, glowRadius: 8, activeWidthRatio: 0.8, glowOpacity: 0.18, midOpacity: 0.35 }
@@ -189,7 +189,6 @@ export default function BackgroundPipeFlow() {
         const camera = new THREE.OrthographicCamera(0, vpW, 0, -vpH, 0.1, 2000)
         camera.position.set(0, 0, 1000)
 
-        // { sectionName: { pipeData, core, glow, mid } }
         let pipesData = []
 
         function rebuildPipes() {
@@ -268,7 +267,7 @@ export default function BackgroundPipeFlow() {
             rebuildPipes()
         }, 500)
 
-        // ── Animation loop ────────────────────────────────────────
+        // Main 3D animation update loop
         function animate() {
             if (disposed) return
             requestAnimationFrame(animate)
@@ -279,7 +278,7 @@ export default function BackgroundPipeFlow() {
             camera.updateProjectionMatrix()
 
             for (const p of pipesData) {
-                // Anchor the pipeline tip so it stays consistently at 75% of the viewport height as you scroll
+                // Synchronize pipe animation progress with page scroll position
                 const viewportLevel = vpH * 0.75
                 const currentY = scroll + viewportLevel
 
@@ -305,7 +304,7 @@ export default function BackgroundPipeFlow() {
         }
         animate()
 
-        // ── Cleanup ───────────────────────────────────────────────
+        // Memory and event listener cleanup
         return () => {
             disposed = true
             observer.disconnect()

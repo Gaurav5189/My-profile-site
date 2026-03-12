@@ -173,7 +173,7 @@
     }
 }
 
-/* ── View All Trigger ── */
+/* View All Trigger */
 .skills__view-all-wrap {
     display: flex;
     justify-content: center;
@@ -213,7 +213,7 @@
     outline-offset: 2px;
 }
 
-/* ── Skills Modal ── */
+/* Skills Modal */
 .skills-modal-overlay {
     position: fixed;
     inset: 0;

@@ -20,12 +20,12 @@ export default function About() {
             <div className="container">
                 <div className="divider" />
                 <div className="about__inner">
-                    {/* Mobile-only label so it can appear above the image */}
+                    {/* Mobile label repositioned above image */}
                     <motion.p className="section-label text-neon about__mobile-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                         // About Me
                     </motion.p>
 
-                    {/* Left column: The moving frame with a fixed background image */}
+                    {/* Left Column: Animated portrait */}
                     <motion.aside
                         className="about__col-left"
                         variants={anim}
@@ -52,7 +52,7 @@ export default function About() {
                         </Tilt>
                     </motion.aside>
 
-                    {/* Right column: Bio and stats (scrolls normally) */}
+                    {/* Right Column: Biography and statistics */}
                     <div className="about__col-right">
                         <motion.p className="section-label text-neon about__desktop-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             // About Me

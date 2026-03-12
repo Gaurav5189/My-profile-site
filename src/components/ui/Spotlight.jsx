@@ -23,8 +23,7 @@ export function Spotlight({
                 const originalPosition = parent.style.position;
                 const originalOverflow = parent.style.overflow;
                 parent.style.position = 'relative';
-                // We don't strictly need overflow: hidden here if the parent defines it, 
-                // but setting it helps ensure the spotlight doesn't bleed.
+                // Prevent spotlight effect from bleeding outside parent container
                 parent.style.overflow = 'hidden';
                 setParentElement(parent);
 

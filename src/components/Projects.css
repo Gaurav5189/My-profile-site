@@ -9,7 +9,7 @@
     background: transparent;
 }
 
-/* ── Ambient orbs ── */
+/* Ambient Orbs */
 .projects-section .orb {
     position: absolute;
     border-radius: 50%;
@@ -59,7 +59,7 @@
     }
 }
 
-/* ── Page Grid ── */
+/* Page Grid */
 .projects-section .page-grid {
     position: relative;
     z-index: 10;
@@ -72,7 +72,7 @@
     column-gap: 4vw;
 }
 
-/* ── Row 1: Header ── */
+/* Row 1: Header */
 .projects-section .hd-left {
     grid-column: 1;
     grid-row: 1;
@@ -136,7 +136,7 @@
     outline-offset: 2px;
 }
 
-/* ── Row 2 Left ── */
+/* Row 2 Left */
 .projects-section .main-left {
     grid-column: 1;
     grid-row: 2;
@@ -228,7 +228,6 @@
     stroke: var(--accent);
     stroke-linecap: round;
     stroke-dasharray: 161;
-    /* circumference ~ 160.2 */
     stroke-dashoffset: 161;
     animation: av-fill 5s linear forwards;
     filter: drop-shadow(0 0 3px var(--accent));
@@ -303,7 +302,7 @@
     color: var(--accent);
 }
 
-/* ── Row 2 Right ── */
+/* Row 2 Right */
 .projects-section .main-right {
     grid-column: 2;
     grid-row: 2;
@@ -354,7 +353,7 @@
     will-change: transform, opacity;
 }
 
-/* ── Row 3 ── */
+/* Row 3 */
 .projects-section .bt-left {
     grid-column: 1;
     grid-row: 3;

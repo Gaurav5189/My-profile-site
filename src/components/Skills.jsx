@@ -68,10 +68,10 @@ export default function Skills() {
         'n8n', 'Workflow Automation', 'OWASP', 'Networking', 'API Security',
         'Linux Admin', 'CI/CD', 'Live Deployment'
     ]
-    // Duplicate the list so the animation can loop seamlessly without skipping
+    // Duplicate list to create a seamless scrolling effect
     const doubledList = [...skillsList, ...skillsList]
 
-    // Handle Escape key and modal focusing
+    // Setup modal accessibility handlers
     useEffect(() => {
         const handleEscapeKey = (e) => {
             if (e.key === 'Escape') {
@@ -80,9 +80,9 @@ export default function Skills() {
         }
 
         if (isPopupOpen) {
-            // Add keyboard listener and focus modal
+            // Listen for Escape key and focus the modal
             window.addEventListener('keydown', handleEscapeKey)
-            // Short delay to allow modal to render before focusing
+            // Wait for render before focusing
             setTimeout(() => {
                 if (modalRef.current) {
                     modalRef.current.focus()
@@ -95,11 +95,10 @@ export default function Skills() {
         }
     }, [isPopupOpen])
 
-    // Restore focus when modal closes
+    // Restore focus to trigger button when modal closes
     const wasModalOpenRef = useRef(false)
     useEffect(() => {
         if (wasModalOpenRef.current && !isPopupOpen) {
-            // Modal just closed, restore focus to opener button
             if (openButtonRef.current) {
                 openButtonRef.current.focus()
             }
@@ -149,7 +148,7 @@ export default function Skills() {
                 </div>
             </div>
 
-            {/* Scrolling marquee - Placed outside the container to span full width */}
+            {/* Full-width scrolling skills marquee */}
             <div className="skills__marquee" aria-hidden="true">
                 <div className="skills__marquee-track">
                     {doubledList.map((t, i) => (

@@ -23,12 +23,12 @@ export default function Navbar() {
     return (
         <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
             <div className="navbar__inner container">
-                {/* Logo */}
+                {/* Brand Logo */}
                 <Link to="hero" smooth duration={600} className="navbar__logo" id="nav-logo">
                     G<span>.</span>
                 </Link>
 
-                {/* Desktop Nav */}
+                {/* Desktop Navigation Links */}
                 <nav className="navbar__links" aria-label="Main navigation">
                     {NAV_LINKS.map(({ label, to }) => (
                         <Link
@@ -45,7 +45,7 @@ export default function Navbar() {
                     ))}
                 </nav>
 
-                {/* CTA */}
+                {/* Call to Action Button */}
                 <Link
                     to="contact"
                     smooth
@@ -56,7 +56,7 @@ export default function Navbar() {
                     Hire Me
                 </Link>
 
-                {/* Hamburger */}
+                {/* Mobile Menu Toggle */}
                 <button
                     className="navbar__hamburger"
                     onClick={() => setMenuOpen(!menuOpen)}
@@ -67,7 +67,7 @@ export default function Navbar() {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Navigation Links */}
             {menuOpen && (
                 <nav className="navbar__mobile" aria-label="Mobile navigation">
                     {NAV_LINKS.map(({ label, to }) => (

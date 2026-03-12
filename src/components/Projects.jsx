@@ -41,7 +41,7 @@ const PROJECTS = [
     }
 ]
 
-// Promise-based Web Animations API helper
+// Utility for Web Animations API
 function wa(el, frames, opts) {
     if (!el) return Promise.resolve()
     return new Promise(res => {
@@ -78,7 +78,7 @@ export default function Projects() {
         })
     }, [])
 
-    // Whenever current index changes without animation (initial mount)
+    // Update accent color on initial load
     useEffect(() => {
         if (sectionRef.current) {
             sectionRef.current.style.setProperty('--accent', PROJECTS[cur].color)
@@ -107,7 +107,7 @@ export default function Projects() {
         resetTimer()
     }
 
-    // IntersectionObserver to auto-slide only when in viewport
+    // Pause auto-sliding when section is off-screen
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -158,7 +158,7 @@ export default function Projects() {
         const EASE_OUT = 'cubic-bezier(0.4,0,0.6,1)'
         const EASE_IN = 'cubic-bezier(0.16,1,0.3,1)'
 
-        /* ── PHASE 1: everything exits ── */
+        /* Step 1: Animate elements out */
         await Promise.all([
             wa(imgCurRef.current, [
                 { transform: 'translate(0,0)', opacity: 1 },
@@ -181,20 +181,19 @@ export default function Projects() {
             ], { duration: 300, easing: EASE_OUT, fill: 'forwards' })
         ])
 
-        /* ── MID: swap content ── */
+        /* Step 2: Swap content instantly */
         if (sectionRef.current) sectionRef.current.style.setProperty('--accent', next.color)
 
-        // Update React state mid-air to show new dots/avatars/text immediately
+        // Update UI state for new project
         setCur(nextIdx)
 
-        // Give React a tick to update DOM (quote and title text will snap!)
-        // However, we are animating the container. 
+        // Allow DOM to update before animating new content
         imgCurRef.current.src = nextImgSrc
         imgCurRef.current.style.cssText = `transform:${imgEnter}; opacity:0;`
         if (bgCardRef.current) bgCardRef.current.style.cssText = `transform:${cardEnter}; opacity:0;`
         await new Promise(r => setTimeout(r, 16))
 
-        /* ── PHASE 2: everything enters ── */
+        /* Step 3: Animate elements in */
         await Promise.all([
             wa(imgCurRef.current, [
                 { transform: imgEnter, opacity: 0 },
@@ -217,7 +216,7 @@ export default function Projects() {
             ], { duration: 420, delay: 140, easing: EASE_IN, fill: 'forwards' })
         ])
 
-        // Clean up inline styles
+        // Remove temporary animation styles
         const els = [imgCurRef.current, bgCardRef.current, quoteRef.current, nameRef.current]
         els.forEach(el => {
             if (el) el.style.cssText = ''
@@ -237,7 +236,7 @@ export default function Projects() {
             <div className="orb orb-center" id="orb-center"></div>
 
             <div className="page-grid">
-                {/* Row 1 */}
+                {/* Header Title and Link */}
                 <div className="hd-left">
                     <motion.p
                         className="section-label"
@@ -272,7 +271,7 @@ export default function Projects() {
                     )}
                 </motion.div>
 
-                {/* Row 2 Left */}
+                {/* Project Thumbnails and Quote */}
                 <div className="main-left">
                     <p className="tech-label">Quick Jump</p>
                     <div className="avatars">
@@ -308,19 +307,19 @@ export default function Projects() {
                     </div>
                 </div>
 
-                {/* Row 2 Right */}
+                {/* Main Project Image Viewer */}
                 <div className="main-right">
                     <div className="img-stage">
-                        {/* Accent background card */}
+                        {/* Decorative background element */}
                         <div className="bg-card" ref={bgCardRef}></div>
-                        {/* Image clip */}
+                        {/* Restrict image within card container */}
                         <div className="img-clip">
                             <img ref={imgCurRef} className="proj-img" src={currentProject.image} alt={currentProject.title} />
                         </div>
                     </div>
                 </div>
 
-                {/* Row 3 */}
+                {/* Navigation Controls and Status Details */}
                 <div className="bt-left">
                     <div className="controls">
                         <button className="ctrl" onClick={() => prevSlide()} aria-label="Previous">

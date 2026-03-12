@@ -7,23 +7,22 @@ export default function SplitTextReveal({ text, className = "", delay = 0, durat
 
     const parseText = (text) => {
         const tokens = [];
-        // Match ^...^ highlights or individual words
+        // Parse text for highlighted sections using ^ markers
         const regex = /\^([^^]+)\^|(\S+)/g;
         let match;
 
         while ((match = regex.exec(text ?? "")) !== null) {
             if (match[1]) {
-                // Highlighted section: split into words to maintain per-word animation
+                // Split highlighted sections while preserving per-word animations
                 const subWords = match[1].split(/\s+/);
                 subWords.forEach((sw, idx) => {
                     if (sw) tokens.push({
                         text: sw,
                         highlight: true,
-                        // Add a flag for trailing space if needed, though we use margin in JSX
                     });
                 });
             } else if (match[2]) {
-                // Regular word
+                // Process standard word
                 tokens.push({ text: match[2], highlight: false });
             }
         }

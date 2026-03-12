@@ -15,7 +15,6 @@ const headingSlideUp = {
     visible: (delay = 0) => ({ y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94], delay } }),
 }
 
-// Evaluated once at module load — no hook needed
 const isMobile =
     typeof window !== 'undefined' &&
     (window.matchMedia('(pointer: coarse)').matches ||
@@ -27,10 +26,10 @@ export default function Hero() {
     const [splineReady, setSplineReady] = useState(false)
     const [introComplete, setIntroComplete] = useState(false)
     const canShowHero = splineReady && introComplete
-    // Unmount Spline when the hero scrolls out of view (with 200px buffer)
+    // Performance: unmount 3D scene when scrolled out of view
     const isHeroInView = useInView(heroRef, { margin: '200px' })
 
-    // Poll shadow DOM: remove logo + detect when the scene is actually loaded
+    // Check periodically for shadow DOM to remove logo and wait for render
     useEffect(() => {
         if (!isHeroInView) return
 
@@ -41,7 +40,6 @@ export default function Hero() {
             const splineViewer = document.querySelector('spline-viewer')
             if (!splineViewer || !splineViewer.shadowRoot) return
 
-            // Remove the "Built with Spline" logo
             if (!logoRemoved) {
                 const logo = splineViewer.shadowRoot.querySelector('#logo')
                 if (logo) {
@@ -50,7 +48,6 @@ export default function Hero() {
                 }
             }
 
-            // Detect when the canvas has actually rendered (scene loaded)
             if (!sceneDetected) {
                 const canvas = splineViewer.shadowRoot.querySelector('canvas')
                 if (canvas) {
@@ -62,10 +59,8 @@ export default function Hero() {
             if (logoRemoved && sceneDetected) clearInterval(interval)
         }, 100)
 
-        // Stop polling after 8 seconds to avoid infinite loop
-        let timeout = setTimeout(() => {
+        setTimeout(() => {
             clearInterval(interval)
-            // Even if polling timed out, show whatever is there
             setSplineReady(true)
         }, 8000)
 
@@ -75,14 +70,12 @@ export default function Hero() {
         }
     }, [isHeroInView])
 
-    // Allow scrolling over the 3D model without breaking hover interactions
+    // Ensure scrolling works properly over the 3D canvas
     useEffect(() => {
         const wrap = splineWrapRef.current
         if (!wrap) return
 
         const stopScroll = (e) => {
-            // Stop the wheel/touch events from reaching the Spline viewer in the capture phase,
-            // which prevents it from swallowing the scroll, allowing native page scrolling to work.
             e.stopPropagation()
         }
 
@@ -100,7 +93,7 @@ export default function Hero() {
     return (
         <section ref={heroRef} className="hero section-pad" id="hero">
 
-            {/* === Intro Overlay === */}
+            {/* Intro Overlay */}
             <motion.div
                 className="hero__intro-overlay"
                 initial={{ opacity: 1, y: 0 }}
@@ -117,7 +110,7 @@ export default function Hero() {
                 </div>
             </motion.div>
 
-            {/* === Spline 3D background — hidden until scene is loaded === */}
+            {/* Spline 3D background */}
             <div
                 ref={splineWrapRef}
                 className={`hero__spline-wrap ${canShowHero ? 'hero__spline-wrap--ready' : ''}`}
@@ -130,13 +123,13 @@ export default function Hero() {
                 />
             </div>
 
-            {/* Overlay: transparent left (3D), dark right (text) */}
+            {/* Background Overlay */}
             <div className="hero__overlay" aria-hidden="true" />
 
-            {/* === Two-column layout: [text content | 3D spacer] === */}
+            {/* Main content layout container */}
             <div className="container hero__inner">
 
-                {/* Left col — all textual content */}
+                {/* Textual content area */}
                 <div className="hero__content">
                     <motion.p
                         className="section-label text-neon"
@@ -191,7 +184,7 @@ export default function Hero() {
                     </motion.div>
                 </div>
 
-                {/* Right col — intentionally empty so 3D icon shows through */}
+                {/* Spacer for 3D model */}
                 <div className="hero__spacer" aria-hidden="true" />
             </div>
 
@@ -201,7 +194,7 @@ export default function Hero() {
     )
 }
 
-/* ── Typewriter Heading — type forward, backtype at end ──── */
+/* Typewriter heading logic */
 const LINES = [
     { text: 'Securing systems,', outlined: false },
     { text: 'shifting left,', outlined: true },
@@ -245,7 +238,7 @@ function TypewriterHeading({ isHeroInView }) {
         }
 
         else if (phase === 'paused') {
-            // Hold all 3 lines visible, then start erasing from line 3
+            // Hold text visible briefly before clearing
             t = setTimeout(() => {
                 setPhase('erasing')
                 setLineIdx(LINES.length - 1)
@@ -255,7 +248,6 @@ function TypewriterHeading({ isHeroInView }) {
 
         else if (phase === 'erasing') {
             if (charIdx > 0) {
-                // Erase one character
                 t = setTimeout(() => {
                     setCharIdx(c => c - 1)
                 }, ERASE_SPEED)
@@ -323,7 +315,7 @@ function TypewriterHeading({ isHeroInView }) {
     )
 }
 
-/* ── Typewriter Intro (Hey there...) ──── */
+/* Initial greeting animation */
 function TypewriterIntro({ text, onComplete }) {
     const chars = text.split("");
     return (

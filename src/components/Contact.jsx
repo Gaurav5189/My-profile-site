@@ -54,7 +54,7 @@ export default function Contact() {
             <div className="container">
                 <div className="divider" />
                 <div className="contact__inner">
-                    {/* Left: CTA */}
+                    {/* CTA Section */}
                     <div className="contact__left">
                         <motion.p className="section-label" variants={anim} custom={0} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             Get In Touch
@@ -78,7 +78,7 @@ export default function Contact() {
                             </div>
                         </motion.div>
 
-                        {/* Social Links */}
+                        {/* Social Profile Links */}
                         <motion.div className="contact__socials" variants={anim} custom={.7} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             {[
                                 { icon: <FiGithub size={18} />, href: 'https://github.com/Gaurav5189', label: 'GitHub', id: 'social-github' },
@@ -92,7 +92,7 @@ export default function Contact() {
                         </motion.div>
                     </div>
 
-                    {/* Right: Form */}
+                    {/* Contact Form Section */}
                     <motion.div className="contact__form-wrap" variants={anim} custom={0.2} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                         {submitted ? (
                             <div className="contact__success" id="contact-success">

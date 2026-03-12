@@ -10,7 +10,7 @@
     flex-direction: column;
 }
 
-/* ── TYPOGRAPHY ── */
+/* Typography */
 .threat-model__heading {
     font-family: var(--font-heading);
     font-size: clamp(2.2rem, 3.8vw, 3.6rem);
@@ -38,10 +38,9 @@
     align-items: center;
     border-radius: 12px;
     min-height: 520px;
-    /* Prevents layout jump when switching threats */
 }
 
-/* ── DIAGRAM COLUMN ── */
+/* Diagram Column */
 .threat-model__diagram {
     flex: 1;
     display: flex;
@@ -75,7 +74,7 @@
     background: #444;
 }
 
-/* ── THREAT MARKERS ── */
+/* Threat Markers */
 .threat-marker {
     position: absolute;
     top: -10px;
@@ -87,8 +86,6 @@
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     z-index: 10;
-
-    /* Applying pulse animation */
     animation: pulse-red 2s infinite;
 }
 
@@ -115,7 +112,7 @@
     z-index: 20;
 }
 
-/* ── MITIGATION COLUMN ── */
+/* Mitigation Column */
 .threat-model__panel {
     flex: 1;
     display: flex;
@@ -133,9 +130,7 @@
 .mitigation-card {
     width: 100%;
     background: rgba(0, 255, 136, 0.05);
-    /* User defined */
     border-left: 4px solid var(--neon-green, #00ff88);
-    /* Accent border */
     padding: 2rem;
     border-radius: 0 8px 8px 0;
     display: flex;
@@ -174,7 +169,7 @@
     line-height: 1.6;
 }
 
-/* ── RESPONSIVE ── */
+/* Responsive */
 @media (max-width: 768px) {
     .threat-model {
         padding-top: 3rem;

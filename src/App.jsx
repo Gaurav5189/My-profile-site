@@ -11,11 +11,10 @@ import BackgroundPipeFlow from './components/BackgroundPipeFlow'
 
 function App() {
     useEffect(() => {
-        // Stop browser from automatically restoring the previous scroll position
+        // Disable automatic scroll restoration to start at the top
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual'
         }
-        // Immediately force to the absolute top of the page on refresh
         window.scrollTo(0, 0)
     }, [])
 

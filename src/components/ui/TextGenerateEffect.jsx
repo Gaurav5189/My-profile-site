@@ -8,7 +8,7 @@ export const TextGenerateEffect = ({
     duration = 0.5,
 }) => {
     const [scope, animate] = useAnimate();
-    // Animation triggers at 80% of the screen exactly once
+    // Trigger animation once when element enters viewport
     const isInView = useInView(scope, { once: true, margin: "0px 0px -20% 0px" });
 
     const wordsArray = words.split(" ");
@@ -40,7 +40,7 @@ export const TextGenerateEffect = ({
                                 opacity: 0,
                                 filter: filter ? "blur(10px)" : "none",
                                 display: "inline-block",
-                                whiteSpace: "pre", // Ensures the space after the word is respected
+                                whiteSpace: "pre", // Preserve trailing spaces
                             }}
                         >
                             {word}{" "}
