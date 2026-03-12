@@ -25,6 +25,8 @@ export default function Hero() {
     const heroRef = useRef(null)
     const splineWrapRef = useRef(null)
     const [splineReady, setSplineReady] = useState(false)
+    const [introComplete, setIntroComplete] = useState(false)
+    const canShowHero = splineReady && introComplete
     // Unmount Spline when the hero scrolls out of view (with 200px buffer)
     const isHeroInView = useInView(heroRef, { margin: '200px' })
 
@@ -103,22 +105,22 @@ export default function Hero() {
                 className="hero__intro-overlay"
                 initial={{ opacity: 1, y: 0 }}
                 animate={{
-                    opacity: splineReady ? 0 : 1,
-                    pointerEvents: splineReady ? 'none' : 'auto',
-                    y: splineReady ? -30 : 0
+                    opacity: canShowHero ? 0 : 1,
+                    pointerEvents: canShowHero ? 'none' : 'auto',
+                    y: canShowHero ? -30 : 0
                 }}
-                transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1], delay: splineReady ? 0.3 : 0 }}
-                aria-hidden={splineReady ? 'true' : 'false'}
+                transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1], delay: canShowHero ? 0.3 : 0 }}
+                aria-hidden={canShowHero ? 'true' : 'false'}
             >
                 <div style={{ textAlign: 'center', padding: '0 20px' }}>
-                    <TypewriterIntro text="Hey there, welcome to my portfolio." />
+                    <TypewriterIntro text="Hey there, welcome to my portfolio." onComplete={() => setIntroComplete(true)} />
                 </div>
             </motion.div>
 
             {/* === Spline 3D background — hidden until scene is loaded === */}
             <div
                 ref={splineWrapRef}
-                className={`hero__spline-wrap ${splineReady ? 'hero__spline-wrap--ready' : ''}`}
+                className={`hero__spline-wrap ${canShowHero ? 'hero__spline-wrap--ready' : ''}`}
                 aria-hidden="true"
             >
                 <spline-viewer
@@ -322,37 +324,43 @@ function TypewriterHeading({ isHeroInView }) {
 }
 
 /* ── Typewriter Intro (Hey there...) ──── */
-function TypewriterIntro({ text }) {
+function TypewriterIntro({ text, onComplete }) {
     const chars = text.split("");
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', fontWeight: '500', fontSize: 'clamp(1.4rem, 4vw, 2.5rem)', color: 'var(--cream)', letterSpacing: '0.05em' }}>
-                {chars.map((char, index) => (
-                    <motion.span
-                        key={index}
-                        initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        transition={{
-                            duration: 0.4,
-                            delay: index * 0.04,
-                            ease: "easeOut"
-                        }}
-                        style={{ whiteSpace: char === " " ? "pre" : "normal", display: 'inline-block' }}
-                    >
-                        {char}
-                    </motion.span>
-                ))}
+                {chars.map((char, index) => {
+                    const isLast = index === chars.length - 1;
+                    return (
+                        <motion.span
+                            key={index}
+                            initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                            transition={{
+                                duration: 0.4,
+                                delay: index * 0.04,
+                                ease: "easeOut"
+                            }}
+                            onAnimationComplete={() => {
+                                if (isLast && onComplete) onComplete();
+                            }}
+                            style={{ whiteSpace: char === " " ? "pre" : "normal", display: 'inline-block' }}
+                        >
+                            {char}
+                        </motion.span>
+                    )
+                })}
             </span>
 
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.8, duration: 1 }}
+                transition={{ delay: 4.8, duration: 1 }}
                 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--neon-cyan)', letterSpacing: '0.2em', textTransform: 'uppercase' }}
             >
                 <motion.span
                     animate={{ opacity: [0.3, 1, 0.3] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                     style={{ display: 'inline-block' }}
                 >
                     Loading environment...
