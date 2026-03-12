@@ -10,15 +10,15 @@ export const PIPES_CONFIG = {
             id: 'sk-1',
             color: '#00ff88',
             side: 'left', // Starts from the left side
-            turns: [0.2, 0.5, 0.8], // Percentage down the section to turn
-            xTargets: [0.8, 0.4, 'left'], // Where to turn to (percentage of screen width, or 'left'/'right'/'center')
+            turns: [0.2, 0.88], // Percentage down the section to turn
+            xTargets: [0.4, 'right'], // Where to turn to (percentage of screen width, or 'left'/'right'/'center')
         },
         {
             id: 'sk-2',
             color: '#ff3eb5',
             side: 'right',
-            turns: [0.3, 0.6, 0.9],
-            xTargets: ['left', 'center', 'right'],
+            turns: [0.3, 0.7],
+            xTargets: [0.6, 0.2],
         },
     ],
     projects: [

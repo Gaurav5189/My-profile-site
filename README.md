@@ -1,78 +1,66 @@
-# Gaurav — DevSecOps Engineer & Security Architect Portfolio
+<div align="center">
+  <p>A personal portfolio website built with <strong>React</strong> and <strong>Vite</strong>. Showcases projects, threat modeling, and technical skills as a security-aware backend engineer.</p>
+</div>
 
-A premium, high-performance personal portfolio website built with React and Vite. Showcases projects, engineering philosophy, and technical skills as a security-aware backend engineer.
+<br/>
 
-## 🚀 Key Features
-- **Spline 3D Hero:** Interactive 3D power icon loaded via the official `<spline-viewer>` web component, with mobile-optimized `pixel-ratio` and `render-on-demand` for low-power devices.
-- **Typewriter Heading:** Auto-typing hero headline that types each line forward, pauses with all three visible, then backtypes before looping — built with a lightweight React state machine.
-- **Animated Background Pipes:** Full-viewport canvas-based pipe flow animation that runs behind all content.
-- **Responsive "Glassmorphic" Design:** Modern dark theme with CSS custom properties for sleek, frosted glass UI components.
-- **Dynamic Scroll Animations:** Section reveals and smooth layouts using `framer-motion`.
-- **Fully Functional Contact Form:** Integrated with Web3Forms API to deliver messages directly to email — no backend needed.
-- **Mobile Performance Optimised:** Spline pixel-ratio reduction and render-on-demand on touch / small-screen devices.
-- **SEO Ready:** Custom meta description, keywords, and semantic HTML tuned for DevSecOps / backend engineering search terms.
-- **Tetromino Preloader:** A custom, fully synchronized geometric preloader that guarantees a minimum display time while waiting for 3D assets to initialize.
-- **Animated Text Scramble Effect:** Interactive scrolling headers that decrypt into view natively using Framer Motion's intersection observers with strict bi-directional logic.
-- **Staggered Blur Text Effects:** Quote reveals utilizing `useAnimate` to create a smooth, cascading word-blur effect on scroll.
-- **Interactive 3D Profiling:** Replaced static images with a dynamic, cursor-following 3D Tilt container enhanced by a realistic Spotlight sheen.
-- **Extensive Micro-Animations:** Tastefully implemented CSS-driven interactions, including smooth section divider reveals, tactile button depressions, and glowing link lifts.
+## 🚀 Key Features <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" align="center" />
 
-## 🛡 DevSecOps Pipeline (Shift Left)
-- **Snyk (Software Composition Analysis - SCA):** This looks at your `package.json` to find out if the other people's code you are using (like React or Vite plugins) has known vulnerabilities (CVEs).
-- **Gitleaks (Secret Scanning):** This looks at your code to ensure you didn't accidentally commit a private API key, database password, or webhook URL.
+- **Imperative 3D Pipelines:** A highly performant, custom-built `Three.js` WebGL pipeline background that dynamically recalculates and tracks scroll progress with exact screen constraint mapping.
+- **Custom Native Web Animations Slider:** A fully custom project gallery built using the native Promise-based Web Animations API (`wa()`) for highly synchronized text scrambling and image clip-path reveals without heavy slider libraries.
+- **Interactive Threat Modeling:** A visually engaging layout to explore application attack surfaces, mitigation strategies, and security pipelines via pulsing interactive markers.
+- **Terminal-Style Typewriter Hero:** A specialized typewriter component that types forward, pauses to let you read, and erases backwards before looping through technical phrases.
+- **Custom UI Glitches & Reveals:** Incorporates Framer Motion and custom CSS (like `GradualSpacing` and `SplitTextReveal`) to cascade, blur, and decrypt text elements smoothly on scroll.
+- **Fully Functional Contact Form:** Integrated with Web3Forms API to deliver messages directly to email — no backend required.
+- **Heavy Mobile Optimisation:** Strict mobile layout breakpoints. The 3D geometry actually decreases its thickness and bounding box dynamically to never overlap text on phones.
 
-*A standard frontend developer might only use one (or neither). A DevSecOps engineer uses both to implement a true "Shift Left" pipeline.*
-## 🛠 Tech Stack
-- **Framework:** React 18 + Vite 5
-- **Styling:** Vanilla CSS (custom properties, Grid & Flexbox)
-- **Animations:** Framer Motion
-- **3D Rendering:** Spline (`<spline-viewer>` web component)
-- **Background FX:** HTML Canvas (BackgroundPipeFlow)
+## 🛡️ DevSecOps Pipeline (Shift Left) <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Locked.png" alt="Locked" width="25" align="center" />
+
+- **Snyk (SCA):** Scans the `package.json` to ensure zero third-party dependencies carry known vulnerabilities (CVEs).
+- **Gitleaks (Secret Scanning):** An automated workflow to ensure no private API keys or database strings ever get committed.
+
+## 🛠️ Tech Stack <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Wrench.png" alt="Wrench" width="25" align="center" />
+
+- **Framework:** React 18 + Vite
+- **Styling:** Vanilla CSS (Custom properties, Grid, Flexbox, UI tokens)
+- **Complex UI Animations:** Framer Motion & Native Web Animations API
+- **3D Rendering:** Imperative WebGL via `Three.js`
 - **Forms API:** Web3Forms
-- **Icons:** React Icons (Feather & Hero icons)
 
 ---
 
-## 📂 Site Structure Tree
+## 📂 Site Structure Tree <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/File%20Folder.png" alt="Folder" width="25" align="center" />
 
 ```text
 My-profile-site/
-├── .github/
-│   └── workflows/
-│       └── ci-pipeline.yml          ← Gitleaks & Snyk DevSecOps Action
-├── index.html                       ← Entry point, fonts, Spline viewer & meta tags
-├── vite.config.js                   ← Vite bundler configuration
-├── package.json                     ← Dependencies & scripts
-├── public/                          ← Static assets (served at root /)
-│   ├── favicon.svg
-│   ├── gaurav.webp                  ← Profile photo (WebP optimised)
-│   ├── pycloud-img.webp             ← PyCloud project screenshot
-│   ├── ravenshaw-site.webp          ← Ravenshaw Alumni project screenshot
-│   └── scene-clean.splinecode       ← Local 3D Spline scene file
+├── .github/workflows/               ← Security pipelines (Gitleaks/Snyk)
+├── index.html                       ← Document entry, fonts, semantic SEO meta tags
+├── vite.config.js                   ← Rollup settings, obfuscation & Terser minification
+├── package.json                     ← Highly stripped dependencies (No bloat)
+├── public/                          ← Static WebP and SVG assets
 └── src/
-    ├── main.jsx                     ← React bootstrap
-    ├── App.jsx                      ← Root layout composer
-    ├── styles/
-    │   └── global.css               ← Design tokens, CSS variables, utilities
+    ├── main.jsx                     ← React DOM mounting
+    ├── App.jsx                      ← Component composition
+    ├── styles/                      ← Global typography and color variables
     └── components/
-        ├── ui/                      ← Custom interactive UI micro-components
-        │   ├── Preloader.jsx / .css
-        │   ├── Spotlight.jsx
-        │   ├── TextGenerateEffect.jsx
-        │   ├── TextScramble.jsx
-        │   └── Tilt.jsx
-        ├── Hero.jsx / .css          ← Two-column 3D hero + typewriter heading
-        ├── BackgroundPipeFlow.jsx / .css ← Canvas-based animated pipe background
-        ├── Navbar.jsx / .css        ← Sticky glassmorphism nav + mobile menu
-        ├── About.jsx / .css         ← Bio, philosophy, and interactive 3D photo
-        ├── Skills.jsx / .css        ← Service card grid + scrolling marquee
-        ├── Projects.jsx / .css      ← Selected work showcase with images
-        ├── Testimonials.jsx / .css  ← Engineering Philosophy quote block
-        ├── Contact.jsx / .css       ← Web3Forms functional contact form
-        └── Footer.jsx / .css        ← Navigation links & social footprint
+        ├── Hero.jsx                 ← Terminal-typing intro logic
+        ├── BackgroundPipeFlow.jsx   ← The core imperative Three.js background class
+        ├── Navbar.jsx               ← Sticky glassmorphism header
+        ├── About.jsx                ← Floating UI / Tilt philosophy cards
+        ├── Skills.jsx               ← Card layout
+        ├── Projects.jsx             ← Custom Promise-based Web Animations slider
+        ├── ThreatModel.jsx          ← Attack surface visualizer
+        ├── Contact.jsx              ← Web3Forms payload handler
+        ├── Footer.jsx               ← Final stamp & socials
+        └── ui/                      ← Reusable micro-animation wrappers
+            ├── GradualSpacing.jsx 
+            ├── SplitTextReveal.jsx
+            ├── Spotlight.jsx
+            ├── TextGenerateEffect.jsx
+            └── Tilt.jsx
 ```
 
-## 💻 Running Locally
+## 💻 Running Locally <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Laptop.png" alt="Laptop" width="25" align="center" />
 
 1. Install dependencies:
    ```bash
