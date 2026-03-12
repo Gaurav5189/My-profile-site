@@ -135,7 +135,7 @@ function buildCurve(pipe, sectionBounds, vpW, sizing) {
 
 // Calculate exact coordinates of page sections
 function measureSectionBounds() {
-    // Add padding gap between pipe sections
+    const pipePadding = 100; // Add padding gap between pipe sections
     const getBounds = (selector, fallbackStart, fallbackHeight) => {
         const el = document.querySelector(selector) || document.getElementById(selector.replace('.', ''))
         if (el) {

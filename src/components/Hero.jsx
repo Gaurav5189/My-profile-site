@@ -59,7 +59,7 @@ export default function Hero() {
             if (logoRemoved && sceneDetected) clearInterval(interval)
         }, 100)
 
-        setTimeout(() => {
+        let timeout = setTimeout(() => {
             clearInterval(interval)
             setSplineReady(true)
         }, 8000)
