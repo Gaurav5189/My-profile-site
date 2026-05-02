@@ -46,7 +46,7 @@ export default function About() {
                             />
                             <img
                                 src="/gaurav.webp"
-                                alt="Gaurav — DevSecOps Engineer"
+                                alt="Gaurav — DevOps Engineer"
                                 className="about__photo-tilt"
                             />
                         </Tilt>
@@ -70,7 +70,7 @@ export default function About() {
 
                         <motion.div className="about__stats" variants={anim} custom={.7} initial="hidden" animate={isInView ? 'visible' : 'hidden'}>
                             {[
-                                { value: '2+', label: 'Years in DevSecOps' },
+                                { value: '2+', label: 'Years in DevOps' },
                                 { value: '3+', label: 'Live Apps & Services' },
                                 { value: '15+', label: 'Automations' },
                             ].map(({ value, label }) => (
